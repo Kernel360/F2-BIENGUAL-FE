@@ -19,7 +19,6 @@ function Login() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  // todo : 추후 백엔드 oauth 로직과 연결 필요!
   const handleOAuthLogin = (provider: string) => {
     console.log(`Redirecting to ${provider} OAuth login...`);
     const returnUrl = searchParams.get('returnUrl');
@@ -29,6 +28,7 @@ function Login() {
         returnUrl ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''
       }`,
     );
+    // todo : 로그인 하고 db에 사용자의 카테고리 정보가 없으면 추가정보입력페이지로 이동
   };
 
   return (

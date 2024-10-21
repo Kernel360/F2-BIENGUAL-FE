@@ -7,29 +7,29 @@ import { Input } from '@/components/ui/input';
 import { useEffect, useState, useMemo } from 'react';
 import { useUserInfo, useUpdateUserInfo } from '@/api/hooks/useUserInfo';
 
+// todo : 개인 선호 카테고리 연결 필요
+
 const categories = [
-  'IT',
-  'Health',
-  'Business',
-  'Sports',
-  'Science',
-  'Language',
-  'Design',
-
-  'Music',
-  'Life',
-  'Fashion',
-  'Food',
-
-  'Finance',
-  'Movie',
-  'Art',
+  { id: 1, name: 'IT' },
+  { id: 2, name: 'Health' },
+  { id: 3, name: 'Business' },
+  { id: 4, name: 'Sports' },
+  { id: 5, name: 'Science' },
+  { id: 6, name: 'Language' },
+  { id: 7, name: 'Design' },
+  { id: 8, name: 'Music' },
+  { id: 9, name: 'Life' },
+  { id: 10, name: 'Fashion' },
+  { id: 11, name: 'Food' },
+  { id: 12, name: 'Finance' },
+  { id: 13, name: 'Movie' },
+  { id: 14, name: 'Art' },
 ];
 
 export default function UserProfile() {
   const [nickname, setNickname] = useState('');
   // const [phone, setPhone] = useState(''); // todo : 나중에 핸드폰 로직 추가
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const { data: userData, refetch: refetchUserInfo } = useUserInfo();
 
   const { mutate: updateUserInfoMutation } = useUpdateUserInfo();
@@ -60,11 +60,11 @@ export default function UserProfile() {
     );
   };
 
-  const toggleCategory = (category: string) => {
+  const toggleCategory = (categoryId: number) => {
     setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category],
+      prev.includes(categoryId)
+        ? prev.filter((id) => id !== categoryId)
+        : [...prev, categoryId],
     );
   };
 
@@ -193,15 +193,15 @@ export default function UserProfile() {
             {categories.map((category) => (
               // eslint-disable-next-line react/button-has-type
               <button
-                key={category}
-                onClick={() => toggleCategory(category)}
+                key={category.id}
+                onClick={() => toggleCategory(category.id)}
                 className={`px-3 py-1 rounded-full text-sm ${
-                  selectedCategories.includes(category)
+                  selectedCategories.includes(category.id)
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-gray-200 text-gray-800'
                 }`}
               >
-                {category}
+                {category.name}
               </button>
             ))}
           </div>
