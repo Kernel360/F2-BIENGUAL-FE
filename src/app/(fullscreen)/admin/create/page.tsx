@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CreateContentsResponse } from '@/types/Admin';
+import { CreateContentsResponse } from '@/types/CreateContents';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/contents`;
 
