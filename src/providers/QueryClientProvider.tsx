@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClientOptions = {
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000,
+      // staleTime: 60 * 1000, // todo : 이것때문에 자동설정된  refetchOnWindowFocus 작동안하는 이슈로 추측됨
     },
   },
 };
@@ -25,12 +25,20 @@ function getQueryClient() {
   return browserQueryClient;
 }
 
+interface TanstackQueryPoviderProps {
+  children: React.ReactNode;
+  initialDatas?: { queryKey: string[]; initialData: unknown }[];
+}
+
 export default function TanstackQueryPovider({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+  initialDatas,
+}: TanstackQueryPoviderProps) {
   const queryClient = getQueryClient();
+
+  initialDatas?.forEach(({ queryKey, initialData }) => {
+    queryClient.setQueryData(queryKey, initialData);
+  });
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
