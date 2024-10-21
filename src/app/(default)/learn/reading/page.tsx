@@ -4,14 +4,22 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import ArticlePreview from '@/components/ArticlePreview';
 import { useReadingContents } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/ContentTypeFilter';
+import Pagination from '@/components/Pagination';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 export default function ReadingPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const currentPage = Number(searchParams.get('page') || 0);
+
   const {
     data: readingContents,
     isLoading,
     isError,
     error,
-  } = useReadingContents();
+    // TODO(@smosco): 백엔드에 page 1부터 시작하게 변경 요청
+  } = useReadingContents(currentPage - 1);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -25,6 +33,10 @@ export default function ReadingPage() {
     return <p>콘텐츠가 없습니다.</p>;
   }
 
+  const handlePageChange = (page: number) => {
+    router.push(`?page=${page}`);
+  };
+
   return (
     <div>
       <ContentTypeFilter />
@@ -33,6 +45,10 @@ export default function ReadingPage() {
           <ArticlePreview key={content.contentId} data={content} />
         ))}
       </ul>
+      <Pagination
+        totalPages={readingContents.data.totalPages}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }
