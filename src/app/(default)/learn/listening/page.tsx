@@ -5,14 +5,21 @@ import { useListeningContents } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/ContentTypeFilter';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import EmptyAlert from '@/components/EmptyAlert';
+import { useSearchParams, useRouter } from 'next/navigation';
+import Pagination from '@/components/Pagination';
 
 function ListeningPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const currentPage = Number(searchParams.get('page') || 0);
+
   const {
     data: listeningContents,
     isLoading,
     isError,
     error,
-  } = useListeningContents();
+  } = useListeningContents(currentPage - 1);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -26,6 +33,10 @@ function ListeningPage() {
     return <EmptyAlert alertDescription="북마크가 없습니다." />;
   }
 
+  const handlePageChange = (page: number) => {
+    router.push(`?page=${page}`);
+  };
+
   return (
     <main>
       <ContentTypeFilter />
@@ -34,6 +45,10 @@ function ListeningPage() {
           <ListeningPreviewCard key={content.contentId} data={content} />
         ))}
       </div>
+      <Pagination
+        totalPages={listeningContents.data.totalPages}
+        onPageChange={handlePageChange}
+      />
     </main>
   );
 }

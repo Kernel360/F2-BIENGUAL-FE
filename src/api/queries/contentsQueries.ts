@@ -59,15 +59,22 @@ export const fetchContentDetail = async (
   return response.json();
 };
 
-// TODO(@smosco):query param으로 정렬, 카테고리, 사이즈 조절 넘기기
-export const fetchReadingContents = async (): Promise<ContentsResponse> => {
-  const response = await fetch(`${BASE_URL}/view/reading`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
+export const fetchReadingContents = async (
+  page = 0,
+  size = 5,
+  sort = 'createdAt',
+  direction = 'DESC',
+): Promise<ContentsResponse> => {
+  const response = await fetch(
+    `${BASE_URL}/view/reading?sort=${sort}&direction=${direction}&page=${page}&size=${size}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
     },
-    credentials: 'include',
-  });
+  );
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
@@ -76,14 +83,22 @@ export const fetchReadingContents = async (): Promise<ContentsResponse> => {
   return response.json();
 };
 
-export const fetchListeningContents = async (): Promise<ContentsResponse> => {
-  const response = await fetch(`${BASE_URL}/view/listening`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
+export const fetchListeningContents = async (
+  page = 0,
+  size = 5,
+  sort = 'createdAt',
+  direction = 'DESC',
+): Promise<ContentsResponse> => {
+  const response = await fetch(
+    `${BASE_URL}/view/listening?sort=${sort}&direction=${direction}&page=${page}&size=${size}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
     },
-    credentials: 'include',
-  });
+  );
 
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
