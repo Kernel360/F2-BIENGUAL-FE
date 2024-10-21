@@ -26,16 +26,26 @@ export const useListeningPreview =
     });
   };
 
-export const useReadingContents = (): UseQueryResult<ContentsResponse> => {
+export const useReadingContents = (
+  page = 0,
+  size = 5,
+  sort = 'createdAt',
+  direction = 'DESC',
+): UseQueryResult<ContentsResponse> => {
   return useQuery({
-    queryKey: ['readingContentsData'],
-    queryFn: () => fetchReadingContents(),
+    queryKey: ['readingContentsData', page, size, sort, direction],
+    queryFn: () => fetchReadingContents(page, size, sort, direction),
   });
 };
 
-export const useListeningContents = (): UseQueryResult<ContentsResponse> => {
+export const useListeningContents = (
+  page = 0,
+  size = 5,
+  sort = 'createdAt',
+  direction = 'DESC',
+): UseQueryResult<ContentsResponse> => {
   return useQuery({
-    queryKey: ['listeningContentsData'],
-    queryFn: () => fetchListeningContents(),
+    queryKey: ['listeningContentsData', page, size, sort, direction],
+    queryFn: () => fetchListeningContents(page, size, sort, direction),
   });
 };
