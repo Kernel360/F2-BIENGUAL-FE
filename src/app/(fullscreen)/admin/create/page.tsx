@@ -7,7 +7,7 @@ import { CreateContentsResponse } from '@/types/Admin';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/contents`;
 
-export const createContents = async (
+const createContents = async (
   contentType: 'LISTENING',
   url: string,
 ): Promise<CreateContentsResponse> => {
@@ -25,7 +25,7 @@ export const createContents = async (
   return response.json();
 };
 
-export default function adminCreate() {
+export default function AdminCreate() {
   const [url, setUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState<CreateContentsResponse | null>(null);
