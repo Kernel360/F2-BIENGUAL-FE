@@ -1,9 +1,9 @@
-export interface CreateContentsRequest {
+export interface AdminCreateContentsRequest {
   contentType: 'LISTENING';
   url: string;
 }
 
-export interface CreateContentsResponse {
+export interface AdminCreateContentsResponse {
   code: 'string';
   message: 'string';
   data: {
