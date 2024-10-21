@@ -3,22 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Category, CategoryList } from '@/types/Category';
 import LoadingSpinner from '@/components/LoadingSpinner';
-
-const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
-
-export const fetchCategories = async (): Promise<Category> => {
-  const response = await fetch(`${BASE_URL}/categories/all`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-  });
-  if (!response.ok) {
-    throw new Error('Failed to fetch categories');
-  }
-  return response.json();
-};
+import { CategoryList } from '@/types/Category';
+import { fetchAllCategories } from '@/api/fetchAllCategories';
 
 const preferedCategories = async () => {
   // todo : 개인별 선호하는 카테고리 추가 연결필요
@@ -30,7 +17,7 @@ export default function LoginAddPage() {
 
   const getAllCategories = async () => {
     try {
-      const initialCategories = await fetchCategories();
+      const initialCategories = await fetchAllCategories();
       console.log(initialCategories);
 
       setCategories(initialCategories.data.categoryList);
