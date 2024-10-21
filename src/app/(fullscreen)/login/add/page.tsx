@@ -2,17 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-
-export interface Category {
-  code: string;
-  message: string;
-  data: { categoryList: CategoryList[] };
-}
-
-export interface CategoryList {
-  id: number;
-  name: string;
-}
+import { Card } from '@/components/ui/card';
+import { Category, CategoryList } from '@/types/Category';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
 
@@ -29,62 +21,73 @@ export const fetchCategories = async (): Promise<Category> => {
 };
 
 const preferedCategories = async () => {
-  // todo : 추가필요
+  // todo : 개인별 선호하는 카테고리 추가 연결필요
 };
 export default function LoginAddPage() {
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [categories, setCategories] = useState<CategoryList[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getAllCategories = async () => {
+    try {
+      const initialCategories = await fetchCategories();
+      console.log(initialCategories);
+
+      setCategories(initialCategories.data.categoryList);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const getAllCategories = async () => {
-      try {
-        const initialCategories = await fetchCategories();
-        console.log(initialCategories);
-
-        // 응답 데이터가 배열인지 확인하고 설정
-        if (Array.isArray(initialCategories.data.categoryList)) {
-          setCategories(initialCategories.data.categoryList);
-        } else {
-          console.error(
-            'Categories data is not an array:',
-            initialCategories.data,
-          );
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getAllCategories();
   }, []);
 
   const toggleCategory = (categoryId: number) => {
     setSelectedCategories((prevSelected) =>
-      prevSelected?.includes(categoryId)
+      prevSelected.includes(categoryId)
         ? prevSelected.filter((id) => id !== categoryId)
-        : [...(prevSelected || []), categoryId],
+        : [...prevSelected, categoryId],
     );
   };
 
   return (
-    <div className="mt-8 w-full">
-      <h2 className="text-lg font-semibold mb-4">관심있는 카테고리를 ㄱ</h2>
-      <div className="flex flex-wrap gap-2">
-        {categories?.map((category) => (
-          <button
-            type="button"
-            key={category.id}
-            onClick={() => toggleCategory(category.id)}
-            className={`px-3 py-1 rounded-full text-sm ${
-              selectedCategories?.includes(category.id)
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-gray-200 text-gray-800'
-            }`}
+    <div className=" flex items-center justify-center  min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50">
+      <Card className="h-84 mx-8 my-8 py-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+        <h1 className="text-3xl font-bold py-6 mb-6 text-center text-violet-700 dark:text-gray-100">
+          읽고싶은 글이나 영상의 카테고리를 골라주세요!
+        </h1>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="grid md:grid-cols-3 sm:grid-cols-2  gap-4 mx-44 ">
+            {categories.map((category) => (
+              <Button
+                type="button"
+                key={category.id}
+                onClick={() => toggleCategory(category.id)}
+                className={`py-4 rounded-xl text-lg font-medium transition-all duration-200 ease-in-out ${
+                  selectedCategories.includes(category.id)
+                    ? 'bg-primary text-primary-foreground shadow-lg scale-105'
+                    : 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
+                }`}
+              >
+                {category.name}
+              </Button>
+            ))}
+          </div>
+        )}
+        <div className="mt-8 flex justify-center">
+          <Button
+            onClick={preferedCategories}
+            className="px-6 py-2 rounded-lg text-lg font-semibold transition-all duration-200 ease-in-out hover:scale-105"
           >
-            {category.name}
-          </button>
-        ))}
-      </div>
-      <Button onClick={preferedCategories}>관심 카테고리 제출</Button>
+            다 골랐어요
+          </Button>
+        </div>
+      </Card>
     </div>
   );
 }
