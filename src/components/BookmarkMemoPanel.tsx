@@ -9,6 +9,7 @@ import {
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import useHandleBookmark from '@/hooks/useHandleBookmark';
 import { convertTime } from '@/lib/convertTime';
 import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
 import useThrottling from '@/lib/useThrottling';
@@ -55,6 +56,8 @@ export default function BookmarkMemoPanel({
   const currentSubtitleIndex =
     findCurrentSubtitleIndex(scriptsData, currentTime) ?? 0;
 
+  const { addBookmark } = useHandleBookmark(contentId);
+
   const handleSaveNewNote = () => {
     if (selectedSentenceIndex !== null) {
       createBookmarkMutation.mutate({
@@ -77,24 +80,7 @@ export default function BookmarkMemoPanel({
       setShowLoginModal(true);
       return;
     }
-    // 로그인 권한 있을때만 아래 실행
-    if (currentSubtitleIndex !== null && currentSubtitleIndex !== undefined) {
-      if (
-        bookmarkData?.data.bookmarkList.some(
-          (bookmark) => bookmark.sentenceIndex === currentSubtitleIndex,
-        )
-      ) {
-        toast({
-          title: '이미 해당 시간에 북마크가 존재합니다.',
-          duration: 1000,
-        });
-        return;
-      }
-
-      createBookmarkMutation.mutate({
-        sentenceIndex: currentSubtitleIndex,
-      });
-    }
+    addBookmark(currentSubtitleIndex);
   };
 
   const handleMemo = () => {

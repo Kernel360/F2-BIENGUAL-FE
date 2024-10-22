@@ -34,6 +34,7 @@ import Tooltip from '@/components/Tooltip';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import useHandleBookmark from '@/hooks/useHandleBookmark';
 
 export default function DetailReadingPage() {
   const params = useParams();
@@ -77,6 +78,8 @@ export default function DetailReadingPage() {
 
   const [showQuiz, setShowQuiz] = useState(false); // 퀴즈 풀기 버튼 누를 때 보여줌
 
+  const { addBookmark } = useHandleBookmark(contentId);
+
   useEffect(() => {
     if (checkScrap?.data) {
       setIsScrapped(checkScrap.data); // 서버에서 스크랩 여부를 받아와 상태 업데이트
@@ -118,16 +121,7 @@ export default function DetailReadingPage() {
         // 이미 북마크가 있는 경우, 삭제 확인 모달 표시
         setShowDeleteModal(true);
       } else {
-        createBookmarkMutation.mutate(
-          {
-            sentenceIndex: selectedSentenceIndex,
-          },
-          {
-            onSuccess: () => {
-              refetchBookmarks(); // 북마크 추가 후 데이터 갱신
-            },
-          },
-        );
+        addBookmark(selectedSentenceIndex);
       }
       setTooltipVisible(false);
       setShowMemo(false); // 메모가 열려있을 때도 닫기(todo: 화인)
