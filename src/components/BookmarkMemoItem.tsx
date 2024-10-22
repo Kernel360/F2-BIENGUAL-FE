@@ -6,11 +6,7 @@ import { useParams } from 'next/navigation';
 
 import { Trash2 } from 'lucide-react';
 
-import {
-  useUpdateBookmark,
-  useFetchAllBookmarks,
-  useDeleteBookmark,
-} from '@/api/hooks/useBookmarks';
+import useHandleBookmark from '@/hooks/useHandleBookmark';
 import { convertTime } from '@/lib/convertTime';
 import { BookmarkByContentId } from '@/types/Bookmark';
 import { Subtitle } from '@/types/Scripts';
@@ -36,27 +32,11 @@ export default function BookmarkMemoItem({
   const [memo, setMemo] = useState<string | null>(bookmark.description);
   const memoRef = useRef<HTMLDivElement>(null);
 
-  const updateBookmarkMutation = useUpdateBookmark(contentId);
-  const deleteBookmarkMutation = useDeleteBookmark(contentId);
-  const { refetch: refetchAllBookmarks } = useFetchAllBookmarks();
+  const { removeBookmarkMemo, updateMemo } = useHandleBookmark(contentId);
 
   const handleSaveMemo = () => {
-    console.log('handleSaveMemo 호출됨');
     if (memo !== null && memo.trim() !== '') {
-      console.log('메모 저장 시도:', memo);
-      updateBookmarkMutation.mutate(
-        { bookmarkId: bookmark.bookmarkId, description: memo },
-        {
-          onSuccess: () => {
-            console.log('북마크 업데이트 성공');
-            refetchAllBookmarks();
-            setIsEditing(false);
-          },
-          onError: (error) => {
-            console.error('메모 수정 실패', error);
-          },
-        },
-      );
+      updateMemo(bookmark.bookmarkId, memo);
     }
   };
 
@@ -66,14 +46,7 @@ export default function BookmarkMemoItem({
   }, [bookmark.description]);
 
   const handleDeleteBookmark = () => {
-    deleteBookmarkMutation.mutate(bookmark.bookmarkId, {
-      onSuccess: () => {
-        refetchAllBookmarks();
-      },
-      onError: (error) => {
-        console.error('북마크 삭제 실패', error);
-      },
-    });
+    removeBookmarkMemo(bookmark.bookmarkId);
   };
 
   useEffect(() => {
