@@ -122,7 +122,7 @@ export default function BookmarkMemoPanel({
         </CardHeader>
         <CardContent className="p-0">
           <ScrollArea className="h-[560px] mb-4 rounded-lg">
-            {/* 메모 추가 */}
+            {/* 메모 추가 컴포넌트 */}
             {isAddingNote && selectedSentenceIndex !== null && (
               <div className="mb-4 p-2 bg-white rounded-lg">
                 <div className="flex flex-col justify-between items-start mb-2">

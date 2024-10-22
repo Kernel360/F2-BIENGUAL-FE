@@ -85,6 +85,7 @@ export default function BookmarkMemoItem({
         </Button>
       </div>
       <div ref={memoRef} onClick={() => setIsEditing(true)}>
+        {/* 메모 폼 컴포넌트 */}
         <ListeningMemoForm
           isEditing={isEditing}
           memo={memo}
