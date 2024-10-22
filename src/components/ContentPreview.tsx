@@ -1,8 +1,9 @@
-import Link from 'next/link';
-import { formatDate } from '@/lib/formatDate';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { BookOpen, Headphones, Eye } from 'lucide-react';
+import Link from 'next/link';
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { formatDate } from '@/lib/formatDate';
 
 interface ContentPreviewData {
   scrapId?: number;

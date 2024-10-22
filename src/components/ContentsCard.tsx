@@ -1,6 +1,6 @@
-import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardDescription, CardTitle } from '@/components/ui/card';
 import { formatViewCount } from '@/lib/utils';
 
 interface CardDataProps {

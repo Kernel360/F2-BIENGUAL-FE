@@ -1,11 +1,12 @@
 'use client';
 
-import LoadingSpinner from '@/components/LoadingSpinner';
-import EmptyAlert from '@/components/EmptyAlert';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+
 import { useFetchSearchResults } from '@/api/hooks/useSearch';
+import EmptyAlert from '@/components/EmptyAlert';
 import ListeningPreviewCard from '@/components/ListeningPreviewCard';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import ReadingPreviewCard from '@/components/ReadingPreviewCard';
 
 function SearchResultsList() {

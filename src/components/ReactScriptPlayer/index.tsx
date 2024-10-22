@@ -1,11 +1,14 @@
 'use client';
 
 import React from 'react';
+
 import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
 import { Script } from '@/types/ContentDetail';
+
 import { LanguageCode, Subtitle } from '../../types/Scripts';
-import { LineView } from './LineView';
+
 import { BlockView } from './BlockView';
+import { LineView } from './LineView';
 
 export interface ReactScriptPlayerProps {
   mode: 'line' | 'block';

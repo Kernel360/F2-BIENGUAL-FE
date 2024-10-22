@@ -1,7 +1,8 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Bookmark, Languages } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 
 // 부모 컴포넌트로부터 스크랩 상태와 함수를 props로 받음
 export default function FloatingButtons({

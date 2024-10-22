@@ -1,25 +1,26 @@
 'use client';
 
+import { useParams } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
-import Modal from '@/components/Modal';
-import VideoPlayer from '@/components/VideoPlayer';
+
 import { useContentDetail } from '@/api/hooks/useContentDetail';
-import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import QuizCover from '@/components/quiz/QuizCover';
-import QuizCarousel from '@/components/quiz/QuizCarousel';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
-import LogInOutButton from '@/components/LogInOutButton';
-import FloatingButtons from '@/components/FloatingButtons';
 import {
   useCheckScrap,
   useCreateScrap,
   useDeleteScrap,
 } from '@/api/hooks/useScrap';
-import { useParams } from 'next/navigation';
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import FloatingButtons from '@/components/FloatingButtons';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import LogInOutButton from '@/components/LogInOutButton';
+import Modal from '@/components/Modal';
+import QuizCarousel from '@/components/quiz/QuizCarousel';
+import QuizCover from '@/components/quiz/QuizCover';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import VideoPlayer from '@/components/VideoPlayer';
 
 export default function DetailListeningPage() {
   const param = useParams();

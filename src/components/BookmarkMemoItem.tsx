@@ -1,16 +1,18 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import { Trash2, Check, X } from 'lucide-react';
+import { useParams } from 'next/navigation';
 import { useState, useEffect, useRef, useCallback } from 'react';
+
 import {
   useUpdateBookmark,
   useFetchAllBookmarks,
   useDeleteBookmark,
 } from '@/api/hooks/useBookmarks';
-import { Trash2, Check, X } from 'lucide-react';
+import { convertTime } from '@/lib/convertTime';
 import { BookmarkByContentId } from '@/types/Bookmark';
 import { Subtitle } from '@/types/Scripts';
-import { useParams } from 'next/navigation';
-import { convertTime } from '@/lib/convertTime';
+
 import { Button } from './ui/button';
 
 interface BookmarkMemoItemProps {

@@ -1,22 +1,24 @@
 import {
-  UserResponse,
-  UserUpdateResponse,
-  UserUpdateRequest,
-  UserTimeResponse,
-  UserRequestLogoutResponse,
-} from '@/types/User';
-import {
   useQuery,
   UseQueryResult,
   useQueryClient,
   useMutation,
 } from '@tanstack/react-query';
+
 import {
   fetchUserInfo,
   updateUserInfo,
   fetchUserTime,
   fetchUserLogout,
 } from '@/api/queries/userQueries';
+import {
+  UserResponse,
+  UserUpdateResponse,
+  UserUpdateRequest,
+  UserTimeResponse,
+  UserRequestLogoutResponse,
+} from '@/types/User';
+
 import { useQueryLoginOnly } from './common';
 
 export const useUserInfo = (): UseQueryResult<UserResponse> => {

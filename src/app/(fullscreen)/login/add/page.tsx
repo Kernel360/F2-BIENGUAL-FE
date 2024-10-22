@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+
+import { fetchAllCategories } from '@/api/fetchAllCategories';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import { CategoryList } from '@/types/Category';
-import { fetchAllCategories } from '@/api/fetchAllCategories';
 
 const preferedCategories = async () => {
   // todo : 개인별 선호하는 카테고리 추가 연결필요

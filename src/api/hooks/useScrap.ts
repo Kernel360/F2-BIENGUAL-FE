@@ -1,16 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import {
   FetchScrapResponse,
   CreateScrapResponse,
   DeleteScrapResponse,
   CheckScrapResponse,
 } from '@/types/Scrap';
+
 import {
   fetchScrap,
   deleteScrap,
   createScrap,
   checkScrap,
 } from '../queries/scrapQueries';
+
 import { useQueryLoginOnly } from './common';
 
 // 스크랩 조회 훅
