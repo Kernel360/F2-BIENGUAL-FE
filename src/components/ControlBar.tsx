@@ -2,9 +2,10 @@
 
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
+import { Volume2, Play, Rewind, FastForward, Pause, Gauge } from 'lucide-react';
 import React, { RefObject, useState } from 'react';
 import ReactPlayer from 'react-player';
-import { Volume2, Play, Rewind, FastForward, Pause, Gauge } from 'lucide-react';
+
 import formatTime from '@/lib/formatTime';
 
 interface BasicControlBarProps {

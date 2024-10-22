@@ -1,12 +1,15 @@
-import type { Metadata } from 'next';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import localFont from 'next/font/local';
+import { cookies } from 'next/headers';
+
+import type { Metadata } from 'next';
+
 import '@/app/globals.css';
+import ContentWrapper from '@/components/layout/ContentWrapper';
 import { Header } from '@/components/layout/Header';
 import { MobileNav } from '@/components/layout/MobileNav';
-import ContentWrapper from '@/components/layout/ContentWrapper';
-import QueryClientProvider from '@/providers/QueryClientProvider';
 import { Toaster } from '@/components/ui/toaster';
-import { cookies } from 'next/headers';
+import QueryClientProvider from '@/providers/QueryClientProvider';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
@@ -38,6 +41,7 @@ export default function RootLayout({
           <ContentWrapper>{children}</ContentWrapper>
           <Toaster /> {/* shadcn toast사용하기 위한 설정  */}
           <MobileNav />
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </body>
     </html>

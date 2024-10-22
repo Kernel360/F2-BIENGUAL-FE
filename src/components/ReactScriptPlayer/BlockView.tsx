@@ -4,8 +4,10 @@
 /* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useRef, useEffect } from 'react';
-import { LanguageCode, Subtitle } from '../../types/Scripts';
+
 import { convertTime } from '../../lib/convertTime';
+import { LanguageCode, Subtitle } from '../../types/Scripts';
+
 import { TextDisplay } from './TextDisplay';
 
 interface BlockViewProps {

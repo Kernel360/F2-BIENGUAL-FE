@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
 import { Clock } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { Preview } from '@/types/Preview';
 
 export default function ListeningPreviewCard({

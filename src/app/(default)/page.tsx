@@ -1,13 +1,14 @@
 'use client';
 
-import LoadingSpinner from '@/components/LoadingSpinner';
-import Carousel from '@/components/Carousel';
-import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import ReadingPreviewCard from '@/components/ReadingPreviewCard';
-import ListeningPreviewCard from '@/components/ListeningPreviewCard';
-import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+
 import { useReadingPreview, useListeningPreview } from '@/api/hooks/usePreview';
+import Carousel from '@/components/Carousel';
+import ListeningPreviewCard from '@/components/ListeningPreviewCard';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import ReadingPreviewCard from '@/components/ReadingPreviewCard';
+import { Button } from '@/components/ui/button';
 
 export default function HomePage() {
   const { data: readingList, isLoading: readingLoading } = useReadingPreview();

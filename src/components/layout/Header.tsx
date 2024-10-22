@@ -1,11 +1,13 @@
 'use client';
 
+import { BookHeadphones, Bookmark, Bell, CircleUserRound } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BookHeadphones, Bookmark, Bell, CircleUserRound } from 'lucide-react';
+
+import LogInOutButton from '@/components/LogInOutButton';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import LogInOutButton from '@/components/LogInOutButton';
+
 import SearchComponent from '../SearchComponent';
 
 export const navItems = [

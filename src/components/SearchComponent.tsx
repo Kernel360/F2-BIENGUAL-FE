@@ -1,9 +1,10 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
 import { Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
+import { useRef, useEffect } from 'react';
+
+import { Button } from '@/components/ui/button';
 
 export default function SearchComponent() {
   const searchRef = useRef<HTMLDivElement>(null);

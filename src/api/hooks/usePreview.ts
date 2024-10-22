@@ -1,15 +1,16 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+
+import {
+  ContentsResponse,
+  ListeningPreviewResponse,
+  ReadingPreviewResponse,
+} from '../../types/Preview';
 import {
   fetchListeningContents,
   fetchListeningPreview,
   fetchReadingContents,
   fetchReadingPreview,
 } from '../queries/contentsQueries';
-import {
-  ContentsResponse,
-  ListeningPreviewResponse,
-  ReadingPreviewResponse,
-} from '../../types/Preview';
 
 export const useReadingPreview = (): UseQueryResult<ReadingPreviewResponse> => {
   return useQuery({

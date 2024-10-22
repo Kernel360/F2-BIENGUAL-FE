@@ -42,7 +42,39 @@
     "import/prefer-default-export": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     // TypeScript 프로젝트일 경우 기본 매개변수를 사용하는 것이 더 간결
-    "react/require-default-props": "off"
+    "react/require-default-props": "off",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin", // node 내장 모듈
+          "external", // 외부 라이브러리
+          "internal", // 내부 모듈 (alias 등)
+          "parent", // 부모 경로에서 가져온 모듈
+          "sibling", // 같은 경로의 모듈
+          "index", // index 파일
+          "object", // object 형태의 imports
+          "type" // type imports (TypeScript)
+        ],
+        "pathGroups": [
+          {
+            "pattern": "react|next", // react와 next를 상단에 오게 설정
+            "group": "external", // external 그룹에 포함
+            "position": "before" // external보다 앞에 위치
+          },
+          {
+            "pattern": "*", // 나머지 외부 라이브러리는 아래쪽에 위치
+            "group": "external",
+            "position": "after"
+          }
+        ],
+        "newlines-between": "always", // 각 그룹 사이에 빈 줄 추가
+        "alphabetize": {
+          "order": "asc", // 알파벳 순으로 정렬
+          "caseInsensitive": true // 대소문자 구분 없이 정렬
+        }
+      }
+    ]
   },
   "ignorePatterns": [
     "src/components/ui/**/*" // components/ui 디렉터리 내 모든 파일 무시

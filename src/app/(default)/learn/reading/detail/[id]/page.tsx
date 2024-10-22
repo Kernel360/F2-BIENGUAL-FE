@@ -4,35 +4,36 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
 import { ArrowUp, MessageCircleMoreIcon } from 'lucide-react';
-import QuizCover from '@/components/quiz/QuizCover';
-import QuizCarousel from '@/components/quiz/QuizCarousel';
-import Tooltip from '@/components/Tooltip';
-import MemoInput from '@/components/MemoInput';
-import Modal from '@/components/Modal';
-import LogInOutButton from '@/components/LogInOutButton';
-import { useContentDetail } from '@/api/hooks/useContentDetail';
+import { useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
+
 import {
   useFetchBookmarksByContendId,
   useCreateBookmark,
   useUpdateBookmark,
   useDeleteBookmark,
 } from '@/api/hooks/useBookmarks';
-import { useParams } from 'next/navigation';
-import FloatingButtons from '@/components/FloatingButtons';
+import { useContentDetail } from '@/api/hooks/useContentDetail';
+import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import {
   useCreateScrap,
   useDeleteScrap,
   useCheckScrap,
 } from '@/api/hooks/useScrap';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import { useFetchQuiz } from '@/api/hooks/useQuiz';
+import FloatingButtons from '@/components/FloatingButtons';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import LogInOutButton from '@/components/LogInOutButton';
+import MemoInput from '@/components/MemoInput';
+import Modal from '@/components/Modal';
+import QuizCarousel from '@/components/quiz/QuizCarousel';
+import QuizCover from '@/components/quiz/QuizCover';
 import ScrollProgressBar from '@/components/ScrollProgressBar';
+import Tooltip from '@/components/Tooltip';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 export default function DetailReadingPage() {
   const params = useParams();

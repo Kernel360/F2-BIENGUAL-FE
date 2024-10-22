@@ -1,10 +1,12 @@
 'use client';
 
-import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
+
 import { Card, CardContent } from '@/components/ui/card';
 import { Preview } from '@/types/Preview';
+
 import { Badge } from './ui/badge';
 
 export default function ReadingPreviewCard({

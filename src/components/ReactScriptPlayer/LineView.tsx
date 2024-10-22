@@ -1,10 +1,13 @@
 'use client';
 
 /* eslint-disable react/button-has-type */
-import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React from 'react';
+
 import useThrottling from '@/lib/useThrottling';
+
 import { LanguageCode, Subtitle } from '../../types/Scripts';
+
 import { TextDisplay } from './TextDisplay';
 
 interface LineViewProps {

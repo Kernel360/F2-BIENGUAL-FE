@@ -3,6 +3,7 @@ import {
   ListeningPreviewResponse,
   ContentsResponse,
 } from '@/types/Preview';
+
 import { ContentDetailResponse } from '../../types/ContentDetail';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/contents`;

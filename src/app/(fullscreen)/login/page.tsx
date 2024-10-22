@@ -1,6 +1,9 @@
 'use client';
 
+import { BookOpen, Headphones } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,8 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { BookOpen, Headphones } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 

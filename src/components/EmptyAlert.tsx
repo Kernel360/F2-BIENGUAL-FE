@@ -1,5 +1,6 @@
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { AlertCircleIcon } from 'lucide-react';
+
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 interface EmptyAlertProps {
   alertTitle?: string;

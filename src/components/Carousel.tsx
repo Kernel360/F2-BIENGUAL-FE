@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useRef, useEffect, ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useRef, useEffect, ReactNode } from 'react';
+
+import { Button } from '@/components/ui/button';
 
 interface CarouselProps<T> {
   header?: ReactNode;

@@ -3,31 +3,34 @@
 
 'use client';
 
+import { Check, X, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
+import { useParams } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import { useParams } from 'next/navigation';
-import { Script } from '@/types/ContentDetail';
+
 import {
   useCreateBookmark,
   useFetchBookmarksByContendId,
 } from '@/api/hooks/useBookmarks';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import { Check, X, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 import { convertTime } from '@/lib/convertTime';
 import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
-import { useToast } from '@/hooks/use-toast';
 import useThrottling from '@/lib/useThrottling';
-import LogInOutButton from './LogInOutButton';
-import ControlBar from './ControlBar';
-import SubtitleOption from './SubtitleOption';
-import { ReactScriptPlayer } from './ReactScriptPlayer';
+import { Script } from '@/types/ContentDetail';
+
 import { LanguageCode } from '../types/Scripts';
+
 import BookmarkMemoItem from './BookmarkMemoItem';
+import ControlBar from './ControlBar';
+import EmptyAlert from './EmptyAlert';
+import LogInOutButton from './LogInOutButton';
+import Modal from './Modal';
+import { ReactScriptPlayer } from './ReactScriptPlayer';
+import SubtitleOption from './SubtitleOption';
 import { Button } from './ui/button';
 import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
-import Modal from './Modal';
-import EmptyAlert from './EmptyAlert';
 
 type Mode = 'line' | 'block';
 

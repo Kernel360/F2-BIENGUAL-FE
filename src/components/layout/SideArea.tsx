@@ -1,9 +1,11 @@
 'use client';
 
 import { Book, Bookmark, HelpCircle, Highlighter } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+
 import { useUserTime } from '@/api/hooks/useUserInfo';
 import { calculateDaysBetweenDates } from '@/lib/calculateDaysBetweenDates';
-import React, { useEffect, useState } from 'react';
+
 import LearningTracker from '../side/LearningTracker';
 
 export default function SideArea() {

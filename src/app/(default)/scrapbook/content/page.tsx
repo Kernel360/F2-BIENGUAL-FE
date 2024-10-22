@@ -1,9 +1,9 @@
 'use client';
 
-import LoadingSpinner from '@/components/LoadingSpinner';
-import EmptyAlert from '@/components/EmptyAlert';
 import { useFetchScrap } from '@/api/hooks/useScrap';
 import ContentPreview from '@/components/ContentPreview';
+import EmptyAlert from '@/components/EmptyAlert';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 export default function RecentContent() {
   const { data: allScrapData, isLoading, isError, error } = useFetchScrap();

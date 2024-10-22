@@ -1,5 +1,7 @@
-import { UserLoginStatusResponse } from '@/types/User';
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
+
+import { UserLoginStatusResponse } from '@/types/User';
+
 import { fetchUserLoginStatus } from '../queries/userQueries';
 
 // 로그인 상태 확인하는 tanstack query훅.
