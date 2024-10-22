@@ -1,7 +1,8 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+
+import { ChevronRight } from 'lucide-react';
 
 import { useReadingPreview, useListeningPreview } from '@/api/hooks/usePreview';
 import Carousel from '@/components/Carousel';

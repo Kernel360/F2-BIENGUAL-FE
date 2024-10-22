@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import { Trash2, Check, X } from 'lucide-react';
-import { useParams } from 'next/navigation';
 import { useState, useEffect, useRef, useCallback } from 'react';
+
+import { useParams } from 'next/navigation';
+
+import { Trash2, Check, X } from 'lucide-react';
 
 import {
   useUpdateBookmark,

@@ -1,5 +1,6 @@
-import { BookOpen, Headphones, Eye } from 'lucide-react';
 import Link from 'next/link';
+
+import { BookOpen, Headphones, Eye } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';

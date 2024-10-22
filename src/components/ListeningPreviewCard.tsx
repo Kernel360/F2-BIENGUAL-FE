@@ -1,8 +1,10 @@
 'use client';
 
-import { Clock } from 'lucide-react';
-import Link from 'next/link';
 import React from 'react';
+
+import Link from 'next/link';
+
+import { Clock } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';

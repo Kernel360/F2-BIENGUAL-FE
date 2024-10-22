@@ -10,6 +10,7 @@ import {
   SetStateAction,
   MutableRefObject,
 } from 'react';
+
 import ReactPlayer from 'react-player';
 
 import ControlBar from './ControlBar';

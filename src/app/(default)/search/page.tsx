@@ -1,7 +1,8 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+
+import { useSearchParams } from 'next/navigation';
 
 import { useFetchSearchResults } from '@/api/hooks/useSearch';
 import EmptyAlert from '@/components/EmptyAlert';

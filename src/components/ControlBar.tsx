@@ -2,8 +2,9 @@
 
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
-import { Volume2, Play, Rewind, FastForward, Pause, Gauge } from 'lucide-react';
 import React, { ForwardedRef, MutableRefObject, useState } from 'react';
+
+import { Volume2, Play, Rewind, FastForward, Pause, Gauge } from 'lucide-react';
 import ReactPlayer from 'react-player';
 
 import formatTime from '@/lib/formatTime';

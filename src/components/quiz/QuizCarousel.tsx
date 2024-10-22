@@ -3,7 +3,6 @@ import React from 'react';
 import { QuestionAnswer } from '@/types/Quiz';
 
 import Carousel from '../Carousel';
-
 import Quiz from './Quiz';
 
 interface QuizCarouselProps {

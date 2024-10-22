@@ -1,7 +1,9 @@
 'use client';
 
-import { useParams } from 'next/navigation';
 import React, { useState, useEffect, useRef } from 'react';
+
+import { useParams } from 'next/navigation';
+
 import ReactPlayer from 'react-player';
 
 import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';

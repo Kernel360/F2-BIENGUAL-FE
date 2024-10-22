@@ -1,8 +1,10 @@
 'use client';
 
-import { Circle, Share2, Trash2 } from 'lucide-react';
-import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
+
+import Link from 'next/link';
+
+import { Circle, Share2, Trash2 } from 'lucide-react';
 
 import {
   useDeleteBookmark,

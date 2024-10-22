@@ -1,8 +1,9 @@
 'use client';
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { Camera, X } from 'lucide-react';
 import { useEffect, useState, useMemo } from 'react';
+
+import { Camera, X } from 'lucide-react';
 
 import { useUserInfo, useUpdateUserInfo } from '@/api/hooks/useUserInfo';
 import { Button } from '@/components/ui/button';

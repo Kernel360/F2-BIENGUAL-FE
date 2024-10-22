@@ -7,14 +7,13 @@ import {
   CheckScrapResponse,
 } from '@/types/Scrap';
 
+import { useQueryLoginOnly } from './common';
 import {
   fetchScrap,
   deleteScrap,
   createScrap,
   checkScrap,
 } from '../queries/scrapQueries';
-
-import { useQueryLoginOnly } from './common';
 
 // 스크랩 조회 훅
 export const useFetchScrap = () => {

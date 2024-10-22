@@ -1,8 +1,9 @@
 'use client';
 
-import { BookHeadphones, Bookmark, Bell, CircleUserRound } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+
+import { BookHeadphones, Bookmark, Bell, CircleUserRound } from 'lucide-react';
 
 import LogInOutButton from '@/components/LogInOutButton';
 import { Button } from '@/components/ui/button';
