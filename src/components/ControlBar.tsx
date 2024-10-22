@@ -3,7 +3,7 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import { Volume2, Play, Rewind, FastForward, Pause, Gauge } from 'lucide-react';
-import React, { RefObject, useState } from 'react';
+import React, { ForwardedRef, MutableRefObject, useState } from 'react';
 import ReactPlayer from 'react-player';
 
 import formatTime from '@/lib/formatTime';
@@ -19,7 +19,7 @@ interface BasicControlBarProps {
 }
 
 interface ControlBarProps {
-  playerRef: RefObject<ReactPlayer>;
+  playerRef: ForwardedRef<ReactPlayer>;
   BasicControlBarProps: BasicControlBarProps;
 }
 
@@ -43,7 +43,12 @@ export default function ControlBar({
     e: React.MouseEvent<HTMLDivElement>,
     action: 'down' | 'up' | 'move',
   ) => {
-    if (!playerRef.current || action === 'down') {
+    if (!playerRef || !(playerRef as MutableRefObject<ReactPlayer>).current)
+      return;
+
+    const currentPlayer = (playerRef as MutableRefObject<ReactPlayer>).current;
+
+    if (action === 'down') {
       setIsDragging(true);
     } else if (action === 'up') {
       setIsDragging(false);
@@ -51,8 +56,8 @@ export default function ControlBar({
       const progressBarRect = progressBar.getBoundingClientRect();
       const newTime =
         ((e.clientX - progressBarRect.left) / progressBarRect.width) *
-        playerRef.current.getDuration();
-      playerRef.current.seekTo(newTime);
+        currentPlayer.getDuration();
+      currentPlayer.seekTo(newTime);
     }
   };
   const [showPlaybackRate, setShowPlaybackRate] = useState(false);
@@ -77,11 +82,19 @@ export default function ControlBar({
           className="h-full bg-violet-400 rounded-l transition-all duration-200 ease"
           style={{
             width: `${
-              playerRef.current?.getCurrentTime() &&
-              playerRef.current?.getDuration()
+              playerRef &&
+              (playerRef as MutableRefObject<ReactPlayer>).current &&
+              (
+                playerRef as MutableRefObject<ReactPlayer>
+              ).current.getCurrentTime() &&
+              (playerRef as MutableRefObject<ReactPlayer>).current.getDuration()
                 ? // eslint-disable-next-line no-unsafe-optional-chaining
-                  (playerRef.current?.getCurrentTime() /
-                    playerRef.current.getDuration()) *
+                  ((
+                    playerRef as MutableRefObject<ReactPlayer>
+                  ).current.getCurrentTime() /
+                    (
+                      playerRef as MutableRefObject<ReactPlayer>
+                    ).current.getDuration()) *
                   100
                 : 0
             }%`,
@@ -107,7 +120,15 @@ export default function ControlBar({
           </div>
           {/* 진행시간 박스 */}
           <span className="text-sm">
-            {`${formatTime(playerRef.current?.getCurrentTime() ?? 0)} / ${formatTime(playerRef.current?.getDuration() ?? 0)}`}
+            {`${formatTime(
+              (
+                playerRef as MutableRefObject<ReactPlayer>
+              ).current?.getCurrentTime() ?? 0,
+            )} / ${formatTime(
+              (
+                playerRef as MutableRefObject<ReactPlayer>
+              ).current?.getDuration() ?? 0,
+            )}`}
           </span>
         </div>
 
