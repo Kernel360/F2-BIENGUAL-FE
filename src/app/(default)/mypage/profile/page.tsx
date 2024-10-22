@@ -9,8 +9,6 @@ import { useUserInfo, useUpdateUserInfo } from '@/api/hooks/useUserInfo';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-// todo : 개인 선호 카테고리 연결 필요
-
 const categories = [
   { id: 1, name: 'IT' },
   { id: 2, name: 'Health' },
@@ -68,6 +66,10 @@ export default function UserProfile() {
         ? prev.filter((id) => id !== categoryId)
         : [...prev, categoryId],
     );
+  };
+
+  const modifyCategories = () => {
+    // todo : 카테고리 변경 api로직 추가. ps. /login/add페이지의 '다골랐어요' 버튼과 같은 api여야함.
   };
 
   return (
@@ -190,7 +192,17 @@ export default function UserProfile() {
           </div>
         </form>
         <div className="mt-8 w-full">
-          <h2 className="text-lg font-semibold mb-4">관심 카테고리</h2>
+          <div className="flex justify-between">
+            <h2 className="text-lg font-semibold mb-4">관심 카테고리</h2>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={!(selectedCategories.length > 0)}
+              onClick={modifyCategories}
+            >
+              변경하기
+            </Button>
+          </div>
           <div className="flex flex-wrap gap-2">
             {categories.map((category) => (
               // eslint-disable-next-line react/button-has-type
