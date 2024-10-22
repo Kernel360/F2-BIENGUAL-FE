@@ -7,6 +7,7 @@ import ContentWrapper from '@/components/layout/ContentWrapper';
 import QueryClientProvider from '@/providers/QueryClientProvider';
 import { Toaster } from '@/components/ui/toaster';
 import { cookies } from 'next/headers';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const pretendard = localFont({
   src: '../fonts/PretendardVariable.woff2',
@@ -38,6 +39,7 @@ export default function RootLayout({
           <ContentWrapper>{children}</ContentWrapper>
           <Toaster /> {/* shadcn toast사용하기 위한 설정  */}
           <MobileNav />
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </body>
     </html>
