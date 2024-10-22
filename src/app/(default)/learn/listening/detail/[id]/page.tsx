@@ -58,8 +58,6 @@ export default function DetailListeningPage() {
 
   const playerRef = useRef<ReactPlayer | null>(null);
 
-  // console.log(playerRef.current);
-
   const [currentTime, setCurrentTime] = useState(0);
 
   const [mode, setMode] = useState<Mode>('line');

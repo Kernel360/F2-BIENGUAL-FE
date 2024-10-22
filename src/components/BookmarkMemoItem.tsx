@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 
 import { useParams } from 'next/navigation';
 
-import { Trash2, Check, X } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 
 import {
   useUpdateBookmark,
@@ -15,6 +15,7 @@ import { convertTime } from '@/lib/convertTime';
 import { BookmarkByContentId } from '@/types/Bookmark';
 import { Subtitle } from '@/types/Scripts';
 
+import ListeningMemoForm from './ListeningMemoForm';
 import { Button } from './ui/button';
 
 interface BookmarkMemoItemProps {
@@ -110,40 +111,14 @@ export default function BookmarkMemoItem({
           <Trash2 className="h-4 w-4" />
         </Button>
       </div>
-      <div
-        ref={memoRef}
-        className={`flex flex-col pl-4 border-l-2 ${isEditing ? 'border-purple-700' : 'border-gray-300'}`}
-        onClick={() => setIsEditing(true)}
-      >
-        <textarea
-          value={memo || ''}
-          onChange={(e) => setMemo(e.target.value)}
-          placeholder={memo || '메모를 입력해주세요.'}
-          className="min-h-5 w-[170px] border-none outline-none p-0 mr-6 bg-transparent text-[14px] font-[500]"
+      <div ref={memoRef} onClick={() => setIsEditing(true)}>
+        <ListeningMemoForm
+          isEditing={isEditing}
+          memo={memo}
+          setMemo={setMemo}
+          handleCancelEdit={handleCancelEdit}
+          handleSaveMemo={handleSaveMemo}
         />
-        {isEditing && (
-          <div className="flex justify-end space-x-2 mt-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={(e) => {
-                handleCancelEdit();
-                e.stopPropagation();
-              }}
-            >
-              <X className="h-4 w-4 mr-2" /> 취소
-            </Button>
-            <Button
-              onClick={() => {
-                console.log('click');
-                handleSaveMemo();
-              }}
-              size="sm"
-            >
-              <Check className="h-4 w-4 mr-2" /> 저장
-            </Button>
-          </div>
-        )}
       </div>
     </div>
   );

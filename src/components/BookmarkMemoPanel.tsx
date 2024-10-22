@@ -2,12 +2,9 @@ import React, { SetStateAction, useState } from 'react';
 
 import { useParams } from 'next/navigation';
 
-import { X, Check, BookmarkPlus, MessageSquarePlus } from 'lucide-react';
+import { BookmarkPlus, MessageSquarePlus } from 'lucide-react';
 
-import {
-  useFetchBookmarksByContendId,
-  useCreateBookmark,
-} from '@/api/hooks/useBookmarks';
+import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
@@ -19,6 +16,7 @@ import { Script } from '@/types/ContentDetail';
 
 import BookmarkMemoItem from './BookmarkMemoItem';
 import EmptyAlert from './EmptyAlert';
+import ListeningMemoForm from './ListeningMemoForm';
 import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
 import { ScrollArea } from './ui/scroll-area';
 
@@ -44,7 +42,6 @@ export default function BookmarkMemoPanel({
   const isLogin = isLoginData?.data; // 로그인 상태 확인
 
   const { data: bookmarkData } = useFetchBookmarksByContendId(contentId);
-  const createBookmarkMutation = useCreateBookmark(contentId);
 
   const [selectedSentenceIndex, setSelectedSentenceIndex] = useState<
     number | null
@@ -58,14 +55,11 @@ export default function BookmarkMemoPanel({
   const currentSubtitleIndex =
     findCurrentSubtitleIndex(scriptsData, currentTime) ?? 0;
 
-  const { addBookmark } = useHandleBookmark(contentId);
+  const { addBookmark, addMemo } = useHandleBookmark(contentId);
 
   const handleSaveNewNote = () => {
     if (selectedSentenceIndex !== null) {
-      createBookmarkMutation.mutate({
-        sentenceIndex: selectedSentenceIndex,
-        description: newNoteText,
-      });
+      addMemo(selectedSentenceIndex, newNoteText);
       setIsAddingNote(false);
       setIsPlaying(true);
     }
@@ -128,7 +122,7 @@ export default function BookmarkMemoPanel({
         </CardHeader>
         <CardContent className="p-0">
           <ScrollArea className="h-[560px] mb-4 rounded-lg">
-            {/* TODO(@smosco): 메모 컴포넌트랑 거의 동일 분리 해야함 */}
+            {/* 메모 추가 */}
             {isAddingNote && selectedSentenceIndex !== null && (
               <div className="mb-4 p-2 bg-white rounded-lg">
                 <div className="flex flex-col justify-between items-start mb-2">
@@ -146,28 +140,17 @@ export default function BookmarkMemoPanel({
                       '문장 없음'}
                   </p>
                 </div>
-                <div className="flex flex-col pl-4 border-l-2 border-purple-700">
-                  <textarea
-                    value={newNoteText}
-                    onChange={(e) => setNewNoteText(e.target.value)}
-                    placeholder="메모를 입력해주세요."
-                    className="min-h-5 w-[180px] border-none outline-none p-0 mr-6 bg-transparent text-[14px] font-[500]"
-                  />
-                </div>
-                <div className="flex justify-end space-x-2 mt-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleCancelNewNote}
-                  >
-                    <X className="h-4 w-4 mr-2" /> 취소
-                  </Button>
-                  <Button onClick={handleSaveNewNote} size="sm">
-                    <Check className="h-4 w-4 mr-2" /> 저장
-                  </Button>
-                </div>
+                <ListeningMemoForm
+                  memo={newNoteText}
+                  setMemo={setNewNoteText}
+                  handleCancelEdit={handleCancelNewNote}
+                  handleSaveMemo={handleSaveNewNote}
+                  isEditing={isAddingNote}
+                />
               </div>
             )}
+
+            {/* 북마크, 메모 목록 */}
             {bookmarkData && bookmarkData.data.bookmarkList.length > 0
               ? bookmarkData.data.bookmarkList.map((bookmark) => {
                   const subtitle = scriptsData?.[bookmark.sentenceIndex];
@@ -185,6 +168,7 @@ export default function BookmarkMemoPanel({
                 )}
           </ScrollArea>
         </CardContent>
+
         <div className="flex flex-col gap-2 justify-between items-center lg:flex-row">
           <Button onClick={throttledHandleBookmark} className="w-full ">
             <BookmarkPlus size={20} className="mr-2" />
