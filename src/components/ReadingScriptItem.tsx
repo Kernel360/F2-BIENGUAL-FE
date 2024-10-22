@@ -142,7 +142,7 @@ export default function ReadingScriptItem({
       </div>
       {showTranslate && <p className="px-2 ">{script.koScript}</p>}
 
-      {isSelected ? (
+      {isSelected && (
         <Tooltip
           onAddBookmark={handleAddBookmark}
           onRemoveBookmark={handleRemoveBookmark}
@@ -150,7 +150,7 @@ export default function ReadingScriptItem({
           onClose={() => setIsSelected(false)}
           isBookmarked={!!bookmarkMemo}
         />
-      ) : null}
+      )}
 
       {/* 삭제 확인 모달 */}
       {showDeleteModal && (

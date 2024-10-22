@@ -37,6 +37,7 @@ export default function BookmarkMemoItem({
   const handleSaveMemo = () => {
     if (memo !== null && memo.trim() !== '') {
       updateMemo(bookmark.bookmarkId, memo);
+      setIsEditing(false);
     }
   };
 
