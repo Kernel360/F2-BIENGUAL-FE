@@ -27,26 +27,36 @@ export const useListeningPreview =
     });
   };
 
-export const useReadingContents = (
-  page = 0,
-  size = 5,
-  sort = 'createdAt',
-  direction = 'DESC',
-): UseQueryResult<ContentsResponse> => {
+export const useReadingContents = ({
+  page,
+  size,
+  sort,
+  direction,
+}: {
+  page?: number;
+  size?: number;
+  sort?: string;
+  direction?: string;
+}): UseQueryResult<ContentsResponse> => {
   return useQuery({
-    queryKey: ['readingContentsData', page, size, sort, direction],
-    queryFn: () => fetchReadingContents(page, size, sort, direction),
+    queryKey: ['readingContentsData', { page, size, sort, direction }],
+    queryFn: () => fetchReadingContents({ page, size, sort, direction }),
   });
 };
 
-export const useListeningContents = (
-  page = 0,
-  size = 5,
-  sort = 'createdAt',
-  direction = 'DESC',
-): UseQueryResult<ContentsResponse> => {
+export const useListeningContents = ({
+  page,
+  size,
+  sort,
+  direction,
+}: {
+  page?: number;
+  size?: number;
+  sort?: string;
+  direction?: string;
+}): UseQueryResult<ContentsResponse> => {
   return useQuery({
-    queryKey: ['listeningContentsData', page, size, sort, direction],
-    queryFn: () => fetchListeningContents(page, size, sort, direction),
+    queryKey: ['listeningContentsData', { page, size, sort, direction }],
+    queryFn: () => fetchListeningContents({ page, size, sort, direction }),
   });
 };

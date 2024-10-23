@@ -42,9 +42,11 @@ export const fetchListeningPreview =
     return response.json();
   };
 
-export const fetchContentDetail = async (
-  contentId: number,
-): Promise<ContentDetailResponse> => {
+export const fetchContentDetail = async ({
+  contentId,
+}: {
+  contentId: number;
+}): Promise<ContentDetailResponse> => {
   const response = await fetch(`${BASE_URL}/details/${contentId}`, {
     method: 'GET',
     headers: {
@@ -60,12 +62,17 @@ export const fetchContentDetail = async (
   return response.json();
 };
 
-export const fetchReadingContents = async (
-  page = 0,
-  size = 5,
-  sort = 'createdAt',
-  direction = 'DESC',
-): Promise<ContentsResponse> => {
+export const fetchReadingContents = async ({
+  page,
+  size,
+  sort,
+  direction,
+}: {
+  page?: number;
+  size?: number;
+  sort?: string;
+  direction?: string;
+}): Promise<ContentsResponse> => {
   const response = await fetch(
     `${BASE_URL}/view/reading?sort=${sort}&direction=${direction}&page=${page}&size=${size}`,
     {
@@ -84,12 +91,17 @@ export const fetchReadingContents = async (
   return response.json();
 };
 
-export const fetchListeningContents = async (
-  page = 0,
-  size = 5,
-  sort = 'createdAt',
-  direction = 'DESC',
-): Promise<ContentsResponse> => {
+export const fetchListeningContents = async ({
+  page,
+  size,
+  sort,
+  direction,
+}: {
+  page?: number;
+  size?: number;
+  sort?: string;
+  direction?: string;
+}): Promise<ContentsResponse> => {
   const response = await fetch(
     `${BASE_URL}/view/listening?sort=${sort}&direction=${direction}&page=${page}&size=${size}`,
     {
