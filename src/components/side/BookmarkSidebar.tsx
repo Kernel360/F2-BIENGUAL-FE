@@ -1,5 +1,6 @@
-import { PanelRightClose, PanelRightOpen, Minus } from 'lucide-react';
 import { useState } from 'react';
+
+import { PanelRightClose, PanelRightOpen, Minus } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';

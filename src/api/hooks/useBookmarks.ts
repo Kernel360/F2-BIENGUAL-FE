@@ -1,6 +1,7 @@
 // src/api/hooks/useBookmarks.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { useQueryLoginOnly } from './common';
 import {
   BookmarkListResponse,
   BookmarkByContentIdResponse,
@@ -13,8 +14,6 @@ import {
   updateBookmark,
   deleteBookmark,
 } from '../queries/bookmarkQueries';
-
-import { useQueryLoginOnly } from './common';
 
 // 북마크 조회 훅
 

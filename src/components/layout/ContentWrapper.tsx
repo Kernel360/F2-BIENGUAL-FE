@@ -1,7 +1,8 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
 import React from 'react';
+
+import { usePathname } from 'next/navigation';
 
 import SideArea from './SideArea';
 

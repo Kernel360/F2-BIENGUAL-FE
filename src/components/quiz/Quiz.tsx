@@ -1,5 +1,6 @@
-import { CircleCheck, CircleX } from 'lucide-react';
 import React, { useState } from 'react';
+
+import { CircleCheck, CircleX } from 'lucide-react';
 
 import { QuestionAnswer } from '@/types/Quiz';
 

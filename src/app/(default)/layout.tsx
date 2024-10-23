@@ -1,7 +1,7 @@
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import localFont from 'next/font/local';
 import { cookies } from 'next/headers';
 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { Metadata } from 'next';
 
 import '@/app/globals.css';

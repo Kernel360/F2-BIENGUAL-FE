@@ -47,31 +47,29 @@
       "error",
       {
         "groups": [
-          "builtin", // node 내장 모듈
-          "external", // 외부 라이브러리
-          "internal", // 내부 모듈 (alias 등)
-          "parent", // 부모 경로에서 가져온 모듈
-          "sibling", // 같은 경로의 모듈
-          "index", // index 파일
-          "object", // object 형태의 imports
-          "type" // type imports (TypeScript)
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling"],
+          "index"
         ],
         "pathGroups": [
           {
-            "pattern": "react|next", // react와 next를 상단에 오게 설정
-            "group": "external", // external 그룹에 포함
-            "position": "before" // external보다 앞에 위치
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
           },
           {
-            "pattern": "*", // 나머지 외부 라이브러리는 아래쪽에 위치
+            "pattern": "next/**",
             "group": "external",
-            "position": "after"
+            "position": "before"
           }
         ],
-        "newlines-between": "always", // 각 그룹 사이에 빈 줄 추가
+        "pathGroupsExcludedImportTypes": ["react", "next"],
+        "newlines-between": "always",
         "alphabetize": {
-          "order": "asc", // 알파벳 순으로 정렬
-          "caseInsensitive": true // 대소문자 구분 없이 정렬
+          "order": "asc",
+          "caseInsensitive": true
         }
       }
     ]

@@ -1,8 +1,10 @@
 'use client';
 
-import { Search } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useRef, useEffect } from 'react';
+
+import { useRouter } from 'next/navigation';
+
+import { Search } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 

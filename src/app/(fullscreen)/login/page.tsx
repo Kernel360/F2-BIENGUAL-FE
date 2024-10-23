@@ -1,8 +1,10 @@
 'use client';
 
-import { BookOpen, Headphones } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import { BookOpen, Headphones } from 'lucide-react';
 
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { Button } from '@/components/ui/button';

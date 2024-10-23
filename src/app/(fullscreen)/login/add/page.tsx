@@ -11,6 +11,10 @@ import { CategoryList } from '@/types/Category';
 const preferedCategories = async () => {
   // todo : 개인별 선호하는 카테고리 추가 연결필요
 };
+const notChoosingCategories = async () => {
+  // todo : 카테고리 선택을 하지 않았을 때 빈 배열 넘겨야함.
+};
+
 export default function LoginAddPage() {
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
   const [categories, setCategories] = useState<CategoryList[]>([]);
@@ -67,10 +71,16 @@ export default function LoginAddPage() {
             ))}
           </div>
         )}
-        <div className="mt-8 flex justify-center">
+        <div className=" flex mt-20 mx-96 gap-2 ">
+          <Button
+            onClick={notChoosingCategories}
+            className="bg-violet-100 text-gray px-6 py-2 rounded-3xl text-lg font-semibold transition-all duration-200 ease-in-out hover:scale-105"
+          >
+            나중에 고를래요
+          </Button>
           <Button
             onClick={preferedCategories}
-            className="px-6 py-2 rounded-lg text-lg font-semibold transition-all duration-200 ease-in-out hover:scale-105"
+            className="bg-violet-600 px-6 py-2  rounded-3xl text-lg font-semibold transition-all duration-200 ease-in-out hover:scale-105"
           >
             다 골랐어요
           </Button>
