@@ -19,13 +19,8 @@ export default function ReadingPage() {
     isLoading,
     isError,
     error,
-    // TODO(@smosco): 백엔드에 page 1부터 시작하게 변경 요청
-  } = useReadingContents({
-    page: currentPage - 1,
-    size: 5,
-    sort: 'createdAt',
-    direction: 'DESC',
-  });
+    // TODO: 백엔드에 page 1부터 시작하게 변경 요청
+  } = useReadingContents(currentPage - 1);
 
   if (isLoading) {
     return <LoadingSpinner />;

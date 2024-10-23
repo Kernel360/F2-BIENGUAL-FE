@@ -20,12 +20,7 @@ function ListeningPage() {
     isLoading,
     isError,
     error,
-  } = useListeningContents({
-    page: currentPage - 1,
-    size: 5,
-    sort: 'createdAt',
-    direction: 'DESC',
-  });
+  } = useListeningContents(currentPage - 1);
 
   if (isLoading) {
     return <LoadingSpinner />;

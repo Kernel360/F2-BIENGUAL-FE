@@ -62,17 +62,12 @@ export const fetchContentDetail = async ({
   return response.json();
 };
 
-export const fetchReadingContents = async ({
-  page,
-  size,
-  sort,
-  direction,
-}: {
-  page?: number;
-  size?: number;
-  sort?: string;
-  direction?: string;
-}): Promise<ContentsResponse> => {
+export const fetchReadingContents = async (
+  page: number = 0,
+  size: number = 5,
+  sort: string = 'createdAt',
+  direction: string = 'DESC',
+): Promise<ContentsResponse> => {
   const response = await fetch(
     `${BASE_URL}/view/reading?sort=${sort}&direction=${direction}&page=${page}&size=${size}`,
     {
@@ -91,17 +86,12 @@ export const fetchReadingContents = async ({
   return response.json();
 };
 
-export const fetchListeningContents = async ({
-  page,
-  size,
-  sort,
-  direction,
-}: {
-  page?: number;
-  size?: number;
-  sort?: string;
-  direction?: string;
-}): Promise<ContentsResponse> => {
+export const fetchListeningContents = async (
+  page: number = 0,
+  size: number = 5,
+  sort: string = 'createdAt',
+  direction: string = 'DESC',
+): Promise<ContentsResponse> => {
   const response = await fetch(
     `${BASE_URL}/view/listening?sort=${sort}&direction=${direction}&page=${page}&size=${size}`,
     {

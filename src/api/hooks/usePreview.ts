@@ -27,36 +27,28 @@ export const useListeningPreview =
     });
   };
 
-export const useReadingContents = ({
-  page,
-  size,
-  sort,
-  direction,
-}: {
-  page?: number;
-  size?: number;
-  sort?: string;
-  direction?: string;
-}): UseQueryResult<ContentsResponse> => {
+export const useReadingContents = (
+  page = 0,
+  size = 5,
+  sort = 'createdAt',
+  direction = 'DESC',
+  initialData?: ContentsResponse,
+): UseQueryResult<ContentsResponse> => {
   return useQuery({
-    queryKey: ['readingContentsData', { page, size, sort, direction }],
-    queryFn: () => fetchReadingContents({ page, size, sort, direction }),
+    queryKey: ['readingContentsData', page, size, sort, direction],
+    queryFn: () => fetchListeningContents(page, size, sort, direction),
+    initialData, // 서버에서 받은 데이터를 초기값으로 사용
   });
 };
 
-export const useListeningContents = ({
-  page,
-  size,
-  sort,
-  direction,
-}: {
-  page?: number;
-  size?: number;
-  sort?: string;
-  direction?: string;
-}): UseQueryResult<ContentsResponse> => {
+export const useListeningContents = (
+  page = 0,
+  size = 5,
+  sort = 'createdAt',
+  direction = 'DESC',
+): UseQueryResult<ContentsResponse> => {
   return useQuery({
-    queryKey: ['listeningContentsData', { page, size, sort, direction }],
-    queryFn: () => fetchListeningContents({ page, size, sort, direction }),
+    queryKey: ['listeningSortedContentsData', page, size, sort, direction],
+    queryFn: () => fetchReadingContents(page, size, sort, direction),
   });
 };
