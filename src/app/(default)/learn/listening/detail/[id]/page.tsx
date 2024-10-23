@@ -1,8 +1,12 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
+import { useParams } from 'next/navigation';
+
+import ReactPlayer from 'react-player';
+
+import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import {
@@ -11,16 +15,22 @@ import {
   useDeleteScrap,
 } from '@/api/hooks/useScrap';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import BookmarkMemoPanel from '@/components/BookmarkMemoPanel';
 import FloatingButtons from '@/components/FloatingButtons';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import LogInOutButton from '@/components/LogInOutButton';
 import Modal from '@/components/Modal';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import QuizCover from '@/components/quiz/QuizCover';
+import { ReactScriptPlayer } from '@/components/ReactScriptPlayer';
+import SubtitleOption from '@/components/SubtitleOption';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import VideoPlayer from '@/components/VideoPlayer';
+import { LanguageCode } from '@/types/Scripts';
+
+type Mode = 'line' | 'block';
 
 export default function DetailListeningPage() {
   const param = useParams();
@@ -45,6 +55,25 @@ export default function DetailListeningPage() {
   const { data: quizData } = useFetchQuiz(contentId);
 
   const [isScrapped, setIsScrapped] = useState<boolean | undefined>(undefined);
+
+  const playerRef = useRef<ReactPlayer | null>(null);
+
+  const [currentTime, setCurrentTime] = useState(0);
+
+  const [mode, setMode] = useState<Mode>('line');
+  const availableLanguages: LanguageCode[] = ['enScript', 'koScript'];
+  const [selectedLanguages, setSelectedLanguages] =
+    useState<LanguageCode[]>(availableLanguages);
+
+  const { data: bookmarkData } = useFetchBookmarksByContendId(contentId);
+
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  const seekTo = (timeInSeconds: number) => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(timeInSeconds, 'seconds');
+    }
+  };
 
   useEffect(() => {
     if (checkScrap?.data) {
@@ -107,8 +136,50 @@ export default function DetailListeningPage() {
 
       {/* TODO(@smosco): response 타입 나누기 싫어서 타입 단언 */}
       <VideoPlayer
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        ref={playerRef}
         videoUrl={ListeningDetailData?.data.videoUrl as string}
+        setCurrentTime={setCurrentTime}
+      />
+
+      {/* 보기모드, 언어 옵션 */}
+      <SubtitleOption
+        mode={mode}
+        selectedLanguages={selectedLanguages}
+        setMode={setMode}
+        setSelectedLanguages={setSelectedLanguages}
+      />
+
+      {/* 자막 컨테이너 */}
+      <ReactScriptPlayer
+        mode={mode}
+        subtitles={ListeningDetailData?.data.scriptList || []}
+        selectedLanguages={selectedLanguages}
+        seekTo={seekTo}
+        currentTime={currentTime}
+        onClickSubtitle={(subtitle, index) => {
+          console.log(subtitle, index);
+        }}
+        onSelectWord={(word, subtitle, index) => {
+          console.log(word, subtitle, index);
+        }}
+        bookmarkedIndices={
+          bookmarkData && bookmarkData?.data.bookmarkList.length > 0
+            ? bookmarkData.data.bookmarkList.map(
+                (bookmark) => bookmark.sentenceIndex,
+              )
+            : []
+        }
+      />
+
+      {/* 북마크 메모 패널 */}
+      <BookmarkMemoPanel
+        seekTo={seekTo}
         scriptsData={ListeningDetailData?.data.scriptList}
+        currentTime={currentTime}
+        setIsPlaying={setIsPlaying}
+        setShowLoginModal={setShowLoginModal}
       />
 
       {/* 퀴즈 */}

@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-// components/MemoInput.tsx
+
 import React, { useRef, useEffect } from 'react';
 
 type MemoInputProps = {
-  position: { top: number; left: number };
   memoText: string;
   setMemoText: React.Dispatch<React.SetStateAction<string>>;
   onSaveMemo: () => void;
@@ -12,7 +11,6 @@ type MemoInputProps = {
 };
 
 export default function MemoInput({
-  position,
   memoText,
   setMemoText,
   onSaveMemo,
@@ -35,8 +33,7 @@ export default function MemoInput({
   return (
     <div
       ref={memoRef}
-      className="absolute bg-white border border-gray-200 shadow-lg rounded-lg p-4 w-72 z-50"
-      style={{ top: position.top, left: position.left }}
+      className="absolute w-72 bg-white border border-gray-200 shadow-lg rounded-lg p-4 z-50 mt-2 top-full left-0 "
       onClick={(e) => e.stopPropagation()} // 메모 창 클릭 시 이벤트 전파 방지
     >
       <textarea

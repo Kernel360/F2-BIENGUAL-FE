@@ -5,10 +5,9 @@ import React from 'react';
 import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
 import { Script } from '@/types/ContentDetail';
 
-import { LanguageCode, Subtitle } from '../../types/Scripts';
-
 import { BlockView } from './BlockView';
 import { LineView } from './LineView';
+import { LanguageCode, Subtitle } from '../../types/Scripts';
 
 export interface ReactScriptPlayerProps {
   mode: 'line' | 'block';

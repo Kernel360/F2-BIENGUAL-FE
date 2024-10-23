@@ -1,14 +1,14 @@
 'use client';
 
 /* eslint-disable react/button-has-type */
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React from 'react';
+
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import useThrottling from '@/lib/useThrottling';
 
-import { LanguageCode, Subtitle } from '../../types/Scripts';
-
 import { TextDisplay } from './TextDisplay';
+import { LanguageCode, Subtitle } from '../../types/Scripts';
 
 interface LineViewProps {
   subtitles: Subtitle[];
