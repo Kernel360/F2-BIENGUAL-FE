@@ -40,11 +40,11 @@ export const checkScrap = async (
 export const createScrap = async (
   contentId: number,
 ): Promise<CreateScrapResponse> => {
-  const response = await fetch(`${BASE_URL}/create`, {
+  const response = await fetch(`${BASE_URL}/create/${contentId}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({ contentId }),
+    // body: JSON.stringify({ contentId }),
   });
   if (!response.ok) {
     throw new Error('Failed to create scrap');
@@ -56,11 +56,11 @@ export const createScrap = async (
 export const deleteScrap = async (
   contentId: number,
 ): Promise<DeleteScrapResponse> => {
-  const response = await fetch(`${BASE_URL}/delete`, {
+  const response = await fetch(`${BASE_URL}/delete/${contentId}`, {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({ contentId }),
+    // body: JSON.stringify({ contentId }),
   });
   if (!response.ok) {
     throw new Error('Failed to delete scrap');
