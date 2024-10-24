@@ -3,29 +3,32 @@
 import React from 'react';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import Link, { LinkProps } from 'next/link';
 
+import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { Preview } from '@/types/Preview';
 
-import { Badge } from '../ui/badge';
+interface ContentCardProps extends Pick<LinkProps, 'href'> {
+  coverImageUrl: string;
+  category: string;
+  title: string;
+  description: string;
+}
 
-export default function ReadingPreviewCard({
-  // TODO(@smosco):hits 추가
-  data: { contentId, thumbnailUrl, title, category, preScripts },
-}: {
-  data: Preview;
-}) {
+export default function ContentCard({
+  href,
+  coverImageUrl,
+  category,
+  title,
+  description,
+}: ContentCardProps) {
   return (
-    <Link
-      href={`/learn/reading/detail/${contentId}`}
-      className="w-full h-fit mr-3"
-    >
+    <Link href={href} className="w-full h-fit mr-3">
       <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border">
         <CardContent className="p-0 h-full">
           <div className="relative w-full h-40 overflow-hidden">
             <Image
-              src={thumbnailUrl}
+              src={coverImageUrl}
               alt={title}
               fill
               sizes="100%"
@@ -38,7 +41,7 @@ export default function ReadingPreviewCard({
               {title}
             </strong>
             <p className="text-sm text-gray-500 text-muted-foreground line-clamp-2">
-              {preScripts}
+              {description}
             </p>
           </div>
         </CardContent>

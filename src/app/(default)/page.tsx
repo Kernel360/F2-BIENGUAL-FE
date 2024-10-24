@@ -7,9 +7,26 @@ import { ChevronRight } from 'lucide-react';
 import { useReadingPreview, useListeningPreview } from '@/api/hooks/usePreview';
 import Carousel from '@/components/common/Carousel';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import ListeningPreviewCard from '@/components/listening/ListeningPreviewCard';
-import ReadingPreviewCard from '@/components/reading/ReadingPreviewCard';
+import ContentCard from '@/components/items/ContentCard';
 import { Button } from '@/components/ui/button';
+
+// todo: 임시코드 바꾸기
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function ItemComponent({ data }: any) {
+  return (
+    <ContentCard
+      href={
+        data.contentType === 'READING'
+          ? `/learn/reading/detail/${data.contentId}`
+          : `/learn/listening/detail/${data.contentId}`
+      }
+      coverImageUrl={data.thumbnailUrl}
+      category={data.category}
+      title={data.title}
+      description={data.preScripts}
+    />
+  );
+}
 
 export default function HomePage() {
   const { data: readingList, isLoading: readingLoading } = useReadingPreview();
@@ -36,7 +53,7 @@ export default function HomePage() {
             </Link>
           </div>
         }
-        itemComponent={ReadingPreviewCard}
+        itemComponent={ItemComponent}
         itemWidth={280}
         itemsPerPage={3}
       />
@@ -54,7 +71,7 @@ export default function HomePage() {
             </Link>
           </div>
         }
-        itemComponent={ListeningPreviewCard}
+        itemComponent={ItemComponent}
         itemWidth={280}
         itemsPerPage={3}
       />
