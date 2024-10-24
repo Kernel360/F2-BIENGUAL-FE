@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { formatDate } from '@/lib/formatDate';
 
-interface ArticelPreviewData {
+interface ArticlePreviewData {
   scrapId?: number;
   contentId: number;
   title: string;
@@ -25,7 +25,7 @@ export default function ArticlePreview({
     createdAt,
   },
 }: {
-  data: ArticelPreviewData;
+  data: ArticlePreviewData;
 }) {
   return (
     <Link href={`/learn/reading/detail/${contentId}`}>
