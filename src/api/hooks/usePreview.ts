@@ -6,9 +6,9 @@ import {
   ReadingPreviewResponse,
 } from '../../types/Preview';
 import {
-  fetchListeningContents,
+  fetchPaginatedReadingPreview,
   fetchListeningPreview,
-  fetchReadingContents,
+  fetchPaginatedListeningPreview,
   fetchReadingPreview,
 } from '../queries/contentsQueries';
 
@@ -18,7 +18,6 @@ export const useReadingPreview = (): UseQueryResult<ReadingPreviewResponse> => {
     queryFn: () => fetchReadingPreview(),
   });
 };
-// sdfsdfsd
 
 export const useListeningPreview =
   (): UseQueryResult<ListeningPreviewResponse> => {
@@ -28,7 +27,7 @@ export const useListeningPreview =
     });
   };
 
-export const useReadingContents = (
+export const usePaginatedReadingPreview = (
   page = 0,
   size = 5,
   sort = 'createdAt',
@@ -36,20 +35,20 @@ export const useReadingContents = (
   initialData?: ContentsResponse,
 ): UseQueryResult<ContentsResponse> => {
   return useQuery({
-    queryKey: ['readingContentsData', page, size, sort, direction],
-    queryFn: () => fetchReadingContents(page, size, sort, direction),
+    queryKey: ['paginatedReadingPreview', page, size, sort, direction],
+    queryFn: () => fetchPaginatedReadingPreview(page, size, sort, direction),
     initialData, // 서버에서 받은 데이터를 초기값으로 사용
   });
 };
 
-export const useListeningContents = (
+export const usePaginatedListeningPreview = (
   page = 0,
   size = 5,
   sort = 'createdAt',
   direction = 'DESC',
 ): UseQueryResult<ContentsResponse> => {
   return useQuery({
-    queryKey: ['listeningSortedContentsData', page, size, sort, direction],
-    queryFn: () => fetchListeningContents(page, size, sort, direction),
+    queryKey: ['paginatedListeningPreview', page, size, sort, direction],
+    queryFn: () => fetchPaginatedListeningPreview(page, size, sort, direction),
   });
 };

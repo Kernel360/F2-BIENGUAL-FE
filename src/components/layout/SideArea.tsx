@@ -7,7 +7,7 @@ import { Book, Bookmark, HelpCircle, Highlighter } from 'lucide-react';
 import { useUserTime } from '@/api/hooks/useUserInfo';
 import { calculateDaysBetweenDates } from '@/lib/calculateDaysBetweenDates';
 
-import LearningTracker from '../side/LearningTracker';
+import LearningTracker from './side/LearningTracker';
 
 export default function SideArea() {
   const mockDailyGoals = [

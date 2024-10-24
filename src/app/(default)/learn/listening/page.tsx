@@ -2,12 +2,12 @@
 
 import { useSearchParams, useRouter } from 'next/navigation';
 
-import { useListeningContents } from '@/api/hooks/usePreview';
-import ContentTypeFilter from '@/components/ContentTypeFilter';
-import EmptyAlert from '@/components/EmptyAlert';
-import ListeningPreviewCard from '@/components/ListeningPreviewCard';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import Pagination from '@/components/Pagination';
+import { usePaginatedListeningPreview } from '@/api/hooks/usePreview';
+import ContentTypeFilter from '@/components/common/ContentTypeFilter';
+import EmptyAlert from '@/components/common/EmptyAlert';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+import Pagination from '@/components/common/Pagination';
+import ListeningPreviewCard from '@/components/listening/ListeningPreviewCard';
 
 function ListeningPage() {
   const router = useRouter();
@@ -20,7 +20,7 @@ function ListeningPage() {
     isLoading,
     isError,
     error,
-  } = useListeningContents(currentPage - 1);
+  } = usePaginatedListeningPreview(currentPage - 1);
 
   if (isLoading) {
     return <LoadingSpinner />;

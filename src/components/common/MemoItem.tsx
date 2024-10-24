@@ -14,7 +14,7 @@ import {
 import { formatDate } from '@/lib/formatDate';
 import { Bookmark } from '@/types/Bookmark';
 
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 
 export default function MemoItem({
   data: {

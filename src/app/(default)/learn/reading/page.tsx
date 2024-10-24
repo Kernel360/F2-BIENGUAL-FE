@@ -2,11 +2,11 @@
 
 import { useSearchParams, useRouter } from 'next/navigation';
 
-import { useReadingContents } from '@/api/hooks/usePreview';
-import ArticlePreview from '@/components/ArticlePreview';
-import ContentTypeFilter from '@/components/ContentTypeFilter';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import Pagination from '@/components/Pagination';
+import { usePaginatedReadingPreview } from '@/api/hooks/usePreview';
+import ArticlePreview from '@/components/common/ArticlePreview';
+import ContentTypeFilter from '@/components/common/ContentTypeFilter';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+import Pagination from '@/components/common/Pagination';
 
 export default function ReadingPage() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function ReadingPage() {
     isError,
     error,
     // TODO: 백엔드에 page 1부터 시작하게 변경 요청
-  } = useReadingContents(currentPage - 1);
+  } = usePaginatedReadingPreview(currentPage - 1);
 
   if (isLoading) {
     return <LoadingSpinner />;

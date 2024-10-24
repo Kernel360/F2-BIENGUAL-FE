@@ -2,8 +2,8 @@ import React from 'react';
 
 import { QuestionAnswer } from '@/types/Quiz';
 
-import Carousel from '../Carousel';
 import Quiz from './Quiz';
+import Carousel from '../common/Carousel';
 
 interface QuizCarouselProps {
   quizListData: QuestionAnswer[];

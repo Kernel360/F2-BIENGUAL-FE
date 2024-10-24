@@ -1,9 +1,9 @@
 'use client';
 
 import { useFetchAllBookmarks } from '@/api/hooks/useBookmarks';
-import EmptyAlert from '@/components/EmptyAlert';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import MemoItem from '@/components/MemoItem';
+import EmptyAlert from '@/components/common/EmptyAlert';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+import MemoItem from '@/components/common/MemoItem';
 
 export default function HighlighterAndMemo() {
   const {

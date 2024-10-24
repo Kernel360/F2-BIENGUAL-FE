@@ -60,7 +60,7 @@ export const fetchContentDetail = async (
   return response.json();
 };
 
-export const fetchReadingContents = async (
+export const fetchPaginatedReadingPreview = async (
   page: number = 0,
   size: number = 5,
   sort: string = 'createdAt',
@@ -84,7 +84,7 @@ export const fetchReadingContents = async (
   return response.json();
 };
 
-export const fetchListeningContents = async (
+export const fetchPaginatedListeningPreview = async (
   page: number = 0,
   size: number = 5,
   sort: string = 'createdAt',

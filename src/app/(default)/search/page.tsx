@@ -5,10 +5,10 @@ import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { useFetchSearchResults } from '@/api/hooks/useSearch';
-import EmptyAlert from '@/components/EmptyAlert';
-import ListeningPreviewCard from '@/components/ListeningPreviewCard';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import ReadingPreviewCard from '@/components/ReadingPreviewCard';
+import EmptyAlert from '@/components/common/EmptyAlert';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+import ListeningPreviewCard from '@/components/listening/ListeningPreviewCard';
+import ReadingPreviewCard from '@/components/reading/ReadingPreviewCard';
 
 function SearchResultsList() {
   const searchParams = useSearchParams();

@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { fetchReadingContents } from '@/api/queries/contentsQueries'; // Ensure you have this function to fetch data
+import { fetchPaginatedReadingPreview } from '@/api/queries/contentsQueries'; // Ensure you have this function to fetch data
 import { Button } from '@/components/ui/button';
 
-import ListTable from '../ListTable';
+import ListTable from '../components/ListTable';
 
 export default async function ListPage() {
-  const initialReadingContents = await fetchReadingContents(0, 10);
+  const initialReadingContents = await fetchPaginatedReadingPreview(0, 10);
 
   return (
     <div>

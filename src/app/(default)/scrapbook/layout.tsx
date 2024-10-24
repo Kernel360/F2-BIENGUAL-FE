@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 import { Bookmark, Plus, HighlighterIcon } from 'lucide-react';
 
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import DisabledModal from '@/components/DisabledModal';
-import LogInOutButton from '@/components/LogInOutButton';
+import DisabledModal from '@/components/common/DisabledModal';
+import LogInOutButton from '@/components/common/LogInOutButton';
 import { Button } from '@/components/ui/button';
 
 interface NavItemProps {

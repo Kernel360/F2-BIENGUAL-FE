@@ -5,11 +5,11 @@ import { usePathname } from 'next/navigation';
 
 import { BookHeadphones, Bookmark, Bell, CircleUserRound } from 'lucide-react';
 
-import LogInOutButton from '@/components/LogInOutButton';
+import LogInOutButton from '@/components/common/LogInOutButton';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
-import SearchComponent from '../SearchComponent';
+import SearchComponent from '../common/SearchComponent';
 
 export const navItems = [
   { name: '학습', href: '/learn/listening', icon: BookHeadphones },
