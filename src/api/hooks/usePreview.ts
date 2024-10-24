@@ -49,6 +49,6 @@ export const useListeningContents = (
 ): UseQueryResult<ContentsResponse> => {
   return useQuery({
     queryKey: ['listeningSortedContentsData', page, size, sort, direction],
-    queryFn: () => fetchReadingContents(page, size, sort, direction),
+    queryFn: () => fetchListeningContents(page, size, sort, direction),
   });
 };

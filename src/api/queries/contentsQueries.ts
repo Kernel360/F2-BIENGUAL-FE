@@ -42,11 +42,9 @@ export const fetchListeningPreview =
     return response.json();
   };
 
-export const fetchContentDetail = async ({
-  contentId,
-}: {
-  contentId: number;
-}): Promise<ContentDetailResponse> => {
+export const fetchContentDetail = async (
+  contentId: number,
+): Promise<ContentDetailResponse> => {
   const response = await fetch(`${BASE_URL}/details/${contentId}`, {
     method: 'GET',
     headers: {

@@ -8,6 +8,6 @@ export const useContentDetail = (
 ): UseQueryResult<ContentDetailResponse> => {
   return useQuery({
     queryKey: ['contentDetail', contentId],
-    queryFn: () => fetchContentDetail({ contentId }),
+    queryFn: () => fetchContentDetail(contentId),
   });
 };
