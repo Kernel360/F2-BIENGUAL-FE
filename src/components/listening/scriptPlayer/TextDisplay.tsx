@@ -3,7 +3,7 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 
-import { Subtitle, LanguageCode } from '../../types/Scripts';
+import { Subtitle, LanguageCode } from '@/types/Scripts';
 
 export function TextDisplay({
   subtitle,
