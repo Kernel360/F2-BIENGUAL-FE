@@ -18,6 +18,7 @@ export const useReadingPreview = (): UseQueryResult<ReadingPreviewResponse> => {
     queryFn: () => fetchReadingPreview(),
   });
 };
+// sdfsdfsd
 
 export const useListeningPreview =
   (): UseQueryResult<ListeningPreviewResponse> => {
@@ -32,10 +33,12 @@ export const useReadingContents = (
   size = 5,
   sort = 'createdAt',
   direction = 'DESC',
+  initialData?: ContentsResponse,
 ): UseQueryResult<ContentsResponse> => {
   return useQuery({
     queryKey: ['readingContentsData', page, size, sort, direction],
     queryFn: () => fetchReadingContents(page, size, sort, direction),
+    initialData, // 서버에서 받은 데이터를 초기값으로 사용
   });
 };
 
@@ -46,7 +49,7 @@ export const useListeningContents = (
   direction = 'DESC',
 ): UseQueryResult<ContentsResponse> => {
   return useQuery({
-    queryKey: ['listeningContentsData', page, size, sort, direction],
+    queryKey: ['listeningSortedContentsData', page, size, sort, direction],
     queryFn: () => fetchListeningContents(page, size, sort, direction),
   });
 };

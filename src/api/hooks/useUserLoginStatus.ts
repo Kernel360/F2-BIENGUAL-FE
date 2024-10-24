@@ -12,7 +12,8 @@ const useUserLoginStatus = (
     queryKey: ['loginStatus'],
     queryFn: fetchUserLoginStatus,
     initialData,
-    refetchOnWindowFocus: true,
+    staleTime: 0, // loginStatus는 캐시없이 항상 최신 상태로 가져와야 refetchOnWindowFocus 제대로 작동
+    refetchOnWindowFocus: true, // 기본값 true지만 명시적으로 적어줌
   });
 };
 

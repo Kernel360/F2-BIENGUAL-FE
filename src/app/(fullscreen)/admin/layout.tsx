@@ -5,21 +5,26 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-type Tab = 'create' | 'list';
+type Tab = 'create' | 'ReadingList';
 const tabs: { key: Tab; label: string; href: string }[] = [
   {
     key: 'create',
     label: '영상 컨텐츠 추가',
-    href: '/admin/create',
+    href: '/admin/create/listening',
   },
-  { key: 'list', label: '영상 컨텐츠 목록', href: '/admin/list' },
+  {
+    key: 'ReadingList',
+    label: '리딩 컨텐츠 목록',
+    href: '/admin/list/reading',
+  },
 ];
+
 export default function AdminPage({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [activeTab, setActiveTab] = useState('create');
+  const [activeTab, setActiveTab] = useState<Tab>('create');
 
   useEffect(() => {
-    if (pathname.startsWith('/admin/list')) setActiveTab('list');
+    if (pathname.startsWith('/admin/list')) setActiveTab('ReadingList');
     else setActiveTab('create');
   }, [pathname]);
 
@@ -35,11 +40,11 @@ export default function AdminPage({ children }: { children: React.ReactNode }) {
                 <Link
                   href={href}
                   className={`inline-block px-2 py-3 text-center font-medium transition-colors whitespace-nowrap ${
-                    activeTab === key && 'font-bold'
+                    activeTab === key ? 'bg-gray-300 font-bold' : ''
                   }`}
                 >
                   {label}
-                </Link>{' '}
+                </Link>
                 {activeTab === key && (
                   <span className="absolute bottom-0 left-0 w-full h-[2px] bg-black" />
                 )}
