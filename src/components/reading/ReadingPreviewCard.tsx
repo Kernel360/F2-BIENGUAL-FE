@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 import { Preview } from '@/types/Preview';
 
-import { Badge } from './ui/badge';
+import { Badge } from '../ui/badge';
 
 export default function ReadingPreviewCard({
   // TODO(@smosco):hits 추가

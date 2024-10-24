@@ -1,6 +1,6 @@
 import { X, Check } from 'lucide-react';
 
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 
 // TODO(@smosco): memo 타입이 BookmarkMemoPanel, BookmarkMemoItem에서 약간 달라서 제네릭 사용
 interface ListeningMemoFormProps<T extends string | null> {

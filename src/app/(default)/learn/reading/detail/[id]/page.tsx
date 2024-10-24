@@ -16,14 +16,14 @@ import {
   useCheckScrap,
 } from '@/api/hooks/useScrap';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import FloatingButtons from '@/components/FloatingButtons';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import LogInOutButton from '@/components/LogInOutButton';
-import Modal from '@/components/Modal';
+import FloatingButtons from '@/components/common/FloatingButtons';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+import LogInOutButton from '@/components/common/LogInOutButton';
+import Modal from '@/components/common/Modal';
+import ScrollProgressBar from '@/components/common/ScrollProgressBar';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import QuizCover from '@/components/quiz/QuizCover';
-import ReadingScriptItem from '@/components/ReadingScriptItem';
-import ScrollProgressBar from '@/components/ScrollProgressBar';
+import ReadingScriptItem from '@/components/reading/ReadingScriptItem';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';

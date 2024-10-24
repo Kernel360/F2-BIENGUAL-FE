@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchReadingContents } from '@/api/queries/contentsQueries';
+import { fetchPaginatedReadingPreview } from '@/api/queries/contentsQueries';
 import { ContentsResponse, Preview } from '@/types/Preview';
 
 // todo : 리딩이랑 리스닝 나눠서 보여주기?
@@ -22,7 +22,7 @@ export default function ListTable({
   // 리딩
   const { data: readingData } = useQuery({
     queryKey: ['readingContentsData'],
-    queryFn: () => fetchReadingContents(0, 10),
+    queryFn: () => fetchPaginatedReadingPreview(0, 10),
     initialData: initialContents,
   });
 

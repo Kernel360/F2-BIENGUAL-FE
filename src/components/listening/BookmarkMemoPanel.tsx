@@ -6,19 +6,18 @@ import { BookmarkPlus, MessageSquarePlus } from 'lucide-react';
 
 import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import EmptyAlert from '@/components/common/EmptyAlert';
+import BookmarkMemoItem from '@/components/listening/BookmarkMemoItem';
+import ListeningMemoForm from '@/components/listening/ListeningMemoForm';
 import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardContent, CardTitle } from '@/components/ui/card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useToast } from '@/hooks/use-toast';
 import useHandleBookmark from '@/hooks/useHandleBookmark';
 import { convertTime } from '@/lib/convertTime';
 import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
 import useThrottling from '@/lib/useThrottling';
 import { Script } from '@/types/ContentDetail';
-
-import BookmarkMemoItem from './BookmarkMemoItem';
-import EmptyAlert from './EmptyAlert';
-import ListeningMemoForm from './ListeningMemoForm';
-import { Card, CardHeader, CardContent, CardTitle } from './ui/card';
-import { ScrollArea } from './ui/scroll-area';
 
 interface BookmarkMemoPanelProps {
   scriptsData: Script[] | undefined;

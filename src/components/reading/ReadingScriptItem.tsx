@@ -7,13 +7,13 @@ import { useParams } from 'next/navigation';
 import { MessageCircleMoreIcon } from 'lucide-react';
 
 import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';
-import MemoInput from '@/components/MemoInput';
+import MemoInput from '@/components/common/MemoInput';
+import Tooltip from '@/components/common/Tooltip';
 import useHandleBookmark from '@/hooks/useHandleBookmark';
 import { Script } from '@/types/ContentDetail';
 
-import Modal from './Modal';
-import Tooltip from './Tooltip';
-import { Button } from './ui/button';
+import Modal from '../common/Modal';
+import { Button } from '../ui/button';
 
 interface ReadingScriptItemProps {
   index: number;

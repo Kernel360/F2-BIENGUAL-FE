@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { fetchAllCategories } from '@/api/fetchAllCategories';
-import LoadingSpinner from '@/components/LoadingSpinner';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { CategoryList } from '@/types/Category';

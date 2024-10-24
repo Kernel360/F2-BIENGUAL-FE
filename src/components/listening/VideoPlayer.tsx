@@ -14,7 +14,7 @@ import {
 import ReactPlayer from 'react-player';
 
 import ControlBar from './ControlBar';
-import { Card, CardContent } from './ui/card';
+import { Card, CardContent } from '../ui/card';
 
 interface VideoPlayerProps {
   videoUrl: string;

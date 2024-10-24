@@ -6,13 +6,12 @@ import { useParams } from 'next/navigation';
 
 import { Trash2 } from 'lucide-react';
 
+import ListeningMemoForm from '@/components/listening/ListeningMemoForm';
+import { Button } from '@/components/ui/button';
 import useHandleBookmark from '@/hooks/useHandleBookmark';
 import { convertTime } from '@/lib/convertTime';
 import { BookmarkByContentId } from '@/types/Bookmark';
 import { Subtitle } from '@/types/Scripts';
-
-import ListeningMemoForm from './ListeningMemoForm';
-import { Button } from './ui/button';
 
 interface BookmarkMemoItemProps {
   bookmark: BookmarkByContentId;

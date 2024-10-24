@@ -8,7 +8,7 @@ import { LayoutList, LayoutGrid, Globe } from 'lucide-react'; // Icons you're us
 
 import { Button } from '@/components/ui/button'; // Assuming you're using a custom Button component
 
-import { LanguageCode } from '../types/Scripts';
+import { LanguageCode } from '../../types/Scripts';
 
 type Mode = 'line' | 'block';
 

@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 
 import { useReadingPreview, useListeningPreview } from '@/api/hooks/usePreview';
-import Carousel from '@/components/Carousel';
-import ListeningPreviewCard from '@/components/ListeningPreviewCard';
-import LoadingSpinner from '@/components/LoadingSpinner';
-import ReadingPreviewCard from '@/components/ReadingPreviewCard';
+import Carousel from '@/components/common/Carousel';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
+import ListeningPreviewCard from '@/components/listening/ListeningPreviewCard';
+import ReadingPreviewCard from '@/components/reading/ReadingPreviewCard';
 import { Button } from '@/components/ui/button';
 
 export default function HomePage() {
