@@ -9,6 +9,6 @@ export interface FetchQuizResponse {
   code: string;
   message: string;
   data: {
-    'question-answer': QuestionAnswer[];
+    questionAnswer: QuestionAnswer[];
   };
 }
