@@ -5,28 +5,38 @@ import React from 'react';
 import Image from 'next/image';
 import Link, { LinkProps } from 'next/link';
 
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface ContentCardProps extends Pick<LinkProps, 'href'> {
+  bottomRightButton?: React.ReactNode;
+  topRightButton?: React.ReactNode;
+  leftBadge?: React.ReactNode;
+  rightBadge?: React.ReactNode;
   coverImageUrl: string;
-  category: string;
   title: string;
   description: string;
 }
 
 export default function ContentCard({
   href,
+  bottomRightButton,
+  topRightButton,
+  leftBadge,
+  rightBadge,
   coverImageUrl,
-  category,
   title,
   description,
 }: ContentCardProps) {
   return (
     <Link href={href} className="w-full h-fit mr-3">
-      <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border">
-        <CardContent className="p-0 h-full">
-          <div className="relative w-full h-40 overflow-hidden">
+      <Card className=" overflow-hidden shadow-card hover:shadow-card-hover hover:border-border">
+        <CardContent className={`p-0 h-full `}>
+          <div
+            className={`relative w-full h-40 overflow-hidden
+       
+               `}
+          >
+            <div className="absolute top-3 right-3 z-10">{topRightButton}</div>
             <Image
               src={coverImageUrl}
               alt={title}
@@ -34,9 +44,15 @@ export default function ContentCard({
               sizes="100%"
               className="object-cover"
             />
+            <div className="absolute bottom-3 right-3 z-10">
+              {bottomRightButton}
+            </div>
           </div>
           <div className="p-4 space-y-2 h-40">
-            <Badge>{category}</Badge>
+            <div className="flex justify-between">
+              {leftBadge}
+              {rightBadge}
+            </div>
             <strong className="line-clamp-2 hover:underline underline-offset-2">
               {title}
             </strong>
