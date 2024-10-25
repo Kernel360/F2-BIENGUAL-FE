@@ -45,7 +45,7 @@ function ListeningPage() {
         {listeningContents.data.contents.map((content) => (
           <ContentCard
             key={content.contentId}
-            href={`/learn/reading/detail/${content.contentId}`}
+            href={`/learn/listening/detail/${content.contentId}`}
             coverImageUrl={content.thumbnailUrl}
             category={content.category}
             title={content.title}
