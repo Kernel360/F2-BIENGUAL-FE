@@ -7,7 +7,7 @@ import ContentTypeFilter from '@/components/common/ContentTypeFilter';
 import EmptyAlert from '@/components/common/EmptyAlert';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Pagination from '@/components/common/Pagination';
-import ListeningPreviewCard from '@/components/listening/ListeningPreviewCard';
+import ContentCard from '@/components/items/ContentCard';
 
 function ListeningPage() {
   const router = useRouter();
@@ -43,7 +43,14 @@ function ListeningPage() {
       <ContentTypeFilter />
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-7 mt-8">
         {listeningContents.data.contents.map((content) => (
-          <ListeningPreviewCard key={content.contentId} data={content} />
+          <ContentCard
+            key={content.contentId}
+            href={`/learn/reading/detail/${content.contentId}`}
+            coverImageUrl={content.thumbnailUrl}
+            category={content.category}
+            title={content.title}
+            description={content.preScripts}
+          />
         ))}
       </div>
       <Pagination

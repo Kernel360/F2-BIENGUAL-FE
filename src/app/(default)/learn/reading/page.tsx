@@ -3,10 +3,11 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 
 import { usePaginatedReadingPreview } from '@/api/hooks/usePreview';
-import ArticlePreview from '@/components/common/ArticlePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Pagination from '@/components/common/Pagination';
+import ListItem from '@/components/items/ListItem';
+// import { formatDate } from '@/lib/formatDate';
 
 export default function ReadingPage() {
   const router = useRouter();
@@ -43,7 +44,26 @@ export default function ReadingPage() {
       <ContentTypeFilter />
       <ul className="flex flex-col gap-6 mt-8">
         {readingContents.data.contents.map((content) => (
-          <ArticlePreview key={content.contentId} data={content} />
+          <ListItem
+            key={content.contentId}
+            href={`/learn/reading/detail/${content.contentId}`}
+            coverImageUrl={content.thumbnailUrl}
+            category={content.category}
+            title={content.title}
+            description={content.preScripts}
+            footerContent={
+              <>
+                {/*  TODO(@godhyzzang): 날짜 보여주기 */}
+                {/* <p className="text-sm mb-3">
+                  {content.createdAt && `${formatDate(content.createdAt)} 저장`}
+                </p> */}
+
+                <p className="text-sm text-muted-foreground">
+                  {content.hits}회
+                </p>
+              </>
+            }
+          />
         ))}
       </ul>
       <Pagination
