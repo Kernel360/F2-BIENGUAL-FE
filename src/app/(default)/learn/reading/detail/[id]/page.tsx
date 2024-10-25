@@ -147,10 +147,8 @@ export default function DetailReadingPage() {
               {showQuiz && (
                 <div className="absolute inset-0 bg-white flex">
                   {/* 퀴즈 */}
-                  {quizData && quizData.data['question-answer'].length > 0 ? (
-                    <QuizCarousel
-                      quizListData={quizData.data['question-answer']}
-                    />
+                  {quizData && quizData.data.questionAnswer.length > 0 ? (
+                    <QuizCarousel quizListData={quizData.data.questionAnswer} />
                   ) : (
                     <QuizCover
                       startColor="white"
