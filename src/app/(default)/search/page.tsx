@@ -4,10 +4,14 @@ import { Suspense } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
+import { Clock } from 'lucide-react';
+
 import { useFetchSearchResults } from '@/api/hooks/useSearch';
 import EmptyAlert from '@/components/common/EmptyAlert';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import ContentCard from '@/components/items/ContentCard';
+import PreviewScrapButton from '@/components/PreviewScrapButton';
+import { Badge } from '@/components/ui/badge';
 
 function SearchResultsList() {
   const searchParams = useSearchParams();
@@ -43,8 +47,20 @@ function SearchResultsList() {
                   ? `/learn/reading/detail/${result.contentId}`
                   : `/learn/listening/detail/${result.contentId}`
               }
+              topRightButton={
+                <PreviewScrapButton contentId={result.contentId} />
+              }
+              bottomRightButton={
+                result.contentType !== 'READING' && (
+                  <Badge className="flex items-center gap-1 bg-gray-200 bg-opacity-70">
+                    <Clock className="w-3 h-3" color="purple" />
+                    <span className="text-violet-800">24:00</span>
+                  </Badge>
+                )
+              }
               coverImageUrl={result.thumbnailUrl}
-              category={result.category}
+              leftBadge={<Badge>{result.category}</Badge>}
+              rightBadge={`조회수 ${result.hits}`}
               title={result.title}
               description={result.preScripts}
             />
