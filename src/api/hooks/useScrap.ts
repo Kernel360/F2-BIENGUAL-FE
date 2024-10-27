@@ -38,7 +38,7 @@ export const useCreateScrap = (contentId: number) => {
   return useMutation<CreateScrapResponse, Error>({
     mutationFn: () => createScrap(contentId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['scrap'] });
+      queryClient.invalidateQueries({ queryKey: ['scrap', contentId] });
     },
   });
 };
@@ -50,7 +50,7 @@ export const useDeleteScrap = (contentId: number) => {
   return useMutation<DeleteScrapResponse, Error>({
     mutationFn: () => deleteScrap(contentId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['scrap'] });
+      queryClient.invalidateQueries({ queryKey: ['scrap', contentId] });
     },
   });
 };
