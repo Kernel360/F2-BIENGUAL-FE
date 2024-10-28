@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { Clock } from 'lucide-react';
 
@@ -15,9 +15,10 @@ import { Badge } from '@/components/ui/badge';
 
 function ListeningPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  //    TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
+  // const searchParams = useSearchParams();
 
-  const currentPage = Number(searchParams.get('page') || 0);
+  // const currentPage = Number(searchParams.get('page') || 0);
 
   const {
     data: listeningContents,
