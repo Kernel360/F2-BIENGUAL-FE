@@ -61,13 +61,22 @@ export const fetchContentDetail = async (
 };
 
 export const fetchPaginatedReadingPreview = async (
-  page: number = 0,
-  size: number = 5,
-  sort: string = 'createdAt',
-  direction: string = 'DESC',
+  page?: number,
+  size?: number,
+  sort?: string,
+  direction?: string,
+  categoryId?: number | undefined,
 ): Promise<ContentsResponse> => {
+  const queryParams = new URLSearchParams();
+  if (sort) queryParams.append('sort', sort);
+  if (direction) queryParams.append('direction', direction);
+  if (page) queryParams.append('page', page.toString());
+  if (size) queryParams.append('size', size.toString());
+  if (categoryId !== undefined)
+    queryParams.append('categoryId', categoryId.toString());
   const response = await fetch(
-    `${BASE_URL}/view/reading?sort=${sort}&direction=${direction}&page=${page}&size=${size}`,
+    // TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
+    `${BASE_URL}/preview/paginated-reading?${queryParams.toString()}`,
     {
       method: 'GET',
       headers: {
@@ -85,13 +94,24 @@ export const fetchPaginatedReadingPreview = async (
 };
 
 export const fetchPaginatedListeningPreview = async (
-  page: number = 0,
-  size: number = 5,
-  sort: string = 'createdAt',
-  direction: string = 'DESC',
+  page?: number,
+  size?: number,
+  sort?: string,
+  direction?: string,
+  categoryId?: number | undefined,
 ): Promise<ContentsResponse> => {
+  const queryParams = new URLSearchParams();
+  if (sort) queryParams.append('sort', sort);
+  if (direction) queryParams.append('direction', direction);
+  if (page) queryParams.append('page', page.toString());
+  if (size) queryParams.append('size', size.toString());
+  if (categoryId !== undefined)
+    queryParams.append('categoryId', categoryId.toString());
+
   const response = await fetch(
-    `${BASE_URL}/view/listening?sort=${sort}&direction=${direction}&page=${page}&size=${size}`,
+    // TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
+    `${BASE_URL}/preview/paginated-listening?${queryParams.toString()}`,
+
     {
       method: 'GET',
       headers: {

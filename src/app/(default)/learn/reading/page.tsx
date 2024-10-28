@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { usePaginatedReadingPreview } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
@@ -11,17 +11,19 @@ import ListItem from '@/components/items/ListItem';
 
 export default function ReadingPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  //    TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
 
-  const currentPage = Number(searchParams.get('page') || 0);
+  // const searchParams = useSearchParams();
+
+  // const currentPage = Number(searchParams.get('page') || 0);
 
   const {
     data: readingContents,
     isLoading,
     isError,
     error,
-    // TODO: 백엔드에 page 1부터 시작하게 변경 요청
-  } = usePaginatedReadingPreview(currentPage - 1);
+  } = usePaginatedReadingPreview();
+  //    TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
 
   if (isLoading) {
     return <LoadingSpinner />;
