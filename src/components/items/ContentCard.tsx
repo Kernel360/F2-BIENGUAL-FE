@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-import Image from 'next/image';
 import Link, { LinkProps } from 'next/link';
 
 import { Card, CardContent } from '@/components/ui/card';
@@ -37,13 +36,7 @@ export default function ContentCard({
                `}
           >
             <div className="absolute top-3 right-3 z-10">{topRightButton}</div>
-            <Image
-              src={coverImageUrl}
-              alt={title}
-              fill
-              sizes="100%"
-              className="object-cover"
-            />
+            <img src={coverImageUrl} alt={title} className="object-cover" />
             <div className="absolute bottom-3 right-3 z-10">
               {bottomRightButton}
             </div>
