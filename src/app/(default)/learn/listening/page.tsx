@@ -24,7 +24,8 @@ function ListeningPage() {
     isLoading,
     isError,
     error,
-  } = usePaginatedListeningPreview(currentPage - 1);
+  } = usePaginatedListeningPreview();
+  //    TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
 
   if (isLoading) {
     return <LoadingSpinner />;

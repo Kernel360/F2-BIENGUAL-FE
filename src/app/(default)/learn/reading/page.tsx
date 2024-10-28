@@ -21,7 +21,8 @@ export default function ReadingPage() {
     isError,
     error,
     // TODO: 백엔드에 page 1부터 시작하게 변경 요청
-  } = usePaginatedReadingPreview(currentPage - 1);
+  } = usePaginatedReadingPreview();
+  //    TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
 
   if (isLoading) {
     return <LoadingSpinner />;
