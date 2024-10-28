@@ -1,0 +1,143 @@
+{
+  "2024": {
+    "9": [
+      {
+        "date": "2024-09-02",
+        "activities": [
+          {
+            "description": "미션 완료",
+            "points": 30
+          }
+        ]
+      },
+      {
+        "date": "2024-09-05",
+        "activities": [
+          {
+            "description": "퀴즈 풀기",
+            "points": 15
+          },
+          {
+            "description": "콘텐츠 접근",
+            "points": -20
+          }
+        ]
+      },
+      {
+        "date": "2024-09-15",
+        "activities": [
+          {
+            "description": "퀴즈 접근",
+            "points": -10
+          }
+        ]
+      },
+      {
+        "date": "2024-09-22",
+        "activities": [
+          {
+            "description": "퀴즈 풀기",
+            "points": 15
+          }
+        ]
+      }
+    ],
+    "10": [
+      {
+        "date": "2024-10-01",
+        "activities": [
+          {
+            "description": "미션 완료",
+            "points": 30
+          }
+        ]
+      },
+      {
+        "date": "2024-10-03",
+        "activities": [
+          {
+            "description": "콘텐츠 접근",
+            "points": -20
+          }
+        ]
+      },
+      {
+        "date": "2024-10-10",
+        "activities": [
+          {
+            "description": "퀴즈 접근",
+            "points": -10
+          }
+        ]
+      },
+      {
+        "date": "2024-10-12",
+        "activities": [
+          {
+            "description": "퀴즈 풀기",
+            "points": 15
+          }
+        ]
+      },
+      {
+        "date": "2024-10-20",
+        "activities": [
+          {
+            "description": "미션 완료",
+            "points": 30
+          }
+        ]
+      }
+    ],
+    "11": [
+      {
+        "date": "2024-11-05",
+        "activities": [
+          {
+            "description": "미션 완료",
+            "points": 30
+          }
+        ]
+      },
+      {
+        "date": "2024-11-08",
+        "activities": [
+          {
+            "description": "퀴즈 풀기",
+            "points": 15
+          },
+          {
+            "description": "콘텐츠 접근",
+            "points": -20
+          },
+          {
+            "description": "퀴즈 접근",
+            "points": -10
+          },
+          {
+            "description": "퀴즈 풀기",
+            "points": 15
+          }
+        ]
+      },
+      {
+        "date": "2024-11-12",
+        "activities": [
+          {
+            "description": "콘텐츠 접근",
+            "points": -20
+          }
+        ]
+      },
+      {
+        "date": "2024-11-25",
+        "activities": [
+          {
+            "description": "퀴즈 풀기",
+            "points": 15
+          }
+        ]
+      }
+    ]
+  }
+}
