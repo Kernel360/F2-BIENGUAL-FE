@@ -10,6 +10,7 @@ import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';
 import MemoInput from '@/components/common/MemoInput';
 import Tooltip from '@/components/common/Tooltip';
 import useHandleBookmark from '@/hooks/useHandleBookmark';
+import { cn } from '@/lib/utils';
 import { Script } from '@/types/ContentDetail';
 
 import Modal from '../common/Modal';
@@ -116,9 +117,12 @@ export default function ReadingScriptItem({
         onClick={() => setIsSelected(true)}
         role="button"
         tabIndex={0}
-        className={`w-fit cursor-pointer px-2 transition-colors duration-300 ${
-          bookmarkMemo ? 'bg-yellow-200' : ''
-        } ${isSelected ? 'bg-gray-200' : ''} ${!bookmarkMemo && 'hover:bg-gray-200'}`}
+        className={cn(
+          `w-fit cursor-pointer px-2 transition-colors duration-300`,
+          bookmarkMemo && 'bg-yellow-200',
+          isSelected && 'bg-gray-200',
+          !bookmarkMemo && 'hover:bg-gray-200',
+        )}
       >
         <p className="font-semibold relative">
           {script.enScript}
