@@ -10,6 +10,7 @@ import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';
 import MemoInput from '@/components/common/MemoInput';
 import Tooltip from '@/components/common/Tooltip';
 import useHandleBookmark from '@/hooks/useHandleBookmark';
+import { cn } from '@/lib/utils';
 import { Script } from '@/types/ContentDetail';
 
 import Modal from '../common/Modal';
@@ -41,8 +42,14 @@ export default function ReadingScriptItem({
     (item) => item.sentenceIndex === index,
   );
 
-  const { addBookmark, removeBookmarkMemo, addMemo, updateMemo } =
-    useHandleBookmark(contentId);
+  const {
+    isAddBookmarkPending,
+    addBookmark,
+    isRemoveBookmarkMemoPending,
+    removeBookmarkMemo,
+    addMemo,
+    updateMemo,
+  } = useHandleBookmark(contentId);
 
   const handleAddBookmark = () => {
     if (!bookmarkMemo) {
@@ -58,15 +65,15 @@ export default function ReadingScriptItem({
 
   const confirmRemoveBookmark = () => {
     if (bookmarkMemo) {
+      setShowDeleteModal(false);
+
       removeBookmarkMemo(bookmarkMemo.bookmarkId, {
         onSuccess: () => {
           refetchBookmarks();
-          setShowDeleteModal(false);
           setIsSelected(false);
         },
         onError: (error: unknown) => {
           console.error('북마크 삭제 중 오류 발생:', error);
-          setShowDeleteModal(false);
         },
       });
     }
@@ -116,9 +123,14 @@ export default function ReadingScriptItem({
         onClick={() => setIsSelected(true)}
         role="button"
         tabIndex={0}
-        className={`w-fit cursor-pointer px-2 transition-colors duration-300 ${
-          bookmarkMemo ? 'bg-yellow-200' : ''
-        } ${isSelected ? 'bg-gray-200' : ''} ${!bookmarkMemo && 'hover:bg-gray-200'}`}
+        className={cn(
+          `w-fit cursor-pointer px-2 transition-colors duration-300`,
+          (isAddBookmarkPending || bookmarkMemo) &&
+            !isRemoveBookmarkMemoPending &&
+            'bg-yellow-200',
+          // isSelected && 'bg-gray-200',
+          !bookmarkMemo && 'hover:bg-gray-200',
+        )}
       >
         <p className="font-semibold relative">
           {script.enScript}
