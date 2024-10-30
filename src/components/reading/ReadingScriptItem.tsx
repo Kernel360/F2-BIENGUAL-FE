@@ -42,8 +42,14 @@ export default function ReadingScriptItem({
     (item) => item.sentenceIndex === index,
   );
 
-  const { addBookmark, removeBookmarkMemo, addMemo, updateMemo } =
-    useHandleBookmark(contentId);
+  const {
+    isAddBookmarkPending,
+    addBookmark,
+    isRemoveBookmarkMemoPending,
+    removeBookmarkMemo,
+    addMemo,
+    updateMemo,
+  } = useHandleBookmark(contentId);
 
   const handleAddBookmark = () => {
     if (!bookmarkMemo) {
@@ -59,15 +65,15 @@ export default function ReadingScriptItem({
 
   const confirmRemoveBookmark = () => {
     if (bookmarkMemo) {
+      setShowDeleteModal(false);
+
       removeBookmarkMemo(bookmarkMemo.bookmarkId, {
         onSuccess: () => {
           refetchBookmarks();
-          setShowDeleteModal(false);
           setIsSelected(false);
         },
         onError: (error: unknown) => {
           console.error('북마크 삭제 중 오류 발생:', error);
-          setShowDeleteModal(false);
         },
       });
     }
@@ -119,8 +125,10 @@ export default function ReadingScriptItem({
         tabIndex={0}
         className={cn(
           `w-fit cursor-pointer px-2 transition-colors duration-300`,
-          bookmarkMemo && 'bg-yellow-200',
-          isSelected && 'bg-gray-200',
+          (isAddBookmarkPending || bookmarkMemo) &&
+            !isRemoveBookmarkMemoPending &&
+            'bg-yellow-200',
+          // isSelected && 'bg-gray-200',
           !bookmarkMemo && 'hover:bg-gray-200',
         )}
       >

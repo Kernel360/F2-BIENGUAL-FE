@@ -41,8 +41,12 @@ export const useCreateBookmark = (contentId: number) => {
     { sentenceIndex: number; wordIndex?: number; description?: string }
   >({
     mutationFn: (newBookmark) => createBookmark(contentId, newBookmark),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookmarks', contentId] });
+    // TODO(@godhyzzang) : onError처리
+    onSettled: async () => {
+      const result = await queryClient.invalidateQueries({
+        queryKey: ['bookmarks', contentId],
+      });
+      return result;
     },
   });
 };
@@ -70,9 +74,12 @@ export const useDeleteBookmark = (contentId: number) => {
 
   return useMutation<void, Error, number>({
     mutationFn: (bookmarkId) => deleteBookmark(bookmarkId),
-    onSuccess: () => {
-      // 북마크 삭제 후 북마크 목록을 갱신
-      queryClient.invalidateQueries({ queryKey: ['bookmarks', contentId] });
+    // TODO(@godhyzzang) : onError처리
+    onSettled: async () => {
+      const result = await queryClient.invalidateQueries({
+        queryKey: ['bookmarks', contentId],
+      });
+      return result;
     },
   });
 };

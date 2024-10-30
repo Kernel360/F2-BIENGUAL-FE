@@ -91,5 +91,12 @@ export default function useHandleBookmark(contentId: number) {
     );
   };
 
-  return { addBookmark, removeBookmarkMemo, addMemo, updateMemo };
+  return {
+    isAddBookmarkPending: createBookmarkMutation.isPending,
+    addBookmark,
+    isRemoveBookmarkMemoPending: deleteBookmarkMutation.isPending,
+    removeBookmarkMemo,
+    addMemo,
+    updateMemo,
+  };
 }
