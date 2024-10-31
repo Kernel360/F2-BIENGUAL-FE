@@ -3,19 +3,22 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 
-import { Subtitle, LanguageCode } from '@/types/Scripts';
+import { Script } from '@/types/ContentDetail';
+import { LanguageCode } from '@/types/Scripts';
 
 export function TextDisplay({
   subtitle,
   selectedLanguages,
   onSelectWord,
 }: {
-  subtitle: Subtitle;
+  subtitle: Script;
   selectedLanguages: LanguageCode[]; // 선택된 언어 배열
-  onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
+  onSelectWord: (word: string, subtitle: Script, index: number) => void;
 }) {
   return (
-    <div className="flex flex-col gap-4">
+    <div
+      className={`flex flex-col gap-4 ${subtitle.bookmarkId && 'bg-yellow-200'}`}
+    >
       {selectedLanguages.map((language) => (
         <p
           key={language}

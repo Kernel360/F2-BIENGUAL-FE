@@ -5,9 +5,9 @@ export type Script = {
   enScript: string;
   koScript: string;
 
-  bookmarkId: number | null;
+  bookmarkId: number;
   isHighlighted: boolean;
-  description: string | null;
+  description: string;
 };
 
 export type ContentDetail = {

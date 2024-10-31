@@ -17,7 +17,6 @@ export interface ReactScriptPlayerProps {
   currentTime: number;
   onClickSubtitle: (subtitle: Subtitle, index: number) => void;
   onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
-  bookmarkedIndices: number[];
 }
 
 export function ReactScriptPlayer({
@@ -28,7 +27,6 @@ export function ReactScriptPlayer({
   currentTime,
   onClickSubtitle,
   onSelectWord,
-  bookmarkedIndices,
 }: ReactScriptPlayerProps) {
   const currentSubtitleIndex =
     findCurrentSubtitleIndex(subtitles, currentTime) ?? 0;
@@ -46,7 +44,6 @@ export function ReactScriptPlayer({
             selectedLanguages={selectedLanguages}
             seekTo={seekTo}
             onSelectWord={onSelectWord}
-            bookmarkedIndices={bookmarkedIndices}
           />
         )}
         {mode === 'block' && (
@@ -57,7 +54,6 @@ export function ReactScriptPlayer({
             seekTo={seekTo}
             onClickSubtitle={onClickSubtitle}
             onSelectWord={onSelectWord}
-            bookmarkedIndices={bookmarkedIndices}
           />
         )}
       </div>
