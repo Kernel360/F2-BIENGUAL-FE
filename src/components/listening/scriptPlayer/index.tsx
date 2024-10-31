@@ -32,8 +32,8 @@ export function ReactScriptPlayer({
     findCurrentSubtitleIndex(subtitles, currentTime) ?? 0;
 
   return (
-    <div className="flex flex-col h-[16rem] p-6 border-2 border-violet-100 rounded-xl overflow-y-auto">
-      <p className="text-xl font-bold">Transcript</p>
+    <div className="flex flex-col border-2 border-violet-100 rounded-xl ">
+      <p className="p-6 text-xl font-bold">Transcript</p>
 
       <div>
         {/* TODO(@smosco): line, block 뷰 props가 거의 동일하기 때문에 공통 props로 추출해서 관리 */}

@@ -6,6 +6,7 @@
 import React, { useRef, useEffect } from 'react';
 
 import { convertTime } from '@/lib/convertTime';
+import { cn } from '@/lib/utils';
 import { Script } from '@/types/ContentDetail';
 import { LanguageCode } from '@/types/Scripts';
 
@@ -33,8 +34,16 @@ export function BlockView({
   useEffect(() => {
     if (containerRef.current) {
       if (currentSubtitleIndex < containerRef.current.children.length - 1) {
-        containerRef.current.children[currentSubtitleIndex].scrollIntoView({
-          block: 'center',
+        const container = containerRef.current;
+        const target = container.children[currentSubtitleIndex];
+
+        // 컨테이너의 상단에서부터 타겟까지의 거리 계산
+        const targetTop = target.getBoundingClientRect().top;
+        const containerTop = container.getBoundingClientRect().top;
+        const relativeTop = targetTop - containerTop;
+
+        container.scrollBy({
+          top: relativeTop - 20,
           behavior: 'smooth',
         });
       }
@@ -42,10 +51,16 @@ export function BlockView({
   }, [currentSubtitleIndex]);
 
   return (
-    <div ref={containerRef} className="flex flex-col">
+    <div
+      ref={containerRef}
+      className="h-[16rem] p-6 flex flex-col overflow-y-scroll"
+    >
       {subtitles.map((subtitle, index) => (
         <div
-          className="p-4 rounded-lg transition-colors duration-300 ease-in-out"
+          className={cn(
+            'p-4 rounded-lg transition-colors duration-300 ease-in-out ',
+            index === currentSubtitleIndex ? 'bg-gray-200' : 'bg-transparent',
+          )}
           // eslint-disable-next-line react/no-array-index-key
           key={index}
           onClick={() => {
