@@ -6,18 +6,18 @@
 import React, { useRef, useEffect } from 'react';
 
 import { convertTime } from '@/lib/convertTime';
-import { LanguageCode, Subtitle } from '@/types/Scripts';
+import { Script } from '@/types/ContentDetail';
+import { LanguageCode } from '@/types/Scripts';
 
 import { TextDisplay } from './TextDisplay';
 
 interface BlockViewProps {
-  subtitles: Subtitle[];
+  subtitles: Script[];
   currentSubtitleIndex: number;
   selectedLanguages: LanguageCode[]; // 선택된 언어 배열
   seekTo: (timeInSeconds: number) => void;
-  onClickSubtitle: (subtitle: Subtitle, index: number) => void;
-  onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
-  bookmarkedIndices: number[];
+  onClickSubtitle: (subtitle: Script, index: number) => void;
+  onSelectWord: (word: string, subtitle: Script, index: number) => void;
 }
 
 export function BlockView({
@@ -27,13 +27,11 @@ export function BlockView({
   seekTo,
   onClickSubtitle,
   onSelectWord,
-  bookmarkedIndices,
 }: BlockViewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (containerRef.current) {
-      // console.log(containerRef.current);
       if (currentSubtitleIndex < containerRef.current.children.length - 1) {
         containerRef.current.children[currentSubtitleIndex].scrollIntoView({
           block: 'center',
@@ -47,14 +45,7 @@ export function BlockView({
     <div ref={containerRef} className="flex flex-col">
       {subtitles.map((subtitle, index) => (
         <div
-          className={`p-4 rounded-lg transition-colors duration-300 ease-in-out ${
-            // eslint-disable-next-line no-nested-ternary
-            bookmarkedIndices.includes(index)
-              ? 'bg-yellow-200' // 북마크된 자막 하이라이트
-              : index === currentSubtitleIndex
-                ? 'bg-violet-50'
-                : ''
-          }`}
+          className="p-4 rounded-lg transition-colors duration-300 ease-in-out"
           // eslint-disable-next-line react/no-array-index-key
           key={index}
           onClick={() => {

@@ -10,18 +10,15 @@ import ListeningMemoForm from '@/components/listening/ListeningMemoForm';
 import { Button } from '@/components/ui/button';
 import useHandleBookmark from '@/hooks/useHandleBookmark';
 import { convertTime } from '@/lib/convertTime';
-import { BookmarkByContentId } from '@/types/Bookmark';
-import { Subtitle } from '@/types/Scripts';
+import { Script } from '@/types/ContentDetail';
 
 interface BookmarkMemoItemProps {
-  bookmark: BookmarkByContentId;
-  subtitle: Subtitle | undefined;
+  bookmark: Script;
   seekTo: (timeInSeconds: number) => void;
 }
 
 export default function BookmarkMemoItem({
   bookmark,
-  subtitle,
   seekTo,
 }: BookmarkMemoItemProps) {
   const params = useParams();
@@ -73,12 +70,12 @@ export default function BookmarkMemoItem({
             variant="secondary"
             className="rounded-full h-6 px-3 bg-violet-100 text-violet-700 hover:bg-violet-200"
             onClick={() =>
-              seekTo((subtitle?.startTimeInSecond as number) + 0.1)
+              seekTo((bookmark?.startTimeInSecond as number) + 0.1)
             }
           >
-            {convertTime(subtitle?.startTimeInSecond as number)}
+            {convertTime(bookmark?.startTimeInSecond as number)}
           </Button>
-          <p className="mt-2 text-[14px] text-gray-600">{subtitle?.enScript}</p>
+          <p className="mt-2 text-[14px] text-gray-600">{bookmark?.enScript}</p>
         </div>
         <Button variant="ghost" size="icon" onClick={handleDeleteBookmark}>
           <Trash2 className="h-4 w-4" />
