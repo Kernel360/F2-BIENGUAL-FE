@@ -4,6 +4,10 @@ export type Script = {
   durationInSecond: number;
   enScript: string;
   koScript: string;
+
+  bookmarkId: number;
+  isHighlighted: boolean;
+  description: string;
 };
 
 export type ContentDetail = {

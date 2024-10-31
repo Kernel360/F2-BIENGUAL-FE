@@ -1,5 +1,6 @@
+import { useQueryClient } from '@tanstack/react-query';
+
 import {
-  useFetchBookmarksByContendId,
   useCreateBookmark,
   useDeleteBookmark,
   useUpdateBookmark,
@@ -8,36 +9,36 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function useHandleBookmark(contentId: number) {
   const { toast } = useToast();
-  const { data: bookmarkData, refetch: refetchBookmarks } =
-    useFetchBookmarksByContendId(contentId);
+  const queryClient = useQueryClient();
+
   const createBookmarkMutation = useCreateBookmark(contentId);
   const deleteBookmarkMutation = useDeleteBookmark(contentId);
   const updateBookmarkMutation = useUpdateBookmark(contentId);
 
+  const refetchContentDetail = () => {
+    queryClient.invalidateQueries({ queryKey: ['contentDetail', contentId] });
+  };
+
+  // const { data: bookmarkData, refetch: refetchBookmarks } =
+  //   useFetchBookmarksByContendId(contentId);
+
   const addBookmark = (targetSubtitleIndex: number) => {
     if (targetSubtitleIndex !== null && targetSubtitleIndex !== undefined) {
-      if (
-        bookmarkData?.data.bookmarkList.find(
-          (bookmark) => bookmark.sentenceIndex === targetSubtitleIndex,
-        )
-      ) {
-        toast({
-          title: '이미 해당 시간에 북마크가 존재합니다.',
-          duration: 1000,
-        });
-        return;
-      }
-
       createBookmarkMutation.mutate(
         {
           sentenceIndex: targetSubtitleIndex,
         },
         {
           onSuccess: () => {
-            refetchBookmarks();
+            refetchContentDetail(); // bookmark 추가 후 전체 디테일 데이터 refetch
           },
         },
       );
+    } else {
+      toast({
+        title: '이미 해당 시간에 북마크가 존재합니다.',
+        duration: 1000,
+      });
     }
   };
 
@@ -53,14 +54,14 @@ export default function useHandleBookmark(contentId: number) {
   ) => {
     deleteBookmarkMutation.mutate(bookmarkIdToDelete, {
       onSuccess: () => {
-        refetchBookmarks(); // 북마크 삭제 후 데이터 갱신
+        refetchContentDetail(); // bookmark 삭제 후 전체 디테일 데이터 refetch
         if (onSuccess) {
-          onSuccess(); // 성공 시 호출될 콜백 함수
+          onSuccess();
         }
       },
       onError: (error) => {
         if (onError) {
-          onError(error); // 에러 발생 시 호출될 콜백 함수
+          onError(error);
         }
       },
     });
@@ -74,7 +75,7 @@ export default function useHandleBookmark(contentId: number) {
       },
       {
         onSuccess: () => {
-          refetchBookmarks(); // 메모 생성 후 목록 갱신
+          refetchContentDetail(); // memo 추가 후 전체 디테일 데이터 refetch
         },
       },
     );
@@ -85,7 +86,7 @@ export default function useHandleBookmark(contentId: number) {
       { bookmarkId, description },
       {
         onSuccess: () => {
-          refetchBookmarks(); // 메모 수정 후 목록 갱신
+          refetchContentDetail(); // memo 업데이트 후 전체 디테일 데이터 refetch
         },
       },
     );
