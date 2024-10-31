@@ -2,7 +2,7 @@ import React, { SetStateAction, useState } from 'react';
 
 import { useParams } from 'next/navigation';
 
-import { BookmarkPlus, MessageSquarePlus } from 'lucide-react';
+import { BookmarkPlus } from 'lucide-react';
 
 import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
@@ -54,7 +54,7 @@ export default function BookmarkMemoPanel({
   const currentSubtitleIndex =
     findCurrentSubtitleIndex(scriptsData, currentTime) ?? 0;
 
-  const { addBookmark, addMemo } = useHandleBookmark(contentId);
+  const { addMemo } = useHandleBookmark(contentId);
 
   const handleSaveNewNote = () => {
     if (selectedSentenceIndex !== null) {
@@ -67,15 +67,6 @@ export default function BookmarkMemoPanel({
   const handleCancelNewNote = () => {
     setIsAddingNote(false);
     setIsPlaying(true);
-  };
-
-  const handleBookmark = () => {
-    // 로그인 권한 없으면 로그인 모달 띄우기
-    if (!isLogin) {
-      setShowLoginModal(true);
-      return;
-    }
-    addBookmark(currentSubtitleIndex);
   };
 
   const handleMemo = () => {
@@ -105,10 +96,7 @@ export default function BookmarkMemoPanel({
       setIsPlaying(false);
     }
   };
-  // thorottle 적용
-  const throttledHandleBookmark = useThrottling({
-    buttonClicked: handleBookmark,
-  });
+
   const throttledHandleMemo = useThrottling({
     buttonClicked: handleMemo,
   });
@@ -168,16 +156,10 @@ export default function BookmarkMemoPanel({
           </ScrollArea>
         </CardContent>
 
-        <div className="flex flex-col gap-2 justify-between items-center lg:flex-row">
-          <Button onClick={throttledHandleBookmark} className="w-full ">
-            <BookmarkPlus size={20} className="mr-2" />
-            북마크
-          </Button>
-          <Button onClick={throttledHandleMemo} className="w-full">
-            <MessageSquarePlus size={20} className="mr-2" />
-            메모 추가
-          </Button>
-        </div>
+        <Button onClick={throttledHandleMemo} className="w-full">
+          <BookmarkPlus size={20} className="mr-2" />
+          북마크 메모 추가
+        </Button>
       </Card>
     </div>
   );
