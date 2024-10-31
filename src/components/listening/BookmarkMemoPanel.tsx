@@ -2,9 +2,8 @@ import React, { SetStateAction, useState } from 'react';
 
 import { useParams } from 'next/navigation';
 
-import { BookmarkPlus, MessageSquarePlus } from 'lucide-react';
+import { BookmarkPlus } from 'lucide-react';
 
-import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import EmptyAlert from '@/components/common/EmptyAlert';
 import BookmarkMemoItem from '@/components/listening/BookmarkMemoItem';
@@ -20,6 +19,7 @@ import useThrottling from '@/lib/useThrottling';
 import { Script } from '@/types/ContentDetail';
 
 interface BookmarkMemoPanelProps {
+  bookmarkList: Script[];
   scriptsData: Script[] | undefined;
   currentTime: number;
   seekTo: (timeInSeconds: number) => void;
@@ -28,6 +28,7 @@ interface BookmarkMemoPanelProps {
 }
 
 export default function BookmarkMemoPanel({
+  bookmarkList,
   scriptsData,
   currentTime,
   seekTo,
@@ -39,8 +40,6 @@ export default function BookmarkMemoPanel({
 
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
-
-  const { data: bookmarkData } = useFetchBookmarksByContendId(contentId);
 
   const [selectedSentenceIndex, setSelectedSentenceIndex] = useState<
     number | null
@@ -54,7 +53,7 @@ export default function BookmarkMemoPanel({
   const currentSubtitleIndex =
     findCurrentSubtitleIndex(scriptsData, currentTime) ?? 0;
 
-  const { addBookmark, addMemo } = useHandleBookmark(contentId);
+  const { addMemo } = useHandleBookmark(contentId);
 
   const handleSaveNewNote = () => {
     if (selectedSentenceIndex !== null) {
@@ -69,15 +68,6 @@ export default function BookmarkMemoPanel({
     setIsPlaying(true);
   };
 
-  const handleBookmark = () => {
-    // 로그인 권한 없으면 로그인 모달 띄우기
-    if (!isLogin) {
-      setShowLoginModal(true);
-      return;
-    }
-    addBookmark(currentSubtitleIndex);
-  };
-
   const handleMemo = () => {
     // 로그인 권한 없으면 로그인 모달 띄우기
     if (!isLogin) {
@@ -86,8 +76,10 @@ export default function BookmarkMemoPanel({
     }
     // 로그인 권한 있을때만 아래 실행
     if (
-      bookmarkData?.data.bookmarkList.some(
-        (bookmark) => bookmark.sentenceIndex === currentSubtitleIndex,
+      bookmarkList.some(
+        (bookmark) =>
+          bookmark.startTimeInSecond ===
+          scriptsData?.[currentSubtitleIndex]?.startTimeInSecond,
       )
     ) {
       toast({
@@ -105,10 +97,7 @@ export default function BookmarkMemoPanel({
       setIsPlaying(false);
     }
   };
-  // thorottle 적용
-  const throttledHandleBookmark = useThrottling({
-    buttonClicked: handleBookmark,
-  });
+
   const throttledHandleMemo = useThrottling({
     buttonClicked: handleMemo,
   });
@@ -150,14 +139,12 @@ export default function BookmarkMemoPanel({
             )}
 
             {/* 북마크, 메모 목록 */}
-            {bookmarkData && bookmarkData.data.bookmarkList.length > 0
-              ? bookmarkData.data.bookmarkList.map((bookmark) => {
-                  const subtitle = scriptsData?.[bookmark.sentenceIndex];
+            {bookmarkList.length > 0
+              ? bookmarkList.map((bookmark) => {
                   return (
                     <BookmarkMemoItem
                       key={bookmark.bookmarkId}
                       bookmark={bookmark}
-                      subtitle={subtitle}
                       seekTo={seekTo}
                     />
                   );
@@ -168,16 +155,10 @@ export default function BookmarkMemoPanel({
           </ScrollArea>
         </CardContent>
 
-        <div className="flex flex-col gap-2 justify-between items-center lg:flex-row">
-          <Button onClick={throttledHandleBookmark} className="w-full ">
-            <BookmarkPlus size={20} className="mr-2" />
-            북마크
-          </Button>
-          <Button onClick={throttledHandleMemo} className="w-full">
-            <MessageSquarePlus size={20} className="mr-2" />
-            메모 추가
-          </Button>
-        </div>
+        <Button onClick={throttledHandleMemo} className="w-full">
+          <BookmarkPlus size={20} className="mr-2" />
+          북마크 메모 추가
+        </Button>
       </Card>
     </div>
   );

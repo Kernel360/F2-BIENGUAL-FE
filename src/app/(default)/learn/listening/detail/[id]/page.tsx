@@ -6,7 +6,6 @@ import { useParams } from 'next/navigation';
 
 import ReactPlayer from 'react-player';
 
-import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import {
@@ -65,8 +64,6 @@ export default function DetailListeningPage() {
   const [selectedLanguages, setSelectedLanguages] =
     useState<LanguageCode[]>(availableLanguages);
 
-  const { data: bookmarkData } = useFetchBookmarksByContendId(contentId);
-
   const [isPlaying, setIsPlaying] = useState(true);
 
   const seekTo = (timeInSeconds: number) => {
@@ -121,6 +118,10 @@ export default function DetailListeningPage() {
     );
   }
 
+  const bookmarkList = ListeningDetailData.data.scriptList.filter(
+    (item) => item.bookmarkId,
+  );
+
   return (
     <div className="max-w-[830px] flex flex-col ">
       <div>
@@ -164,17 +165,11 @@ export default function DetailListeningPage() {
         onSelectWord={(word, subtitle, index) => {
           console.log(word, subtitle, index);
         }}
-        bookmarkedIndices={
-          bookmarkData && bookmarkData?.data.bookmarkList.length > 0
-            ? bookmarkData.data.bookmarkList.map(
-                (bookmark) => bookmark.sentenceIndex,
-              )
-            : []
-        }
       />
 
       {/* 북마크 메모 패널 */}
       <BookmarkMemoPanel
+        bookmarkList={bookmarkList}
         seekTo={seekTo}
         scriptsData={ListeningDetailData?.data.scriptList}
         currentTime={currentTime}

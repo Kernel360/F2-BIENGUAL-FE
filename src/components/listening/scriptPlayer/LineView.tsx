@@ -6,17 +6,17 @@ import React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import useThrottling from '@/lib/useThrottling';
-import { LanguageCode, Subtitle } from '@/types/Scripts';
+import { Script } from '@/types/ContentDetail';
+import { LanguageCode } from '@/types/Scripts';
 
 import { TextDisplay } from './TextDisplay';
 
 interface LineViewProps {
-  subtitles: Subtitle[];
+  subtitles: Script[];
   selectedLanguages: LanguageCode[];
   currentSubtitleIndex: number;
   seekTo: (timeInSeconds: number) => void;
-  onSelectWord: (word: string, subtitle: Subtitle, index: number) => void;
-  bookmarkedIndices: number[];
+  onSelectWord: (word: string, subtitle: Script, index: number) => void;
 }
 
 export function LineView({
@@ -25,7 +25,6 @@ export function LineView({
   currentSubtitleIndex,
   seekTo,
   onSelectWord,
-  bookmarkedIndices,
 }: LineViewProps) {
   const totalSubtitles = subtitles.length;
 
@@ -57,23 +56,14 @@ export function LineView({
           <ChevronRight className="stroke-violet-400" />
         </button>
       </div>
-      {/* 비디오가 첫 로딩 후 재생되지 않았을 때만 준비 메세지 보여줌 */}
 
       {subtitles[currentSubtitleIndex] && (
         // TODO: 사용자가 자막이 언제 넘어갈지 알 수 있도록 progressbar 추가
-        <div
-          className={`transition-colors duration-300 ${
-            bookmarkedIndices.includes(currentSubtitleIndex)
-              ? 'bg-yellow-200' // 북마크된 자막 하이라이트
-              : ''
-          }`}
-        >
-          <TextDisplay
-            subtitle={subtitles[currentSubtitleIndex]}
-            selectedLanguages={selectedLanguages}
-            onSelectWord={onSelectWord}
-          />
-        </div>
+        <TextDisplay
+          subtitle={subtitles[currentSubtitleIndex]}
+          selectedLanguages={selectedLanguages}
+          onSelectWord={onSelectWord}
+        />
       )}
     </div>
   );

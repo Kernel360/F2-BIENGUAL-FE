@@ -6,7 +6,6 @@ import { useParams } from 'next/navigation';
 
 import { MessageCircleMoreIcon } from 'lucide-react';
 
-import { useFetchBookmarksByContendId } from '@/api/hooks/useBookmarks';
 import MemoInput from '@/components/common/MemoInput';
 import Tooltip from '@/components/common/Tooltip';
 import useHandleBookmark from '@/hooks/useHandleBookmark';
@@ -30,17 +29,11 @@ export default function ReadingScriptItem({
   const params = useParams();
   const contentId = Number(params.id);
 
-  const { data: bookmarkData, refetch: refetchBookmarks } =
-    useFetchBookmarksByContendId(contentId);
   const [isSelected, setIsSelected] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
-  const [memoText, setMemoText] = useState('');
+  const [memoText, setMemoText] = useState(script.description || '');
   const [showMemo, setShowMemo] = useState<boolean>(false);
-
-  const bookmarkMemo = bookmarkData?.data.bookmarkList.find(
-    (item) => item.sentenceIndex === index,
-  );
 
   const {
     isAddBookmarkPending,
@@ -52,24 +45,25 @@ export default function ReadingScriptItem({
   } = useHandleBookmark(contentId);
 
   const handleAddBookmark = () => {
-    if (!bookmarkMemo) {
+    if (!script.bookmarkId) {
       addBookmark(index);
+      // TODO(@smosco): 북마크의 팬딩 상태로는 충분하지 않음 확인
+      // eslint-disable-next-line no-param-reassign
+      // script.isHighlighted = true;
     }
   };
 
   const handleRemoveBookmark = () => {
-    if (bookmarkMemo) {
+    if (script.bookmarkId) {
       setShowDeleteModal(true);
     }
   };
 
   const confirmRemoveBookmark = () => {
-    if (bookmarkMemo) {
-      setShowDeleteModal(false);
-
-      removeBookmarkMemo(bookmarkMemo.bookmarkId, {
+    setShowDeleteModal(false);
+    if (script.bookmarkId) {
+      removeBookmarkMemo(script.bookmarkId, {
         onSuccess: () => {
-          refetchBookmarks();
           setIsSelected(false);
         },
         onError: (error: unknown) => {
@@ -83,8 +77,8 @@ export default function ReadingScriptItem({
   const handleAddMemoStart = () => {
     setShowMemo(true);
 
-    if (bookmarkMemo) {
-      setMemoText(bookmarkMemo.description || '');
+    if (script.bookmarkId) {
+      setMemoText(script.description || '');
     }
 
     // TODO(@smosco): setIsSelected가 해제되면 툴팁이 사라지지만 문장 연한 회색도 사라짐
@@ -95,11 +89,11 @@ export default function ReadingScriptItem({
     const memoTextTrimmed = memoText.trim();
 
     if (memoTextTrimmed === '') {
-      if (bookmarkMemo) {
-        removeBookmarkMemo(bookmarkMemo.bookmarkId);
+      if (script.bookmarkId) {
+        removeBookmarkMemo(script.bookmarkId);
       }
-    } else if (bookmarkMemo) {
-      updateMemo(bookmarkMemo.bookmarkId, memoTextTrimmed);
+    } else if (script.bookmarkId) {
+      updateMemo(script.bookmarkId, memoTextTrimmed);
     } else {
       addMemo(index, memoTextTrimmed);
     }
@@ -111,8 +105,8 @@ export default function ReadingScriptItem({
   const handleReadMemo = (e: React.MouseEvent<HTMLSpanElement>) => {
     e.stopPropagation();
 
-    if (bookmarkMemo) {
-      setMemoText(bookmarkMemo?.description as string);
+    if (script.description) {
+      setMemoText(script.description);
       setShowMemo(true);
     }
   };
@@ -125,11 +119,11 @@ export default function ReadingScriptItem({
         tabIndex={0}
         className={cn(
           `w-fit cursor-pointer px-2 transition-colors duration-300`,
-          (isAddBookmarkPending || bookmarkMemo) &&
+          // 팬딩 상태 또는 북마크가 활성화된 경우 노란색 적용
+          (isAddBookmarkPending || script.bookmarkId) &&
             !isRemoveBookmarkMemoPending &&
             'bg-yellow-200',
-          // isSelected && 'bg-gray-200',
-          !bookmarkMemo && 'hover:bg-gray-200',
+          !script.isHighlighted && 'hover:bg-gray-200',
         )}
       >
         <p className="font-semibold relative">
@@ -143,7 +137,7 @@ export default function ReadingScriptItem({
             />
           )}
         </p>
-        {bookmarkMemo?.description && (
+        {script.description && (
           <span
             className="cursor-pointer ml-2 inline-flex"
             onClick={handleReadMemo}
@@ -160,11 +154,10 @@ export default function ReadingScriptItem({
           onRemoveBookmark={handleRemoveBookmark}
           onAddMemoStart={handleAddMemoStart}
           onClose={() => setIsSelected(false)}
-          isBookmarked={!!bookmarkMemo}
+          isBookmarked={script.isHighlighted}
         />
       )}
 
-      {/* 삭제 확인 모달 */}
       {showDeleteModal && (
         <Modal
           isOpen={showDeleteModal}
