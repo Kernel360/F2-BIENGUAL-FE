@@ -166,7 +166,7 @@ export default function DetailListeningPage() {
           console.log(word, subtitle, index);
         }}
       />
-
+      {/* TODO(@godhyzzang) : logout상태일 때 블러처리한 커버사진 있으면 좋을듯 */}
       {/* 북마크 메모 패널 */}
       <BookmarkMemoPanel
         bookmarkList={bookmarkList}

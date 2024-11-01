@@ -1,22 +1,23 @@
 import { useState, useEffect } from 'react';
 
-import {
-  useCheckScrap,
-  useCreateScrap,
-  useDeleteScrap,
-} from '@/api/hooks/useScrap';
+import { useCreateScrap, useDeleteScrap } from '@/api/hooks/useScrap';
 
-export default function useHandleScrap(contentId: number) {
-  const [isScrapped, setIsScrapped] = useState<boolean | undefined>(undefined);
-  const { data: checkScrapData } = useCheckScrap(contentId);
+export default function useHandleScrap(
+  contentId: number,
+  isScrappedData?: boolean,
+) {
+  const [isScrapped, setIsScrapped] = useState<boolean | undefined>(
+    isScrappedData, // props로 받아온 isScrappedData를 넘겨주어서 useState로 isScrapped생성
+  );
+
   const createScrapMutation = useCreateScrap(contentId);
   const deleteScrapMutation = useDeleteScrap(contentId);
 
   useEffect(() => {
-    if (checkScrapData?.data !== undefined) {
-      setIsScrapped(checkScrapData.data);
+    if (isScrappedData !== undefined) {
+      setIsScrapped(isScrappedData);
     }
-  }, [checkScrapData]);
+  }, [isScrappedData]);
 
   const toggleScraped = () => {
     if (isScrapped) {

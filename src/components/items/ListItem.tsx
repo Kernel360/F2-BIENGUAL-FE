@@ -1,20 +1,21 @@
 import Link, { LinkProps } from 'next/link';
 
-import { Badge } from '@/components/ui/badge';
-
 interface ListItemProps extends Pick<LinkProps, 'href'> {
   coverImageUrl: string;
-  category: string;
+  topRightButton?: React.ReactNode;
+  leftBadge?: React.ReactNode;
+  rightBadge?: React.ReactNode;
   title: string;
   description: string;
   footerContent?: React.ReactNode;
 }
 
 export default function ListItem({
-  // TODO(@smosco): hits, 북마크 아이콘 추가
   href,
   coverImageUrl,
-  category,
+  topRightButton,
+  leftBadge,
+  rightBadge,
   title,
   description,
   footerContent,
@@ -23,7 +24,10 @@ export default function ListItem({
     <Link href={href}>
       <div className="pb-6 border-b border-gray-200 flex justify-between items-start">
         <div className="flex-1 pr-4">
-          <Badge>{category}</Badge>
+          <div className="flex justify-between">
+            {leftBadge}
+            {rightBadge}
+          </div>
 
           <h2 className="mt-1 text-lg font-semibold mb-2 hover:underline underline-offset-2">
             {title}
@@ -36,12 +40,13 @@ export default function ListItem({
           {footerContent && footerContent}
         </div>
 
-        <div className="flex-shrink-0 w-32">
+        <div className="relative flex-shrink-0 w-32">
           <img
             src={coverImageUrl}
             alt="scrapThumbnail"
             className="rounded-md object-cover aspect-square"
           />
+          <div className="absolute top-3 right-3 z-10">{topRightButton}</div>
         </div>
       </div>
     </Link>

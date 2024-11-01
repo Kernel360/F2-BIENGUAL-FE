@@ -15,7 +15,12 @@ export default function ItemComponent({ data }: any) {
           ? `/learn/reading/detail/${data.contentId}`
           : `/learn/listening/detail/${data.contentId}`
       }
-      topRightButton={<PreviewScrapButton contentId={data.contentId} />}
+      topRightButton={
+        <PreviewScrapButton
+          contentId={data.contentId}
+          isScrappedData={data.isScrapped}
+        />
+      }
       bottomRightButton={
         data.contentType !== 'READING' && (
           <Badge className="flex items-center gap-1 bg-gray-200 bg-opacity-70">

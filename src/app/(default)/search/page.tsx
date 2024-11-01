@@ -48,7 +48,10 @@ function SearchResultsList() {
                   : `/learn/listening/detail/${result.contentId}`
               }
               topRightButton={
-                <PreviewScrapButton contentId={result.contentId} />
+                <PreviewScrapButton
+                  contentId={result.contentId}
+                  isScrappedData={result.isScrapped}
+                />
               }
               bottomRightButton={
                 result.contentType !== 'READING' && (

@@ -1,13 +1,15 @@
 'use client';
 
+import { useState } from 'react';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { Bookmark, Plus, HighlighterIcon } from 'lucide-react';
 
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import DisabledModal from '@/components/common/DisabledModal';
 import LogInOutButton from '@/components/common/LogInOutButton';
+import Modal from '@/components/common/Modal';
 import { Button } from '@/components/ui/button';
 
 interface NavItemProps {
@@ -87,6 +89,7 @@ export default function ScrapbookLayout({
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   // 로그읜 모달
+  const [showLoginModal, setShowLoginModal] = useState(!isLogin);
   return (
     <>
       <div className="flex w-full mx-auto">
@@ -95,17 +98,17 @@ export default function ScrapbookLayout({
       </div>
 
       {/* 로그인 안 되어있으면 로그인 해야만 하는 나갈 수 있는 모달 */}
-      {!isLogin && (
-        <DisabledModal
-          isOpen
-          // onClose={() => setShowLoginModal(false)}
+      {showLoginModal && (
+        <Modal
+          isOpen={showLoginModal}
+          onClose={() => setShowLoginModal(false)}
           title="로그인이 필요합니다."
           description="이 기능을 이용하려면 로그인이 필요해요! "
         >
           <div className="flex justify-center gap-4 mt-4">
             <LogInOutButton />
           </div>
-        </DisabledModal>
+        </Modal>
       )}
     </>
   );

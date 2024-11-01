@@ -1,6 +1,9 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+
 import React from 'react';
+
+import ReactDOM from 'react-dom';
 
 type ModalProps = {
   isOpen: boolean;
@@ -25,16 +28,20 @@ export default function Modal({
   ) => {
     // 클릭한 위치가 모달 컨텐츠 내부가 아닐 때만 닫기
     if (e.target === e.currentTarget) {
+      e.stopPropagation();
       onClose();
     }
   };
 
-  return (
+  return ReactDOM.createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={handleOverlayClick}
     >
-      <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+      <div
+        className="bg-white rounded-lg shadow-lg max-w-md w-full p-6"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold">{title}</h2>
           <button
@@ -49,6 +56,7 @@ export default function Modal({
         {description && <p className="mt-4 text-gray-600">{description}</p>}
         <div className="mt-6">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

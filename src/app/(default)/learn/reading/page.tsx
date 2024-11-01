@@ -7,6 +7,8 @@ import ContentTypeFilter from '@/components/common/ContentTypeFilter';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Pagination from '@/components/common/Pagination';
 import ListItem from '@/components/items/ListItem';
+import PreviewScrapButton from '@/components/PreviewScrapButton';
+import { Badge } from '@/components/ui/badge';
 // import { formatDate } from '@/lib/formatDate';
 
 export default function ReadingPage() {
@@ -50,7 +52,16 @@ export default function ReadingPage() {
             key={content.contentId}
             href={`/learn/reading/detail/${content.contentId}`}
             coverImageUrl={content.thumbnailUrl}
-            category={content.category}
+            topRightButton={
+              <PreviewScrapButton
+                contentId={content.contentId}
+                isScrappedData={content.isScrapped}
+              />
+            }
+            leftBadge={<Badge>{content.category}</Badge>}
+            rightBadge={
+              <p className="text-sm text-muted-foreground">{content.hits}회</p>
+            }
             title={content.title}
             description={content.preScripts}
             footerContent={
@@ -59,10 +70,6 @@ export default function ReadingPage() {
                 {/* <p className="text-sm mb-3">
                   {content.createdAt && `${formatDate(content.createdAt)} 저장`}
                 </p> */}
-
-                <p className="text-sm text-muted-foreground">
-                  {content.hits}회
-                </p>
               </>
             }
           />

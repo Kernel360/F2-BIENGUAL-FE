@@ -53,7 +53,10 @@ function ListeningPage() {
             key={content.contentId}
             href={`/learn/listening/detail/${content.contentId}`}
             topRightButton={
-              <PreviewScrapButton contentId={content.contentId} />
+              <PreviewScrapButton
+                contentId={content.contentId}
+                isScrappedData={content.isScrapped}
+              />
             }
             bottomRightButton={
               <Badge className="flex items-center gap-1 bg-gray-200 bg-opacity-70">
