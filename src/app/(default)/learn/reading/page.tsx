@@ -7,6 +7,8 @@ import ContentTypeFilter from '@/components/common/ContentTypeFilter';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Pagination from '@/components/common/Pagination';
 import ListItem from '@/components/items/ListItem';
+import { Badge } from '@/components/ui/badge';
+import PreviewScrapButton from '@/components/PreviewScrapButton';
 // import { formatDate } from '@/lib/formatDate';
 
 export default function ReadingPage() {
@@ -68,10 +70,6 @@ export default function ReadingPage() {
                 {/* <p className="text-sm mb-3">
                   {content.createdAt && `${formatDate(content.createdAt)} 저장`}
                 </p> */}
-
-                <p className="text-sm text-muted-foreground">
-                  {content.hits}회
-                </p>
               </>
             }
           />
