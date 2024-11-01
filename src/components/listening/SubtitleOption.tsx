@@ -8,20 +8,19 @@ import { LayoutList, LayoutGrid, Globe } from 'lucide-react'; // Icons you're us
 
 import { Button } from '@/components/ui/button'; // Assuming you're using a custom Button component
 
-import { LanguageCode } from '../../types/Scripts';
+import { CustomScriptLanguageCode } from '../../types/Scripts';
 
 type Mode = 'line' | 'block';
 
 interface SubtitleOptionProps {
   mode: Mode;
-  selectedLanguages: LanguageCode[];
-  setSelectedLanguages: Dispatch<SetStateAction<LanguageCode[]>>;
+  selectedLanguages: CustomScriptLanguageCode[];
+  setSelectedLanguages: Dispatch<SetStateAction<CustomScriptLanguageCode[]>>;
   setMode: Dispatch<SetStateAction<Mode>>;
 }
 
 export default function SubtitleOption({
   mode,
-
   selectedLanguages,
   setSelectedLanguages,
   setMode,
