@@ -50,7 +50,16 @@ export default function ReadingPage() {
             key={content.contentId}
             href={`/learn/reading/detail/${content.contentId}`}
             coverImageUrl={content.thumbnailUrl}
-            category={content.category}
+            topRightButton={
+              <PreviewScrapButton
+                contentId={content.contentId}
+                isScrappedData={content.isScrapped}
+              />
+            }
+            leftBadge={<Badge>{content.category}</Badge>}
+            rightBadge={
+              <p className="text-sm text-muted-foreground">{content.hits}회</p>
+            }
             title={content.title}
             description={content.preScripts}
             footerContent={

@@ -6,6 +6,7 @@ export interface Preview {
   contentType: 'READING' | 'LISTENING';
   preScripts: string;
   hits: number;
+  isScrapped: boolean;
 }
 
 export interface ReadingPreviewResponse {
