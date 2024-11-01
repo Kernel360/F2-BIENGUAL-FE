@@ -1,9 +1,13 @@
+import { useState } from 'react';
+
 import { Bookmark } from 'lucide-react';
+
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import useHandleScrap from '@/hooks/useHandleScrap';
-import Modal from './common/Modal';
+
 import LogInOutButton from './common/LogInOutButton';
-import { useState } from 'react';
+import Modal from './common/Modal';
+
 interface PreviewScrapButtonProps {
   contentId: number;
   isScrappedData: boolean;
@@ -43,7 +47,7 @@ export default function PreviewScrapButton({
           fill={isScrapped ? 'violet' : ''}
         />
       </button>
-      {/* 로그인 안 했을 때 보여줄 모달*/}
+      {/* 로그인 안 했을 때 보여줄 모달 */}
       {showLoginModal && (
         <Modal
           isOpen={showLoginModal}

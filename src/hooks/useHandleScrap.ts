@@ -1,10 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import {
-  useCheckScrap,
-  useCreateScrap,
-  useDeleteScrap,
-} from '@/api/hooks/useScrap';
+import { useCreateScrap, useDeleteScrap } from '@/api/hooks/useScrap';
 
 export default function useHandleScrap(
   contentId: number,

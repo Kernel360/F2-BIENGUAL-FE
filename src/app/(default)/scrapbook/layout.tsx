@@ -1,13 +1,15 @@
 'use client';
 
+import { useState } from 'react';
+
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Modal from '@/components/common/Modal';
+
 import { Bookmark, Plus, HighlighterIcon } from 'lucide-react';
-import { useState } from 'react';
+
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import DisabledModal from '@/components/common/DisabledModal';
 import LogInOutButton from '@/components/common/LogInOutButton';
+import Modal from '@/components/common/Modal';
 import { Button } from '@/components/ui/button';
 
 interface NavItemProps {
@@ -87,7 +89,7 @@ export default function ScrapbookLayout({
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   // 로그읜 모달
-  const [showLoginModal, setShowLoginModal] = useState(!!!isLogin);
+  const [showLoginModal, setShowLoginModal] = useState(!isLogin);
   return (
     <>
       <div className="flex w-full mx-auto">

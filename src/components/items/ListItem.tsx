@@ -1,7 +1,5 @@
 import Link, { LinkProps } from 'next/link';
 
-import { Badge } from '@/components/ui/badge';
-
 interface ListItemProps extends Pick<LinkProps, 'href'> {
   coverImageUrl: string;
   topRightButton?: React.ReactNode;
