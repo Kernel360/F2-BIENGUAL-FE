@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 const queryClientOptions = {
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, // 캐시된 데이터가 1분 동안 신선함 유지
+      // staleTime: 60 * 1000, // 캐시된 데이터가 1분 동안 신선함 유지
     },
   },
 };

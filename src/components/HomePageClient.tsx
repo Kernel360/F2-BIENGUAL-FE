@@ -31,16 +31,18 @@ export default function HomePageClient({
     queryKey: ['readingPreview'],
     queryFn: () => fetchReadingPreview(),
     initialData: initialReadingContents,
-    staleTime: 1000 * 60 * 10,
+    // staleTime: 1000 * 60 * 10,
   });
 
   const { data: listeningList, isLoading: listeningLoading } = useQuery({
     queryKey: ['listeningPreview'],
     queryFn: () => fetchListeningPreview(),
     initialData: initialListeningContents,
-    staleTime: 1000 * 60 * 10,
+    // staleTime: 1000 * 60 * 10,
   });
 
+  console.log(readingList.data.readingPreview);
+  console.log(listeningList.data.listeningPreview);
   if (readingLoading || listeningLoading) {
     return <LoadingSpinner />;
   }
