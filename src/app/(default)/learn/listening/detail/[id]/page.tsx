@@ -5,6 +5,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'next/navigation';
 
 import ReactPlayer from 'react-player';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ReactScriptPlayer } from 'react-player-plugin-prompter';
 
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
@@ -19,7 +21,6 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
 import BookmarkMemoPanel from '@/components/listening/BookmarkMemoPanel';
-import { ReactScriptPlayer } from '@/components/listening/scriptPlayer';
 import SubtitleOption from '@/components/listening/SubtitleOption';
 import VideoPlayer from '@/components/listening/VideoPlayer';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
@@ -27,7 +28,7 @@ import QuizCover from '@/components/quiz/QuizCover';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { LanguageCode } from '@/types/Scripts';
+import { CustomScriptLanguageCode } from '@/types/Scripts';
 
 type Mode = 'line' | 'block';
 
@@ -60,9 +61,12 @@ export default function DetailListeningPage() {
   const [currentTime, setCurrentTime] = useState(0);
 
   const [mode, setMode] = useState<Mode>('line');
-  const availableLanguages: LanguageCode[] = ['enScript', 'koScript'];
+  const availableLanguages: CustomScriptLanguageCode[] = [
+    'enScript',
+    'koScript',
+  ];
   const [selectedLanguages, setSelectedLanguages] =
-    useState<LanguageCode[]>(availableLanguages);
+    useState<CustomScriptLanguageCode[]>(availableLanguages);
 
   const [isPlaying, setIsPlaying] = useState(true);
 
@@ -155,17 +159,39 @@ export default function DetailListeningPage() {
       {/* 자막 컨테이너 */}
       <ReactScriptPlayer
         mode={mode}
-        subtitles={ListeningDetailData?.data.scriptList || []}
+        scripts={ListeningDetailData?.data.scriptList || []}
         selectedLanguages={selectedLanguages}
         seekTo={seekTo}
         currentTime={currentTime}
-        onClickSubtitle={(subtitle, index) => {
-          console.log(subtitle, index);
+        onClickScript={(script, index) => {
+          console.log(script, index);
         }}
-        onSelectWord={(word, subtitle, index) => {
-          console.log(word, subtitle, index);
+        onSelectWord={(word, script, index) => {
+          console.log(word, script, index);
+        }}
+        containerStyle={{
+          width: '',
+          height: '16rem',
+          padding: '',
+          backgroundColor: '',
+          borderColor: '#ede9fe',
+        }}
+        textStyle={{
+          color: '',
+          fontSize: '',
+          fontWeight: '',
+          lineHeight: '',
+          activeColor: '#f5f3ff',
+        }}
+        timeStyle={{
+          color: '#5a5a5a',
+          fontSize: '',
+          backgroundColor: '#ddd6fe',
+          borderRadius: '',
+          padding: '',
         }}
       />
+
       {/* TODO(@godhyzzang) : logout상태일 때 블러처리한 커버사진 있으면 좋을듯 */}
       {/* 북마크 메모 패널 */}
       <BookmarkMemoPanel
