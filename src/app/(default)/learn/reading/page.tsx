@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { usePaginatedReadingPreview } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
@@ -13,19 +13,16 @@ import { Badge } from '@/components/ui/badge';
 
 export default function ReadingPage() {
   const router = useRouter();
-  //    TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
 
-  // const searchParams = useSearchParams();
-
-  // const currentPage = Number(searchParams.get('page') || 0);
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get('page'));
 
   const {
     data: readingContents,
     isLoading,
     isError,
     error,
-  } = usePaginatedReadingPreview();
-  //    TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
+  } = usePaginatedReadingPreview(currentPage);
 
   if (isLoading) {
     return <LoadingSpinner />;
