@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { createScrap, deleteScrap } from '@/api/queries/scrapQueries';
 
-export const useHandleScrap = (
+export const useScrapToggle = (
   contentId: number,
   initialIsScrapped: boolean,
   page?: number,
@@ -20,9 +20,9 @@ export const useHandleScrap = (
       }
       return newScrapState;
     },
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ['content', contentId] });
 
+    // TODO(@smosco): 이렇게 모든 스크랩 요청에서 이전 데이터를 저장하고 성공을 가정해서 setQueryData를 하고 invalidate을 해야하는지 의문
+    onMutate: () => {
       const previousReadingPreview = queryClient.getQueryData([
         'readingPreview',
       ]);

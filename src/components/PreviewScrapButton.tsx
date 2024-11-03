@@ -1,9 +1,11 @@
 import { useState } from 'react';
 
+import { useSearchParams } from 'next/navigation';
+
 import { Bookmark } from 'lucide-react';
 
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import { useHandleScrap } from '@/hooks/useHandleScrap';
+import { useScrapToggle } from '@/hooks/useScrapToggle';
 
 import LogInOutButton from './common/LogInOutButton';
 import Modal from './common/Modal';
@@ -21,9 +23,10 @@ export default function PreviewScrapButton({
   const isLogin = isLoginData?.data;
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const { toggleScrap } = useHandleScrap(contentId, isScrappedData);
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get('page'));
 
-  console.log(isScrappedData);
+  const { toggleScrap } = useScrapToggle(contentId, isScrappedData, page);
 
   const handleShowLoginModal = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -32,7 +35,6 @@ export default function PreviewScrapButton({
 
   const handleToggleScrap = (event: React.MouseEvent) => {
     event.preventDefault();
-    console.log('토글할거야');
     toggleScrap();
   };
 
