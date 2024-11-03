@@ -6,6 +6,7 @@ import { createScrap, deleteScrap } from '@/api/queries/scrapQueries';
 export const useHandleScrap = (
   contentId: number,
   initialIsScrapped: boolean,
+  page?: number,
 ) => {
   const queryClient = useQueryClient();
 
@@ -31,6 +32,14 @@ export const useHandleScrap = (
       const previousDetail = queryClient.getQueryData([
         'contentDetail',
         contentId,
+      ]);
+      const previousPaginatedReadingPreview = queryClient.getQueryData([
+        'paginatedReadingPreview',
+        page,
+      ]);
+      const previousPaginatedListeningPreview = queryClient.getQueryData([
+        'paginatedListeningPreview',
+        page,
       ]);
 
       // 리딩 프리뷰 목록 낙관 업데이트
@@ -89,14 +98,61 @@ export const useHandleScrap = (
         return old;
       });
 
+      // 리딩 페이지네이션 프리뷰 목록 낙관적 업데이트
+      queryClient.setQueryData(
+        ['paginatedReadingPreview', page],
+        (old: any) => {
+          if (old?.data?.contents && Array.isArray(old.data.contents)) {
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                contents: old.data.contents.map((content: any) =>
+                  content.contentId === contentId
+                    ? { ...content, isScrapped: !initialIsScrapped }
+                    : content,
+                ),
+              },
+            };
+          }
+
+          return old;
+        },
+      );
+
+      // 리스닝 페이지네이션 프리뷰 목록 낙관적 업데이트
+      queryClient.setQueryData(
+        ['paginatedListeningPreview', page],
+        (old: any) => {
+          if (old?.data?.contents && Array.isArray(old.data.contents)) {
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                contents: old.data.contents.map((content: any) =>
+                  content.contentId === contentId
+                    ? { ...content, isScrapped: !initialIsScrapped }
+                    : content,
+                ),
+              },
+            };
+          }
+
+          return old;
+        },
+      );
+
       return {
         previousReadingPreview,
         previousListeningPreview,
         previousDetail,
+        previousPaginatedReadingPreview,
+        previousPaginatedListeningPreview,
       };
     },
 
     onError: (error, variables, context) => {
+      // console.log(error);
       if (context?.previousReadingPreview) {
         queryClient.setQueryData(
           ['readingPreview'],
@@ -115,12 +171,30 @@ export const useHandleScrap = (
           context.previousDetail,
         );
       }
+      if (context?.previousPaginatedReadingPreview) {
+        queryClient.setQueryData(
+          ['paginatedReadingPreview', page],
+          context.previousPaginatedReadingPreview,
+        );
+      }
+      if (context?.previousPaginatedListeningPreview) {
+        queryClient.setQueryData(
+          ['paginatedListeningPreview', page],
+          context.previousPaginatedListeningPreview,
+        );
+      }
     },
 
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['readingPreview'] });
       queryClient.invalidateQueries({ queryKey: ['listeningPreview'] });
       queryClient.invalidateQueries({ queryKey: ['contentDetail', contentId] });
+      queryClient.invalidateQueries({
+        queryKey: ['paginatedReadingPreview', page],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['paginatedListeningPreview', page],
+      });
     },
   });
 
