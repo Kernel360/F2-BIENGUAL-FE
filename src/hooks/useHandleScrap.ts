@@ -1,39 +1,128 @@
-import { useState, useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useCreateScrap, useDeleteScrap } from '@/api/hooks/useScrap';
+import { createScrap, deleteScrap } from '@/api/queries/scrapQueries';
 
-export default function useHandleScrap(
+export const useHandleScrap = (
   contentId: number,
-  isScrappedData?: boolean,
-) {
-  const [isScrapped, setIsScrapped] = useState<boolean | undefined>(
-    isScrappedData, // props로 받아온 isScrappedData를 넘겨주어서 useState로 isScrapped생성
-  );
+  initialIsScrapped: boolean,
+) => {
+  const queryClient = useQueryClient();
 
-  const createScrapMutation = useCreateScrap(contentId);
-  const deleteScrapMutation = useDeleteScrap(contentId);
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const newScrapState = !initialIsScrapped;
+      if (newScrapState) {
+        await createScrap(contentId);
+      } else {
+        await deleteScrap(contentId);
+      }
+      return newScrapState;
+    },
+    onMutate: async () => {
+      await queryClient.cancelQueries({ queryKey: ['content', contentId] });
 
-  useEffect(() => {
-    if (isScrappedData !== undefined) {
-      setIsScrapped(isScrappedData);
-    }
-  }, [isScrappedData]);
+      const previousReadingPreview = queryClient.getQueryData([
+        'readingPreview',
+      ]);
+      const previousListeningPreview = queryClient.getQueryData([
+        'listeningPreview',
+      ]);
+      const previousDetail = queryClient.getQueryData([
+        'contentDetail',
+        contentId,
+      ]);
 
-  const toggleScraped = () => {
-    if (isScrapped) {
-      deleteScrapMutation.mutate(undefined, {
-        onSuccess: () => {
-          setIsScrapped(false);
-        },
+      // 리딩 프리뷰 목록 낙관 업데이트
+      queryClient.setQueryData(['readingPreview'], (old: any) => {
+        if (
+          old?.data?.readingPreview &&
+          Array.isArray(old.data.readingPreview)
+        ) {
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              readingPreview: old.data.readingPreview.map((content: any) =>
+                content.contentId === contentId
+                  ? { ...content, isScrapped: !initialIsScrapped }
+                  : content,
+              ),
+            },
+          };
+        }
+        return old;
       });
-    } else {
-      createScrapMutation.mutate(undefined, {
-        onSuccess: () => {
-          setIsScrapped(true);
-        },
-      });
-    }
-  };
 
-  return { isScrapped, toggleScraped };
-}
+      // 리스닝 프리뷰 목록 낙관 업데이트
+      queryClient.setQueryData(['listeningPreview'], (old: any) => {
+        if (
+          old?.data?.listeningPreview &&
+          Array.isArray(old.data.listeningPreview)
+        ) {
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              listeningPreview: old.data.listeningPreview.map((content: any) =>
+                content.contentId === contentId
+                  ? { ...content, isScrapped: !initialIsScrapped }
+                  : content,
+              ),
+            },
+          };
+        }
+        return old;
+      });
+
+      // 콘텐츠 디테일 낙관적 업데이트
+      queryClient.setQueryData(['contentDetail', contentId], (old: any) => {
+        if (old?.data) {
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              isScrapped: !initialIsScrapped,
+            },
+          };
+        }
+        return old;
+      });
+
+      return {
+        previousReadingPreview,
+        previousListeningPreview,
+        previousDetail,
+      };
+    },
+
+    onError: (error, variables, context) => {
+      if (context?.previousReadingPreview) {
+        queryClient.setQueryData(
+          ['readingPreview'],
+          context.previousReadingPreview,
+        );
+      }
+      if (context?.previousListeningPreview) {
+        queryClient.setQueryData(
+          ['listeningPreview'],
+          context.previousListeningPreview,
+        );
+      }
+      if (context?.previousDetail) {
+        queryClient.setQueryData(
+          ['contentDetail', contentId],
+          context.previousDetail,
+        );
+      }
+    },
+
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['readingPreview'] });
+      queryClient.invalidateQueries({ queryKey: ['listeningPreview'] });
+      queryClient.invalidateQueries({ queryKey: ['contentDetail', contentId] });
+    },
+  });
+
+  return { toggleScrap: mutation.mutate };
+};

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Bookmark } from 'lucide-react';
 
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import useHandleScrap from '@/hooks/useHandleScrap';
+import { useHandleScrap } from '@/hooks/useHandleScrap';
 
 import LogInOutButton from './common/LogInOutButton';
 import Modal from './common/Modal';
@@ -20,10 +20,10 @@ export default function PreviewScrapButton({
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data;
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const { isScrapped, toggleScraped } = useHandleScrap(
-    contentId,
-    isScrappedData, // useHandleScrap에 isScrappedData를 넘겨주어서 isScrapped를 받아옴
-  );
+
+  const { toggleScrap } = useHandleScrap(contentId, isScrappedData);
+
+  console.log(isScrappedData);
 
   const handleShowLoginModal = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -32,7 +32,8 @@ export default function PreviewScrapButton({
 
   const handleToggleScrap = (event: React.MouseEvent) => {
     event.preventDefault();
-    toggleScraped(); // 스크랩 토글
+    console.log('토글할거야');
+    toggleScrap();
   };
 
   return (
@@ -43,8 +44,8 @@ export default function PreviewScrapButton({
       >
         <Bookmark
           className="h-6 w-6"
-          stroke={isScrapped ? 'white' : 'white'}
-          fill={isScrapped ? 'violet' : ''}
+          stroke="white"
+          fill={isScrappedData ? 'violet' : ''} // 스크랩 상태에 따라 아이콘 색상 변경
         />
       </button>
       {/* 로그인 안 했을 때 보여줄 모달 */}
