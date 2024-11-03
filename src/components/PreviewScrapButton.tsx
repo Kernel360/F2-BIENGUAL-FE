@@ -45,7 +45,7 @@ export default function PreviewScrapButton({
         <Bookmark
           className="h-6 w-6"
           stroke="white"
-          fill={isScrappedData ? 'violet' : ''} // 스크랩 상태에 따라 아이콘 색상 변경
+          fill={isScrappedData ? '#6622ec' : ''} // 스크랩 상태에 따라 아이콘 색상 변경
         />
       </button>
       {/* 로그인 안 했을 때 보여줄 모달 */}
