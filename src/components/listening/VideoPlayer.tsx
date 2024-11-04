@@ -21,11 +21,18 @@ interface VideoPlayerProps {
   setCurrentTime: React.Dispatch<SetStateAction<number>>;
   isPlaying: boolean;
   setIsPlaying: React.Dispatch<SetStateAction<boolean>>;
+  onProgress: (playedSeconds: number) => void;
 }
 
 const VideoPlayer = forwardRef<ReactPlayer, VideoPlayerProps>(
   function VideoPlayer(
-    { videoUrl, setCurrentTime, isPlaying, setIsPlaying }: VideoPlayerProps,
+    {
+      videoUrl,
+      setCurrentTime,
+      isPlaying,
+      setIsPlaying,
+      onProgress,
+    }: VideoPlayerProps,
     playerRef,
   ) {
     const [mounted, setMounted] = useState(false); // 추가: 마운트 상태 확인
@@ -38,6 +45,7 @@ const VideoPlayer = forwardRef<ReactPlayer, VideoPlayerProps>(
 
     const handleProgress = (state: { playedSeconds: number }) => {
       setCurrentTime(state.playedSeconds);
+      onProgress(state.playedSeconds);
     };
 
     const handlePlayPause = () => {

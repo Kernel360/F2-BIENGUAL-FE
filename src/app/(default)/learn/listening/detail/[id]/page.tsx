@@ -9,6 +9,10 @@ import ReactPlayer from 'react-player';
 import { ReactScriptPlayer } from 'react-player-plugin-prompter';
 
 import { useContentDetail } from '@/api/hooks/useContentDetail';
+import {
+  useUpdateMissionStatus,
+  useFetchMissionStatus,
+} from '@/api/hooks/useMission';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import FloatingButtons from '@/components/common/FloatingButtons';
@@ -53,8 +57,10 @@ export default function DetailListeningPage() {
   const { data: quizData } = useFetchQuiz(contentId);
 
   const playerRef = useRef<ReactPlayer | null>(null);
-
   const [currentTime, setCurrentTime] = useState(0);
+
+  const { data: missionStatus } = useFetchMissionStatus();
+  const { mutate: updateMissionStatus } = useUpdateMissionStatus();
 
   const [mode, setMode] = useState<Mode>('line');
   const availableLanguages: CustomScriptLanguageCode[] = [
@@ -69,6 +75,19 @@ export default function DetailListeningPage() {
   const seekTo = (timeInSeconds: number) => {
     if (playerRef.current) {
       playerRef.current.seekTo(timeInSeconds, 'seconds');
+    }
+  };
+
+  // 90% 이상 재생되면 콘텐츠 학습 미션 업데이트 요청 보냄(콜백 함수)
+  const handleProgress = (playedSeconds: number) => {
+    const duration = playerRef.current?.getDuration();
+
+    if (
+      duration &&
+      (playedSeconds / duration) * 100 >= 90 &&
+      !missionStatus?.data.oneContent
+    ) {
+      updateMissionStatus({ oneContent: true });
     }
   };
 
@@ -126,6 +145,7 @@ export default function DetailListeningPage() {
         ref={playerRef}
         videoUrl={ListeningDetailData?.data.videoUrl as string}
         setCurrentTime={setCurrentTime}
+        onProgress={handleProgress}
       />
 
       {/* 보기모드, 언어 옵션 */}
