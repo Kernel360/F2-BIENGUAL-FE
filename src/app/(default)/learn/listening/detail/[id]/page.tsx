@@ -201,6 +201,7 @@ export default function DetailListeningPage() {
         currentTime={currentTime}
         setIsPlaying={setIsPlaying}
         setShowLoginModal={setShowLoginModal}
+        missionStatus={missionStatus?.data}
       />
 
       {/* 퀴즈 */}
