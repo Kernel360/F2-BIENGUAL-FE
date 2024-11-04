@@ -1,15 +1,15 @@
 // src/api/hooks/useBookmarks.ts
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { ContentDetailResponse } from '@/types/ContentDetail';
+
 import { useQueryLoginOnly } from './common';
 import {
   BookmarkListResponse,
-  BookmarkByContentIdResponse,
   Bookmark,
   BookmarkByContentId,
 } from '../../types/Bookmark';
 import {
-  fetchBookmarksByContentId,
   fetchAllBookmarks,
   createBookmark,
   updateBookmark,
@@ -17,13 +17,6 @@ import {
 } from '../queries/bookmarkQueries';
 
 // 북마크 조회 훅
-
-export const useFetchBookmarksByContendId = (contentId: number) => {
-  return useQueryLoginOnly<BookmarkByContentIdResponse>({
-    queryKey: ['bookmarks', contentId],
-    queryFn: () => fetchBookmarksByContentId(contentId),
-  });
-};
 
 export const useFetchAllBookmarks = () => {
   return useQueryLoginOnly<BookmarkListResponse>({
@@ -44,34 +37,44 @@ export const useCreateBookmark = (contentId: number) => {
     mutationFn: (newBookmark) => createBookmark(contentId, newBookmark),
     // when mutation is called:
     onMutate: async (newBookmark) => {
-      await queryClient.cancelQueries({ queryKey: ['bookmarks', contentId] });
+      await queryClient.cancelQueries({
+        queryKey: ['contentDetail', contentId],
+      });
       // Snapshot the previous value
-      const previousBookmarks =
-        queryClient.getQueryData<BookmarkByContentIdResponse>([
-          'bookmarks',
-          contentId,
-        ]);
+      const previousData = queryClient.getQueryData<ContentDetailResponse>([
+        'contentDetail',
+        contentId,
+      ]);
       // 캐시에 optimistically update
-      queryClient.setQueryData(['bookmarks', contentId], {
-        ...previousBookmarks,
+      queryClient.setQueryData(['contentDetail', contentId], {
+        ...previousData,
         data: {
-          bookmarkList: [
-            ...(previousBookmarks?.data.bookmarkList || []),
-            newBookmark,
-          ],
+          ...previousData?.data,
+          scriptList:
+            previousData?.data.scriptList.map((script, index) => {
+              if (index === newBookmark.sentenceIndex) {
+                return {
+                  ...script,
+                  isHighlighted: true, // 새로운 description으로 업데이트
+                  description: newBookmark.description,
+                };
+              }
+              return script; // 변동 없는 스크립트는 그대로 반환
+            }) || [],
         },
       });
-      return { previousBookmarks };
+
+      return { previousData };
     },
 
     // 에러가 발생할 경우 onMute에서 보관한 캐시데이터가 있다면 복원
     onError: (err, newBookmark, context) => {
-      const ctx = context as { previousBookmarks?: BookmarkByContentId[] };
+      const ctx = context as { previousData?: BookmarkByContentId[] };
 
-      if (ctx.previousBookmarks) {
+      if (ctx.previousData) {
         queryClient.setQueryData(
-          ['bookmarks', contentId],
-          ctx.previousBookmarks,
+          ['contentDetail', contentId],
+          ctx.previousData,
         );
       }
     },
@@ -79,7 +82,7 @@ export const useCreateBookmark = (contentId: number) => {
     // 성공 여부와 관계없이 항상 refetch
     onSettled: () => {
       queryClient.invalidateQueries({
-        queryKey: ['bookmarks', contentId],
+        queryKey: ['contentDetail', contentId],
       });
     },
   });
@@ -98,45 +101,45 @@ export const useUpdateBookmark = (contentId: number) => {
       updateBookmark(contentId, bookmarkId, description),
     // when mutation is called:
     onMutate: async ({ bookmarkId, description }) => {
-      await queryClient.cancelQueries({ queryKey: ['bookmarks', contentId] });
-      const previousBookmarks =
-        queryClient.getQueryData<BookmarkByContentIdResponse>([
-          'bookmarks',
-          contentId,
-        ]);
+      await queryClient.cancelQueries({
+        queryKey: ['contentDetail', contentId],
+      });
+      const previousData = queryClient.getQueryData<ContentDetailResponse>([
+        'contentDetail',
+        contentId,
+      ]);
       // 캐시에 optimistically update
-      queryClient.setQueryData(['bookmarks', contentId], {
-        ...previousBookmarks,
+      queryClient.setQueryData(['contentDetail', contentId], {
+        ...previousData,
         data: {
-          bookmarkList: [
-            ...(previousBookmarks?.data.bookmarkList.map((bookmark) => {
-              // 해당 bookmarkId에 해당하는 북마크의 description을 업데이트
-              if (bookmark.bookmarkId === bookmarkId) {
+          ...previousData?.data,
+          scriptList:
+            previousData?.data.scriptList.map((script) => {
+              if (script.bookmarkId === bookmarkId) {
                 return {
-                  ...bookmark, // 기존의 모든 속성 유지
+                  ...script,
                   description, // 새로운 description으로 업데이트
                 };
               }
-              return bookmark; // 변동 없는 북마크는 그대로 반환
-            }) || []),
-          ],
+              return script; // 변동 없는 스크립트는 그대로 반환
+            }) || [],
         },
       });
     },
     // 에러가 발생할 경우 onMute에서 보관한 데이터가 있다면 복원
     onError: (err, bookmarkId, context) => {
-      const ctx = context as { previousBookmarks?: BookmarkByContentId[] };
+      const ctx = context as { previousData?: BookmarkByContentId[] };
 
-      if (ctx.previousBookmarks) {
+      if (ctx.previousData) {
         queryClient.setQueryData(
-          ['bookmarks', contentId],
-          ctx.previousBookmarks,
+          ['contentDetail', contentId],
+          ctx.previousData,
         );
       }
     },
     // 성공 여부와 관계없이 항상 refetch
     onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['bookmarks', contentId] });
+      queryClient.invalidateQueries({ queryKey: ['contentDetail', contentId] });
     },
   });
 };
@@ -149,40 +152,48 @@ export const useDeleteBookmark = (contentId: number) => {
     mutationFn: (bookmarkId) => deleteBookmark(bookmarkId),
     // when mutation is called:
     onMutate: async (bookmarkId) => {
-      await queryClient.cancelQueries({ queryKey: ['bookmarks', contentId] });
-      const previousBookmarks =
-        queryClient.getQueryData<BookmarkByContentIdResponse>([
-          'bookmarks',
-          contentId,
-        ]);
+      await queryClient.cancelQueries({
+        queryKey: ['contentDetail', contentId],
+      });
+      const previousData = queryClient.getQueryData<ContentDetailResponse>([
+        'contentDetail',
+        contentId,
+      ]);
       // 캐시에 optimistically update
-      queryClient.setQueryData(['bookmarks', contentId], {
-        ...previousBookmarks,
+      queryClient.setQueryData(['contentDetail', contentId], {
+        ...previousData,
         data: {
-          bookmarkList: [
-            ...(previousBookmarks?.data.bookmarkList.filter(
-              (bookmark) => bookmark.bookmarkId !== bookmarkId,
-            ) || []),
-          ],
+          ...previousData?.data,
+          scriptList:
+            previousData?.data.scriptList.map((script) => {
+              if (script.bookmarkId === bookmarkId) {
+                return {
+                  ...script,
+                  isHighlighted: false, // isHighlighted를 false로 업데이트
+                  description: null, // description을 빈 문자열로 업데이트
+                };
+              }
+              return script; // 변동 없는 스크립트는 그대로 반환
+            }) || [],
         },
       });
-      return { previousBookmarks };
+      return { previousData };
     },
     // 에러가 발생할 경우 onMute에서 보관한 캐시데이터가 있다면 복원
     onError: (err, bookmarkId, context) => {
-      const ctx = context as { previousBookmarks?: BookmarkByContentId[] };
+      const ctx = context as { previousData?: BookmarkByContentId[] };
 
-      if (ctx.previousBookmarks) {
+      if (ctx.previousData) {
         queryClient.setQueryData(
-          ['bookmarks', contentId],
-          ctx.previousBookmarks,
+          ['contentDetail', contentId],
+          ctx.previousData,
         );
       }
     },
     // 성공 여부와 관계없이 항상 refetch
     onSettled: async () => {
       const result = await queryClient.invalidateQueries({
-        queryKey: ['bookmarks', contentId],
+        queryKey: ['contentDetail', contentId],
       });
       return result;
     },
