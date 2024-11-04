@@ -18,6 +18,7 @@ export type ContentDetail = {
   thumbnailUrl: string;
   videoUrl?: string;
   hits: number;
+  isScrapped: boolean;
   scriptList: Script[];
 };
 

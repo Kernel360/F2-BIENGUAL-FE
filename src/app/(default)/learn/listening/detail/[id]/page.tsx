@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { useParams } from 'next/navigation';
 
@@ -10,11 +10,6 @@ import { ReactScriptPlayer } from 'react-player-plugin-prompter';
 
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
-import {
-  useCheckScrap,
-  useCreateScrap,
-  useDeleteScrap,
-} from '@/api/hooks/useScrap';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -28,6 +23,7 @@ import QuizCover from '@/components/quiz/QuizCover';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useScrapToggle } from '@/hooks/useScrapToggle';
 import { CustomScriptLanguageCode } from '@/types/Scripts';
 
 type Mode = 'line' | 'block';
@@ -43,18 +39,18 @@ export default function DetailListeningPage() {
     error,
   } = useContentDetail(contentId);
 
+  // TODO(@smosco): 아직 데이터를 못 받아왔을 때 무조건 false로 설정해둠
+  const { toggleScrap } = useScrapToggle(
+    contentId,
+    ListeningDetailData?.data.isScrapped || false,
+  );
+
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   const [showLoginModal, setShowLoginModal] = useState(false); // 권한 없을때 로그인 모달
 
-  const { data: checkScrap } = useCheckScrap(contentId);
-  const createScrapMutation = useCreateScrap(contentId);
-  const deleteScrapMutation = useDeleteScrap(contentId);
-
   const [showQuiz, setShowQuiz] = useState(false); // 퀴즈 풀기 버튼 누를 때 보여줌
   const { data: quizData } = useFetchQuiz(contentId);
-
-  const [isScrapped, setIsScrapped] = useState<boolean | undefined>(undefined);
 
   const playerRef = useRef<ReactPlayer | null>(null);
 
@@ -76,34 +72,18 @@ export default function DetailListeningPage() {
     }
   };
 
-  useEffect(() => {
-    if (checkScrap?.data) {
-      setIsScrapped(checkScrap.data); // 서버에서 스크랩 여부를 받아와 상태 업데이트
-    }
-  }, [checkScrap]);
-
   const handleScrapToggle = () => {
     // 로그인 권한 없으면 로그인 모달 띄우기
     if (!isLogin) {
       setShowLoginModal(true);
       return;
     }
-    // 로그인 권한 있을때만 아래 실행
-    if (isScrapped) {
-      // 스크랩 삭제
-      deleteScrapMutation.mutate(undefined, {
-        onSuccess: () => {
-          setIsScrapped(false);
-        },
-      });
-    } else {
-      // 스크랩 생성
-      createScrapMutation.mutate(undefined, {
-        onSuccess: () => {
-          setIsScrapped(true);
-        },
-      });
+    // 데이터가 아직 로드되지 않은 경우 실행 방지
+    if (isLoading || ListeningDetailData?.data.isScrapped === undefined) {
+      return;
     }
+
+    toggleScrap();
   };
 
   if (isLoading) {
@@ -269,7 +249,7 @@ export default function DetailListeningPage() {
 
       {/* 번역, 스크랩 버튼 */}
       <FloatingButtons
-        isScrapped={isScrapped}
+        isScrapped={ListeningDetailData.data.isScrapped}
         onScrapToggle={handleScrapToggle}
       />
     </div>

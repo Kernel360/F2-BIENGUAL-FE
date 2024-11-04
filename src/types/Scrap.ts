@@ -9,12 +9,6 @@ export interface ScrapListItem {
   contentType: 'READING' | 'LISTENING';
 }
 
-export interface CheckScrapResponse {
-  code: string;
-  message: string;
-  data: boolean;
-}
-
 export interface FetchScrapResponse {
   code: string;
   message: string;

@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { useParams } from 'next/navigation';
 
@@ -10,11 +10,6 @@ import { ArrowUp } from 'lucide-react';
 
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
-import {
-  useCreateScrap,
-  useDeleteScrap,
-  useCheckScrap,
-} from '@/api/hooks/useScrap';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -27,59 +22,46 @@ import ReadingScriptItem from '@/components/reading/ReadingScriptItem';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useScrapToggle } from '@/hooks/useScrapToggle';
 
 export default function DetailReadingPage() {
   const params = useParams();
   const contentId = Number(params.id);
   const { data, isLoading, isError, error } = useContentDetail(contentId);
 
+  // TODO(@smosco): 아직 데이터를 못 받아왔을 때 무조건 false로 설정해둠
+  const { toggleScrap } = useScrapToggle(
+    contentId,
+    data?.data.isScrapped || false,
+  );
+
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data;
 
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const { data: checkScrap } = useCheckScrap(contentId);
-  const createScrapMutation = useCreateScrap(contentId);
-  const deleteScrapMutation = useDeleteScrap(contentId);
-
   const { data: quizData } = useFetchQuiz(contentId);
 
   const [showTranslate, setShowTranslate] = useState(true);
 
-  const [isScrapped, setIsScrapped] = useState<boolean | undefined>(undefined);
-
   const [showQuiz, setShowQuiz] = useState(false);
-
-  useEffect(() => {
-    if (checkScrap?.data) {
-      setIsScrapped(checkScrap.data);
-    }
-  }, [checkScrap]);
 
   const toggleTranslation = () => setShowTranslate((prev) => !prev);
 
   const handleScrapToggle = () => {
-    // 로그인 안 한 경우
+    // 로그인하지 않은 경우
     if (!isLogin) {
       setShowLoginModal(true);
       return;
     }
 
-    if (isScrapped) {
-      deleteScrapMutation.mutate(undefined, {
-        onSuccess: () => {
-          setIsScrapped(false);
-        },
-      });
-    } else {
-      createScrapMutation.mutate(undefined, {
-        onSuccess: () => {
-          setIsScrapped(true);
-        },
-      });
+    // 데이터가 아직 로드되지 않은 경우 실행 방지
+    if (isLoading || data?.data.isScrapped === undefined) {
+      return;
     }
-  };
 
+    toggleScrap();
+  };
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <div>Error: {error?.message}</div>;
 
@@ -205,7 +187,7 @@ export default function DetailReadingPage() {
 
       {/* 번역, 스크랩 버튼 */}
       <FloatingButtons
-        isScrapped={isScrapped}
+        isScrapped={data?.data.isScrapped}
         onScrapToggle={handleScrapToggle}
         showTranslate={showTranslate}
         onTranslateToggle={toggleTranslation}

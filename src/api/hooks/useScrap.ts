@@ -4,30 +4,16 @@ import {
   FetchScrapResponse,
   CreateScrapResponse,
   DeleteScrapResponse,
-  CheckScrapResponse,
 } from '@/types/Scrap';
 
 import { useQueryLoginOnly } from './common';
-import {
-  fetchScrap,
-  deleteScrap,
-  createScrap,
-  checkScrap,
-} from '../queries/scrapQueries';
+import { fetchScrap, deleteScrap, createScrap } from '../queries/scrapQueries';
 
 // 스크랩 조회 훅
 export const useFetchScrap = () => {
   return useQueryLoginOnly<FetchScrapResponse>({
     queryKey: ['scrap'],
     queryFn: () => fetchScrap(),
-  });
-};
-
-// 스크랩 확인 훅
-export const useCheckScrap = (contentId: number) => {
-  return useQueryLoginOnly<CheckScrapResponse>({
-    queryKey: ['scrap', contentId],
-    queryFn: () => checkScrap(contentId),
   });
 };
 
