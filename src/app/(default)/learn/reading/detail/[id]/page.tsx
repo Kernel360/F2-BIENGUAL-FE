@@ -9,6 +9,7 @@ import { useParams } from 'next/navigation';
 import { ArrowUp } from 'lucide-react';
 
 import { useContentDetail } from '@/api/hooks/useContentDetail';
+import { useFetchMissionStatus } from '@/api/hooks/useMission';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import FloatingButtons from '@/components/common/FloatingButtons';
@@ -45,6 +46,8 @@ export default function DetailReadingPage() {
   const [showTranslate, setShowTranslate] = useState(true);
 
   const [showQuiz, setShowQuiz] = useState(false);
+
+  const { data: missionStatus } = useFetchMissionStatus();
 
   const toggleTranslation = () => setShowTranslate((prev) => !prev);
 
@@ -192,7 +195,7 @@ export default function DetailReadingPage() {
         showTranslate={showTranslate}
         onTranslateToggle={toggleTranslation}
       />
-      <MissionScrollProgressbar />
+      <MissionScrollProgressbar missionStatus={missionStatus?.data} />
     </>
   );
 }
