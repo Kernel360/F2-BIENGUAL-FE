@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { formatDate } from '@/lib/formatDate';
-import { Calendar } from '@/components/ui/calendar';
+import { ko } from 'date-fns/locale';
+import { Calendar as CustomCalendar } from '@/components/common/CustomShadcnCalendar';
 
 export const mockMissionHistory: {
   [key: string]: {
@@ -36,7 +36,8 @@ export const mockMissionHistory: {
   },
 };
 
-// 현재 mock데이터에 맞게 맞춰져있음. 추후 데이터 넘어오면 그대로 바꾸기만 하면 됨
+// TODO(@godhyzzang) 현재 mock데이터에 맞게 맞춰져있음. 추후 데이터 넘어오면 그대로 바꾸기만 하면 됨
+// TODO(@godhyzzang)date-fns 사용?
 const correctDate = (date: Date) => {
   const formattedDate = new Date(date);
   formattedDate.setDate(formattedDate.getDate() + 1);
@@ -49,7 +50,7 @@ export default function DashboardCalendar() {
   );
 
   const completedStyle = {
-    // tailwind문법이 안 맞음..
+    // tailwind문법이 modifierStyles에 호환되지 않아서 일반 css문법으로 변경
     //  zero: 'bg-gray-500 text-white rounded-full',
     // one: 'bg-green-500 text-white rounded-full',
     // two: 'bg-blue-500 text-white rounded-full',
@@ -79,22 +80,17 @@ export default function DashboardCalendar() {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex flex-col items-center mb-4">
-        <span className="text-lg font-bold">{selectedDate?.getFullYear()}</span>
-
-        <span className="text-lg font-bold">
-          {selectedDate?.toLocaleString('default', { month: 'long' })}
-        </span>
-      </div>
-      <Calendar
+      <div className="text-2xl font-bold">✅ 미션 히스토리</div>
+      <CustomCalendar
         classNames={{
           day_selected:
             'bg-purple-200 ring-2 ring-purple-500 ring-offset-2 ring-offset-white', // 날짜 눌렀을 때
         }}
+        locale={ko}
         mode="single"
         selected={selectedDate}
         onSelect={setSelectedDate}
-        className="rounded-md border"
+        className="rounded-md"
         modifiers={{
           zero: (date: Date) => {
             const correctedDate = correctDate(date);
@@ -122,7 +118,12 @@ export default function DashboardCalendar() {
       />
 
       <div className="flex flex-col rounded-sm p-3 border w-full h-full">
-        <div>미션 히스토리</div>
+        <div
+          className="text-lg
+       font-bold"
+        >
+          🔍 어떤 미션을 성공했을까?
+        </div>
         <div>
           {Object.entries(mockMissionHistory).map(([date, details]) =>
             date === (selectedDate ? correctDate(selectedDate) : '') ? (
