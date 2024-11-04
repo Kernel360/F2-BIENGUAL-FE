@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Clock } from 'lucide-react';
 
@@ -15,18 +15,16 @@ import { Badge } from '@/components/ui/badge';
 
 function ListeningPage() {
   const router = useRouter();
-  //    TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
-  // const searchParams = useSearchParams();
 
-  // const currentPage = Number(searchParams.get('page') || 0);
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get('page'));
 
   const {
     data: listeningContents,
     isLoading,
     isError,
     error,
-  } = usePaginatedListeningPreview();
-  //    TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
+  } = usePaginatedListeningPreview(currentPage);
 
   if (isLoading) {
     return <LoadingSpinner />;

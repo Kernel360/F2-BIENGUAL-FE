@@ -43,7 +43,11 @@ export const usePaginatedReadingPreview = (
       sort,
       direction,
       categoryId,
-    ],
+    ].filter((value) => value !== undefined),
+    // TODO(@smosco): 외부 스크랩 할 때 setQueryData 또는 invalidate 하기 위해 정확한 queryKey가 필요함
+    // null 값으로 오면 queryKey가 이상하므로 임시 방편으로 filter를 적용함
+    // 다만 나중에 sort, direction, categoryId가 들어오는 경우 순서가 유지 되지 않으므로 문제 발생
+    // 따라서 어디서든지 간에 default 값을 넘길 필요가 있음
     queryFn: () =>
       fetchPaginatedReadingPreview(page, size, sort, direction, categoryId),
     initialData, // 서버에서 받은 데이터를 초기값으로 사용
@@ -65,7 +69,11 @@ export const usePaginatedListeningPreview = (
       sort,
       direction,
       categoryId,
-    ],
+    ].filter((value) => value !== undefined),
+    // TODO(@smosco): 외부 스크랩 할 때 setQueryData 또는 invalidate 하기 위해 정확한 queryKey가 필요함
+    // null 값으로 오면 queryKey가 이상하므로 임시 방편으로 filter를 적용함
+    // 다만 나중에 sort, direction, categoryId가 들어오는 경우 순서가 유지 되지 않으므로 문제 발생
+    // 따라서 어디서든지 간에 default 값을 넘길 필요가 있음
     queryFn: () =>
       fetchPaginatedListeningPreview(page, size, sort, direction, categoryId),
   });
