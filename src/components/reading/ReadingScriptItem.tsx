@@ -6,11 +6,13 @@ import { useParams } from 'next/navigation';
 
 import { MessageCircleMoreIcon } from 'lucide-react';
 
+import { useUpdateMissionStatus } from '@/api/hooks/useMission';
 import MemoInput from '@/components/common/MemoInput';
 import Tooltip from '@/components/common/Tooltip';
 import useHandleBookmark from '@/hooks/useHandleBookmark';
 import { cn } from '@/lib/utils';
 import { Script } from '@/types/ContentDetail';
+import { MissionStatus } from '@/types/Mission';
 
 import Modal from '../common/Modal';
 import { Button } from '../ui/button';
@@ -19,12 +21,14 @@ interface ReadingScriptItemProps {
   index: number;
   script: Script;
   showTranslate: boolean;
+  missionStatus: MissionStatus | undefined;
 }
 
 export default function ReadingScriptItem({
   index,
   script,
   showTranslate,
+  missionStatus,
 }: ReadingScriptItemProps) {
   const params = useParams();
   const contentId = Number(params.id);
@@ -38,12 +42,17 @@ export default function ReadingScriptItem({
   const { addBookmark, removeBookmarkMemo, addMemo, updateMemo } =
     useHandleBookmark(contentId);
 
+  const { mutate: updateMissionStatus } = useUpdateMissionStatus();
+
   const handleAddBookmark = () => {
     if (!script.bookmarkId) {
       addBookmark(index);
-      // TODO(@smosco): 북마크의 팬딩 상태로는 충분하지 않음 확인
-      // eslint-disable-next-line no-param-reassign
-      // script.isHighlighted = true;
+
+      // TODO(@smosco): 현재 북마크 생성 성공 여부에 관계 없이 북마크 미션 업데이트 요청을 보냄
+      // 심지어 순서도 안 지켜짐
+      if (!missionStatus?.bookmark) {
+        updateMissionStatus({ bookmark: true });
+      }
     }
   };
 
@@ -88,9 +97,13 @@ export default function ReadingScriptItem({
       }
     } else if (script.bookmarkId) {
       updateMemo(script.bookmarkId, memoTextTrimmed);
-      console.log('메모 업데이트 확인');
     } else {
       addMemo(index, memoTextTrimmed);
+      // TODO(@smosco): 현재 북마크 생성 성공 여부에 관계 없이 북마크 미션 업데이트 요청을 보냄
+      // 심지어 순서도 안 지켜짐
+      if (!missionStatus?.bookmark) {
+        updateMissionStatus({ bookmark: true });
+      }
     }
 
     setMemoText('');

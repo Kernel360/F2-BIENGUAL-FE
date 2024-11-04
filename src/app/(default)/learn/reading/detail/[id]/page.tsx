@@ -102,6 +102,7 @@ export default function DetailReadingPage() {
                     key={index}
                     script={script}
                     showTranslate={showTranslate}
+                    missionStatus={missionStatus?.data}
                   />
                 );
               })}
