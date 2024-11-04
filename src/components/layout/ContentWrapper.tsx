@@ -15,7 +15,7 @@ export default function ContentWrapper({
 
   return (
     <div className="flex justify-center max-w-[1140px] mx-auto">
-      {pathname?.includes('/mypage') ? (
+      {pathname?.includes('/mypage') || pathname?.includes('/dashboard') ? (
         <div>{children}</div>
       ) : (
         <>

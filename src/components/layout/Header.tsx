@@ -3,7 +3,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { BookHeadphones, Bookmark, Bell, CircleUserRound } from 'lucide-react';
+import {
+  BookHeadphones,
+  Bookmark,
+  Bell,
+  CircleUserRound,
+  ChartPie,
+} from 'lucide-react';
 
 import LogInOutButton from '@/components/common/LogInOutButton';
 import { Button } from '@/components/ui/button';
@@ -15,6 +21,7 @@ export const navItems = [
   { name: '학습', href: '/learn/listening', icon: BookHeadphones },
   { name: '스크랩', href: '/scrapbook/content', icon: Bookmark },
   { name: '마이페이지', href: '/mypage/profile', icon: CircleUserRound },
+  { name: '대시보드', href: '/dashboard', icon: ChartPie },
 ];
 
 export function Header() {
