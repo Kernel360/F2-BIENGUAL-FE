@@ -21,15 +21,15 @@ export const fetchMissionStatus =
 
 // 미션 완료 요청
 export const updateMissionStatus = async (missionStatusData: {
-  oneContent: boolean;
-  bookmark: boolean;
-  quiz: boolean;
+  oneContent?: boolean;
+  bookmark?: boolean;
+  quiz?: boolean;
 }): Promise<UpdateMissionStatusResponse> => {
   const response = await fetch(`${BASE_URL}/status`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({ missionStatusData }),
+    body: JSON.stringify({ ...missionStatusData }),
   });
   if (!response.ok) {
     throw new Error('Failed to update mission status');

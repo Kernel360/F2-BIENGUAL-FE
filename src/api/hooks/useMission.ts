@@ -24,7 +24,7 @@ export const useUpdateMissionStatus = () => {
   return useMutation<
     UpdateMissionStatusResponse,
     Error,
-    { oneContent: boolean; bookmark: boolean; quiz: boolean }
+    { oneContent?: boolean; bookmark?: boolean; quiz?: boolean }
   >({
     mutationFn: (missionStatusData) => updateMissionStatus(missionStatusData),
     onSuccess: () => {
