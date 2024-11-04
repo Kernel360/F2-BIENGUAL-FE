@@ -35,14 +35,8 @@ export default function ReadingScriptItem({
   const [memoText, setMemoText] = useState(script.description || '');
   const [showMemo, setShowMemo] = useState<boolean>(false);
 
-  const {
-    isAddBookmarkPending,
-    addBookmark,
-    isRemoveBookmarkMemoPending,
-    removeBookmarkMemo,
-    addMemo,
-    updateMemo,
-  } = useHandleBookmark(contentId);
+  const { addBookmark, removeBookmarkMemo, addMemo, updateMemo } =
+    useHandleBookmark(contentId);
 
   const handleAddBookmark = () => {
     if (!script.bookmarkId) {
@@ -94,6 +88,7 @@ export default function ReadingScriptItem({
       }
     } else if (script.bookmarkId) {
       updateMemo(script.bookmarkId, memoTextTrimmed);
+      console.log('메모 업데이트 확인');
     } else {
       addMemo(index, memoTextTrimmed);
     }
@@ -120,9 +115,7 @@ export default function ReadingScriptItem({
         className={cn(
           `w-fit cursor-pointer px-2 transition-colors duration-300`,
           // 팬딩 상태 또는 북마크가 활성화된 경우 노란색 적용
-          (isAddBookmarkPending || script.bookmarkId) &&
-            !isRemoveBookmarkMemoPending &&
-            'bg-yellow-200',
+          script.isHighlighted && 'bg-yellow-200',
           !script.isHighlighted && 'hover:bg-gray-200',
         )}
       >
