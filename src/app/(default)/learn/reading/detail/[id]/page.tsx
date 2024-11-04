@@ -15,9 +15,9 @@ import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
-import ScrollProgressBar from '@/components/common/ScrollProgressBar';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import QuizCover from '@/components/quiz/QuizCover';
+import MissionScrollProgressbar from '@/components/reading/MissionScrollProgressbar';
 import ReadingScriptItem from '@/components/reading/ReadingScriptItem';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -192,7 +192,7 @@ export default function DetailReadingPage() {
         showTranslate={showTranslate}
         onTranslateToggle={toggleTranslation}
       />
-      <ScrollProgressBar />
+      <MissionScrollProgressbar />
     </>
   );
 }
