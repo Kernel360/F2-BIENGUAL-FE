@@ -34,13 +34,21 @@ export default function LearningTracker({
 
   const renderHistoryCircle = (day: DailyHistory, index: number) => {
     const isSelected = index === selectedIndex;
-    const bgColor = day.completedMissions > 0 ? 'bg-violet-500' : 'bg-gray-300';
+
+    const dateBackgroundColorArray = [
+      'bg-gray-300',
+      'bg-green-300',
+      'bg-blue-300',
+      'bg-violet-500',
+    ];
+    const dateBackgroundColor = dateBackgroundColorArray[day.completedMissions];
+
     const borderColor = isSelected ? 'border-violet-700' : 'border-transparent';
 
     return (
       <button
         key={day.date}
-        className={`w-8 h-8 rounded-full ${bgColor} ${borderColor} border-2 flex items-center justify-center text-white font-bold focus:outline-none`}
+        className={`w-8 h-8 rounded-full ${dateBackgroundColor} ${borderColor} border-2 flex items-center justify-center text-white font-bold focus:outline-none`}
         onClick={() => setSelectedIndex(index)}
         aria-label={`${day.date}: ${day.completedMissions} missions completed`}
       >
@@ -49,6 +57,7 @@ export default function LearningTracker({
     );
   };
 
+  // 대시보드 캘린더와 연결?
   return (
     <Card className=" fixed w-[260px] bg-white my-[60px] ">
       <CardHeader className="pb-2">
@@ -59,7 +68,7 @@ export default function LearningTracker({
       <CardContent>
         <div className="space-y-4">
           <Progress value={progress} className="w-full" />
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 gap-2">
             {dailyGoals.map((goal) => (
               <div
                 key={goal.id}

@@ -7,8 +7,6 @@ export default function Dashboardpage() {
     <div className="border p-3">
       <span className="">월간학습</span>
       <Calendar />
-
-      <div className="rounded-sm p-3 border" />
     </div>
   );
 }

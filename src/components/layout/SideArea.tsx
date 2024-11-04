@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { Book, Bookmark, HelpCircle, Highlighter } from 'lucide-react';
+import { Book, HelpCircle, Highlighter } from 'lucide-react';
 
 import { useUserTime } from '@/api/hooks/useUserInfo';
 import { calculateDaysBetweenDates } from '@/lib/calculateDaysBetweenDates';
@@ -17,12 +17,7 @@ export default function SideArea() {
       label: '10분 학습',
       completed: false,
     },
-    {
-      id: 'memo',
-      icon: <Bookmark className="h-4 w-4" />,
-      label: '메모 1개',
-      completed: false,
-    },
+
     {
       id: 'highlight',
       icon: <Highlighter className="h-4 w-4" />,
@@ -40,7 +35,7 @@ export default function SideArea() {
   const mockHistory = [
     { date: '2023.06.15', completedMissions: 3 },
     { date: '2023.06.14', completedMissions: 2 },
-    { date: '2023.06.13', completedMissions: 4 },
+    { date: '2023.06.13', completedMissions: 1 },
     { date: '2023.06.12', completedMissions: 0 },
     { date: '2023.06.11', completedMissions: 1 },
   ];
