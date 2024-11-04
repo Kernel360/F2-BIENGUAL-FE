@@ -2,7 +2,6 @@ import {
   FetchScrapResponse,
   CreateScrapResponse,
   DeleteScrapResponse,
-  CheckScrapResponse,
 } from '@/types/Scrap';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/scrap`;
@@ -14,22 +13,6 @@ export const fetchScrap = async (): Promise<FetchScrapResponse> => {
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   });
-  if (!response.ok) {
-    throw new Error('Failed to fetch scrap');
-  }
-  return response.json();
-};
-
-// 스크랩 되었는지 확인
-export const checkScrap = async (
-  contentId: number,
-): Promise<CheckScrapResponse> => {
-  const response = await fetch(`${BASE_URL}/check?contentId=${contentId}`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-  });
-
   if (!response.ok) {
     throw new Error('Failed to fetch scrap');
   }
