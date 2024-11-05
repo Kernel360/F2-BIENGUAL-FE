@@ -2,28 +2,30 @@
 
 import React, { useState, useEffect } from 'react';
 
-import { fetchAllCategories } from '@/api/fetchAllCategories';
+import { useRouter } from 'next/navigation';
+
+import { useUpdateUserInfo } from '@/api/hooks/useUserInfo';
+import { fetchAllCategories } from '@/api/queries/fetchAllCategories';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { CategoryList } from '@/types/Category';
-
-const preferedCategories = async () => {
-  // todo : 개인별 선호하는 카테고리 추가 연결필요
-};
-const notChoosingCategories = async () => {
-  // todo : 카테고리 선택을 하지 않았을 때 빈 배열 넘겨야함.
-};
+import { useToast } from '@/hooks/use-toast';
 
 export default function LoginAddPage() {
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const [categories, setCategories] = useState<CategoryList[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const [categories, setCategories] = useState<CategoryList[]>([]);
+
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+  const updateUserInfoMutation = useUpdateUserInfo();
+  const router = useRouter();
+
+  const toast = useToast();
 
   const getAllCategories = async () => {
     try {
       const initialCategories = await fetchAllCategories();
-      console.log(initialCategories);
 
       setCategories(initialCategories.data.categoryList);
     } catch (error) {
@@ -37,12 +39,40 @@ export default function LoginAddPage() {
     getAllCategories();
   }, []);
 
+  const handlePreferedCategories = () => {
+    if (selectedCategories.length !== 0 && selectedCategories.length <= 5) {
+      updateUserInfoMutation.mutate(
+        { categories: selectedCategories },
+        {
+          onSuccess: () => {
+            router.push('/');
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        },
+      );
+    }
+  };
+  const notChoosingCategories = async () => {
+    router.push('/');
+  };
+
   const toggleCategory = (categoryId: number) => {
-    setSelectedCategories((prevSelected) =>
-      prevSelected.includes(categoryId)
-        ? prevSelected.filter((id) => id !== categoryId)
-        : [...prevSelected, categoryId],
-    );
+    setSelectedCategories((prevSelected) => {
+      if (prevSelected.includes(categoryId)) {
+        return prevSelected.filter((id) => id !== categoryId);
+      }
+      if (prevSelected.length < 5) {
+        return [...prevSelected, categoryId];
+      }
+
+      toast.toast({
+        description: '카테고리는 최대 5개까지 선택 가능합니다.',
+      });
+
+      return prevSelected;
+    });
   };
 
   return (
@@ -74,13 +104,13 @@ export default function LoginAddPage() {
         <div className=" flex mt-20 mx-96 gap-2 ">
           <Button
             onClick={notChoosingCategories}
-            className="bg-violet-100 text-gray px-6 py-2 rounded-3xl text-lg font-semibold transition-all duration-200 ease-in-out hover:scale-105"
+            className="bg-violet-100 text-gray px-6 py-2 rounded-3xl text-lg font-semibold transition-all duration-200 ease-in-out hover:scale-105 hover:bg-violet-200/90"
           >
             나중에 고를래요
           </Button>
           <Button
-            onClick={preferedCategories}
-            className="bg-violet-600 px-6 py-2  rounded-3xl text-lg font-semibold transition-all duration-200 ease-in-out hover:scale-105"
+            onClick={handlePreferedCategories}
+            className="bg-violet-600 px-6 py-2  rounded-3xl text-lg font-semibold transition-all duration-200 ease-in-out hover:scale-105 hover:shadow-lg"
           >
             다 골랐어요
           </Button>

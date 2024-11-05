@@ -6,51 +6,52 @@ import { useEffect, useState, useMemo } from 'react';
 import { Camera, X } from 'lucide-react';
 
 import { useUserInfo, useUpdateUserInfo } from '@/api/hooks/useUserInfo';
+import { fetchAllCategories } from '@/api/queries/fetchAllCategories';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-
-const categories = [
-  { id: 1, name: 'IT' },
-  { id: 2, name: 'Health' },
-  { id: 3, name: 'Business' },
-  { id: 4, name: 'Sports' },
-  { id: 5, name: 'Science' },
-  { id: 6, name: 'Language' },
-  { id: 7, name: 'Design' },
-  { id: 8, name: 'Music' },
-  { id: 9, name: 'Life' },
-  { id: 10, name: 'Fashion' },
-  { id: 11, name: 'Food' },
-  { id: 12, name: 'Finance' },
-  { id: 13, name: 'Movie' },
-  { id: 14, name: 'Art' },
-];
-
+import { CategoryList } from '@/types/Category';
+import { useToast } from '@/hooks/use-toast';
 export default function UserProfile() {
-  const [nickname, setNickname] = useState('');
-  // const [phone, setPhone] = useState(''); // todo : 나중에 핸드폰 로직 추가
-  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
-  const { data: userData, refetch: refetchUserInfo } = useUserInfo();
+  const [isLoading, setIsLoading] = useState(true);
 
-  const { mutate: updateUserInfoMutation } = useUpdateUserInfo();
+  const { data: userData, refetch: refetchUserInfo } = useUserInfo();
+  const [nickname, setNickname] = useState('');
+
+  // 초기 카테고리 목록
+  const [categories, setCategories] = useState<CategoryList[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+
+  const updateUserInfoMutation = useUpdateUserInfo();
+  const toast = useToast();
 
   useEffect(() => {
     if (userData) {
       setNickname(userData.data.nickname || '');
-      // todo : 나중에 핸드폰 로직 추가
-      // if (userData.data.phoneNumber) {
-      //   setPhone(userData.data.phoneNumber || '');
-      // }
+
+      if (userData.data.myCategories) {
+        setSelectedCategories(
+          userData.data.myCategories.map((category) => category.id),
+        );
+      }
+
+      const getAllCategories = async () => {
+        try {
+          const initialCategories = await fetchAllCategories();
+          setCategories(initialCategories.data.categoryList);
+        } catch (error) {
+          console.error('Error fetching categories:', error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      getAllCategories();
     }
   }, [userData]);
 
-  const isNicknameChanged = useMemo(() => {
-    return nickname !== userData?.data.nickname;
-  }, [nickname, userData?.data.nickname]);
-
   const handleNicknameChange = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
-    updateUserInfoMutation(
+    updateUserInfoMutation.mutate(
       { nickname },
       {
         onSuccess: () => {
@@ -60,16 +61,54 @@ export default function UserProfile() {
     );
   };
 
+  const isNicknameChanged = useMemo(() => {
+    return nickname !== userData?.data.nickname;
+  }, [nickname, userData?.data.nickname]);
+
   const toggleCategory = (categoryId: number) => {
-    setSelectedCategories((prev) =>
-      prev.includes(categoryId)
-        ? prev.filter((id) => id !== categoryId)
-        : [...prev, categoryId],
-    );
+    setSelectedCategories((prevSelected) => {
+      if (prevSelected.includes(categoryId)) {
+        return prevSelected.filter((id) => id !== categoryId);
+      }
+      if (prevSelected.length < 5) {
+        return [...prevSelected, categoryId];
+      }
+
+      toast.toast({
+        description: '카테고리는 최대 5개까지 선택 가능합니다.',
+      });
+
+      return prevSelected;
+    });
   };
 
-  const modifyCategories = () => {
-    // todo : 카테고리 변경 api로직 추가. ps. /login/add페이지의 '다골랐어요' 버튼과 같은 api여야함.
+  // selectedCategories와 myCategories가 동일한지 여부를 확인
+  const isCategoriesChanged = useMemo(() => {
+    const userCategoriesIds =
+      userData?.data?.myCategories?.map((category) => category.id) || [];
+    return (
+      selectedCategories.length !== userCategoriesIds.length ||
+      selectedCategories.some((id) => !userCategoriesIds.includes(id))
+    );
+  }, [selectedCategories, userData?.data?.myCategories]);
+
+  const updateCategories = () => {
+    // 카테고리 선택 안 할 수도 있음
+    if (selectedCategories.length <= 5) {
+      updateUserInfoMutation.mutate(
+        { categories: selectedCategories },
+        {
+          onSuccess: () => {
+            toast.toast({
+              description: '카테고리가 성공적으로 변경되었습니다.',
+            });
+          },
+          onError: (error) => {
+            console.log(error);
+          },
+        },
+      );
+    }
   };
 
   return (
@@ -79,6 +118,7 @@ export default function UserProfile() {
       </header>
       <div className="p-4 max-w-xl flex flex-col justify-center items-center mx-auto">
         <div className="flex justify-center mb-6">
+          {/* 프로필사진 */}
           <div className="relative">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
@@ -101,6 +141,7 @@ export default function UserProfile() {
             </button>
           </div>
         </div>
+        {/* 내 정보 수정 */}
         <form className="space-y-4 w-full " name="userInfo">
           <div>
             <label
@@ -167,38 +208,17 @@ export default function UserProfile() {
               />
             </div>
           </div>
-          <div>
-            {/* todo : 나중에 연결하기 */}
-            {/* <label
-              htmlFor="phone"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              휴대폰 번호
-            </label>
-            <div className="flex gap-2">
-              <Input
-                id="phone"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                readOnly
-                disabled
-                className="flex-1"
-                autoComplete="on"
-              />
-              <Button variant="outline" size="sm">
-                변경하기
-              </Button>
-            </div> */}
-          </div>
+          <div />
         </form>
+        {/* 카테고리 수정 */}
         <div className="mt-8 w-full">
           <div className="flex justify-between">
             <h2 className="text-lg font-semibold mb-4">관심 카테고리</h2>
             <Button
               variant="outline"
               size="sm"
-              disabled={!(selectedCategories.length > 0)}
-              onClick={modifyCategories}
+              disabled={!isCategoriesChanged} // 카테고리 변경사항이 없으면 변경버튼 disabled
+              onClick={updateCategories}
             >
               변경하기
             </Button>
