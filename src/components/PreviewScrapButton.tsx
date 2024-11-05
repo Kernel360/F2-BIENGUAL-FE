@@ -13,11 +13,18 @@ import Modal from './common/Modal';
 interface PreviewScrapButtonProps {
   contentId: number;
   isScrappedData: boolean;
+  target:
+    | 'readingPreview'
+    | 'listeningPreview'
+    | 'contentDetail'
+    | 'paginatedReadingPreview'
+    | 'paginatedListeningPreview';
 }
 
 export default function PreviewScrapButton({
   contentId,
   isScrappedData,
+  target,
 }: PreviewScrapButtonProps) {
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data;
@@ -26,7 +33,11 @@ export default function PreviewScrapButton({
   const searchParams = useSearchParams();
   const page = Number(searchParams.get('page'));
 
-  const { toggleScrap } = useScrapToggle(contentId, isScrappedData, page);
+  const { toggleScrap } = useScrapToggle({
+    contentId,
+    target,
+    page,
+  });
 
   const handleShowLoginModal = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -35,7 +46,7 @@ export default function PreviewScrapButton({
 
   const handleToggleScrap = (event: React.MouseEvent) => {
     event.preventDefault();
-    toggleScrap();
+    toggleScrap(isScrappedData);
   };
 
   return (
