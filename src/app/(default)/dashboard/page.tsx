@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 import { PlayCircle, ChevronRight, Trophy } from 'lucide-react';
 import { Bar, BarChart, Pie, PieChart } from 'recharts';
 
@@ -15,8 +17,7 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
+  ChartConfig,
 } from '@/components/ui/chart';
 
 const quizData = [
@@ -29,12 +30,53 @@ const quizData = [
 ];
 
 const categoryData = [
-  { name: 'Sports', value: 30 },
-  { name: 'Health', value: 25 },
-  { name: 'News', value: 20 },
-  { name: 'Politics', value: 15 },
-  { name: 'Science', value: 10 },
+  { category: 'sports', percent: 30, fill: 'hsl(var(--chart-1))' },
+  { category: 'health', percent: 25, fill: 'hsl(var(--chart-2))' },
+  { category: 'news', percent: 20, fill: 'hsl(var(--chart-3))' },
+  { category: 'politics', percent: 15, fill: 'hsl(var(--chart-4))' },
+  { category: 'science', percent: 10, fill: 'hsl(var(--chart-5))' },
 ];
+
+const categoryChartConfig = {
+  percent: {
+    label: 'Percent',
+  },
+  sports: {
+    label: 'Sports',
+    color: 'hsl(var(--chart-1))',
+  },
+  health: {
+    label: 'Health',
+    color: 'hsl(var(--chart-2))',
+  },
+  news: {
+    label: 'News',
+    color: 'hsl(var(--chart-3))',
+  },
+  politics: {
+    label: 'Politics',
+    color: 'hsl(var(--chart-4))',
+  },
+  science: {
+    label: 'Science',
+    color: 'hsl(var(--chart-5))',
+  },
+} satisfies ChartConfig;
+
+const quizChartConfig = {
+  total: {
+    label: '총 문제',
+    color: 'hsl(var(--chart-1))',
+  },
+  correct: {
+    label: '정답',
+    color: 'hsl(var(--chart-2))',
+  },
+  accuracy: {
+    label: '정답률',
+    color: 'hsl(var(--chart-3))',
+  },
+} satisfies ChartConfig;
 
 export default function Component() {
   return (
@@ -46,13 +88,12 @@ export default function Component() {
             <CardTitle className="text-lg font-medium">
               최근 학습 강의
             </CardTitle>
-            <button
-              type="button"
+            <Link
+              href="/recent"
               className="text-md text-muted-foreground hover:text-primary"
-              onClick={() => {}}
             >
               학습 목록 <ChevronRight className="inline h-4 w-4" />
-            </button>
+            </Link>
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
             <div className="flex items-center space-x-3">
@@ -70,13 +111,12 @@ export default function Component() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between p-4">
             <CardTitle className="text-lg font-medium">내 포인트</CardTitle>
-            <button
-              type="button"
+            <Link
+              href="/point"
               className="text-md text-muted-foreground hover:text-primary"
-              onClick={() => {}}
             >
               포인트 내역 <ChevronRight className="inline h-4 w-4" />
-            </button>
+            </Link>
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
             <div className="flex items-center space-x-3">
@@ -109,30 +149,24 @@ export default function Component() {
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
             <ChartContainer
-              config={{
-                Sports: { label: 'Sports', color: 'hsl(var(--chart-1))' },
-                Health: { label: 'Health', color: 'hsl(var(--chart-2))' },
-                News: { label: 'News', color: 'hsl(var(--chart-3))' },
-                Politics: { label: 'Politics', color: 'hsl(var(--chart-4))' },
-                Science: { label: 'Science', color: 'hsl(var(--chart-5))' },
-              }}
+              config={categoryChartConfig}
               className="w-[350px] h-[300px]"
             >
               <PieChart className="h-[300px] w-full">
                 <Pie
                   data={categoryData}
-                  dataKey="value"
-                  nameKey="name"
+                  dataKey="percent"
+                  nameKey="category"
                   cx="50%"
                   cy="50%"
-                  outerRadius={80}
-                  fill="var(--color-Grammar)"
+                  outerRadius={100}
                 />
+
                 <ChartTooltip content={<ChartTooltipContent />} />
-                <ChartLegend
+                {/* <ChartLegend
                   content={<ChartLegendContent nameKey="name" />}
                   className="flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
-                />
+                /> */}
               </PieChart>
             </ChartContainer>
           </CardContent>
@@ -148,14 +182,7 @@ export default function Component() {
           </CardDescription>
         </CardHeader>
         <CardContent className="px-4 pb-4 pt-0">
-          <ChartContainer
-            config={{
-              total: { label: '총 문제', color: 'hsl(var(--primary))' },
-              correct: { label: '정답', color: 'hsl(var(--success))' },
-              accuracy: { label: '정답률', color: 'hsl(var(--warning))' },
-            }}
-            className="h-[300px]"
-          >
+          <ChartContainer config={quizChartConfig} className="h-[300px]">
             <BarChart data={quizData} className="h-[300px]">
               <ChartTooltip content={<ChartTooltipContent />} />
               <Bar
