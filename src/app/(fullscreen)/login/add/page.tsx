@@ -9,8 +9,8 @@ import { fetchAllCategories } from '@/api/queries/fetchAllCategories';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { CategoryList } from '@/types/Category';
 import { useToast } from '@/hooks/use-toast';
+import { CategoryList } from '@/types/Category';
 
 export default function LoginAddPage() {
   const [isLoading, setIsLoading] = useState(true);

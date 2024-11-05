@@ -9,9 +9,11 @@ import { useUserInfo, useUpdateUserInfo } from '@/api/hooks/useUserInfo';
 import { fetchAllCategories } from '@/api/queries/fetchAllCategories';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CategoryList } from '@/types/Category';
 import { useToast } from '@/hooks/use-toast';
+import { CategoryList } from '@/types/Category';
+
 export default function UserProfile() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(true);
 
   const { data: userData, refetch: refetchUserInfo } = useUserInfo();

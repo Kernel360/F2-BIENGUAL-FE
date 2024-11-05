@@ -3,8 +3,8 @@ import React from 'react';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import '@/app/globals.css';
-import QueryClientProvider from '@/providers/QueryClientProvider';
 import { Toaster } from '@/components/ui/toaster';
+import QueryClientProvider from '@/providers/QueryClientProvider';
 
 export default function RootLayout({
   children,
