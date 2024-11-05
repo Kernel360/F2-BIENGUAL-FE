@@ -29,7 +29,7 @@ export const updateUserInfo = async (
 ): Promise<UserUpdateResponse> => {
   try {
     const response = await fetch(`${BASE_URL}/user/me`, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },

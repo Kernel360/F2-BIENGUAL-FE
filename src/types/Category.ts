@@ -1,4 +1,4 @@
-export interface Category {
+export interface FetchCategoryResponse {
   code: string;
   message: string;
   data: { categoryList: CategoryList[] };

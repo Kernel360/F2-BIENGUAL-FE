@@ -1,3 +1,5 @@
+import { CategoryList } from './Category';
+
 export interface User {
   username?: string;
   nickname: string;
@@ -5,6 +7,7 @@ export interface User {
   phoneNumber?: string;
   birth?: string; // Date일수도 있음
   gender?: 'GENDER_MALE' | 'GENDER_FEMALE';
+  myCategories?: CategoryList[];
 }
 
 export interface UserResponse {
@@ -19,6 +22,7 @@ export interface UserUpdateRequest {
   phoneNumber?: string;
   birth?: string; // Date일수도 있음
   gender?: 'GENDER_MALE' | 'GENDER_FEMALE';
+  categories?: number[];
 }
 
 export interface UserUpdateResponse {
