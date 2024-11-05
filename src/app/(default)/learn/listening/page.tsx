@@ -54,6 +54,7 @@ function ListeningPage() {
               <PreviewScrapButton
                 contentId={content.contentId}
                 isScrappedData={content.isScrapped}
+                target="paginatedListeningPreview"
               />
             }
             bottomRightButton={

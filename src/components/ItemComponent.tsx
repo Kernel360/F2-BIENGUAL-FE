@@ -19,6 +19,11 @@ export default function ItemComponent({ data }: any) {
         <PreviewScrapButton
           contentId={data.contentId}
           isScrappedData={data.isScrapped}
+          target={
+            data.contentType === 'READING'
+              ? 'readingPreview'
+              : 'listeningPreview'
+          }
         />
       }
       bottomRightButton={

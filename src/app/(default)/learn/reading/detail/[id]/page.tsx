@@ -30,11 +30,10 @@ export default function DetailReadingPage() {
   const contentId = Number(params.id);
   const { data, isLoading, isError, error } = useContentDetail(contentId);
 
-  // TODO(@smosco): 아직 데이터를 못 받아왔을 때 무조건 false로 설정해둠
-  const { toggleScrap } = useScrapToggle(
+  const { toggleScrap } = useScrapToggle({
     contentId,
-    data?.data.isScrapped || false,
-  );
+    target: 'contentDetail',
+  });
 
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data;
@@ -63,7 +62,7 @@ export default function DetailReadingPage() {
       return;
     }
 
-    toggleScrap();
+    toggleScrap(data?.data.isScrapped);
   };
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <div>Error: {error?.message}</div>;

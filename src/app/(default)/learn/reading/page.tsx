@@ -53,6 +53,7 @@ export default function ReadingPage() {
               <PreviewScrapButton
                 contentId={content.contentId}
                 isScrappedData={content.isScrapped}
+                target="paginatedReadingPreview"
               />
             }
             leftBadge={<Badge>{content.category}</Badge>}

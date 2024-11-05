@@ -43,11 +43,10 @@ export default function DetailListeningPage() {
     error,
   } = useContentDetail(contentId);
 
-  // TODO(@smosco): 아직 데이터를 못 받아왔을 때 무조건 false로 설정해둠
-  const { toggleScrap } = useScrapToggle(
+  const { toggleScrap } = useScrapToggle({
     contentId,
-    ListeningDetailData?.data.isScrapped || false,
-  );
+    target: 'contentDetail',
+  });
 
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
@@ -102,7 +101,7 @@ export default function DetailListeningPage() {
       return;
     }
 
-    toggleScrap();
+    toggleScrap(ListeningDetailData?.data.isScrapped);
   };
 
   if (isLoading) {
