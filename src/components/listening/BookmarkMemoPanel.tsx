@@ -4,6 +4,7 @@ import { useParams } from 'next/navigation';
 
 import { BookmarkPlus } from 'lucide-react';
 
+import { useUpdateMissionStatus } from '@/api/hooks/useMission';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import EmptyAlert from '@/components/common/EmptyAlert';
 import BookmarkMemoItem from '@/components/listening/BookmarkMemoItem';
@@ -17,6 +18,7 @@ import { convertTime } from '@/lib/convertTime';
 import { findCurrentSubtitleIndex } from '@/lib/findCurrentSubtitleIndex';
 import useThrottling from '@/lib/useThrottling';
 import { Script } from '@/types/ContentDetail';
+import { MissionStatus } from '@/types/Mission';
 
 interface BookmarkMemoPanelProps {
   bookmarkList: Script[];
@@ -25,6 +27,7 @@ interface BookmarkMemoPanelProps {
   seekTo: (timeInSeconds: number) => void;
   setIsPlaying: React.Dispatch<SetStateAction<boolean>>;
   setShowLoginModal: React.Dispatch<SetStateAction<boolean>>;
+  missionStatus: MissionStatus | undefined;
 }
 
 export default function BookmarkMemoPanel({
@@ -34,6 +37,7 @@ export default function BookmarkMemoPanel({
   seekTo,
   setIsPlaying,
   setShowLoginModal,
+  missionStatus,
 }: BookmarkMemoPanelProps) {
   const params = useParams();
   const contentId = Number(params.id);
@@ -55,11 +59,19 @@ export default function BookmarkMemoPanel({
 
   const { addMemo } = useHandleBookmark(contentId);
 
+  const { mutate: updateMissionStatus } = useUpdateMissionStatus();
+
   const handleSaveNewNote = () => {
     if (selectedSentenceIndex !== null) {
       addMemo(selectedSentenceIndex, newNoteText);
       setIsAddingNote(false);
       setIsPlaying(true);
+
+      // TODO(@smosco): 현재 북마크 생성 성공 여부에 관계 없이 북마크 미션 업데이트 요청을 보냄
+      // 심지어 순서도 안 지켜짐
+      if (!missionStatus?.bookmark) {
+        updateMissionStatus({ bookmark: true });
+      }
     }
   };
 

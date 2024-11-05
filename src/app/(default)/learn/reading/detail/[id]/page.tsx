@@ -9,15 +9,16 @@ import { useParams } from 'next/navigation';
 import { ArrowUp } from 'lucide-react';
 
 import { useContentDetail } from '@/api/hooks/useContentDetail';
+import { useFetchMissionStatus } from '@/api/hooks/useMission';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
-import ScrollProgressBar from '@/components/common/ScrollProgressBar';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import QuizCover from '@/components/quiz/QuizCover';
+import MissionScrollProgressbar from '@/components/reading/MissionScrollProgressbar';
 import ReadingScriptItem from '@/components/reading/ReadingScriptItem';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -45,6 +46,8 @@ export default function DetailReadingPage() {
   const [showTranslate, setShowTranslate] = useState(true);
 
   const [showQuiz, setShowQuiz] = useState(false);
+
+  const { data: missionStatus } = useFetchMissionStatus();
 
   const toggleTranslation = () => setShowTranslate((prev) => !prev);
 
@@ -99,6 +102,7 @@ export default function DetailReadingPage() {
                     key={index}
                     script={script}
                     showTranslate={showTranslate}
+                    missionStatus={missionStatus?.data}
                   />
                 );
               })}
@@ -192,7 +196,7 @@ export default function DetailReadingPage() {
         showTranslate={showTranslate}
         onTranslateToggle={toggleTranslation}
       />
-      <ScrollProgressBar />
+      <MissionScrollProgressbar missionStatus={missionStatus?.data} />
     </>
   );
 }
