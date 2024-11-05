@@ -75,7 +75,8 @@
     ]
   },
   "ignorePatterns": [
-    "src/components/ui/**/*" // components/ui 디렉터리 내 모든 파일 무시
+    "src/components/ui/**/*", // components/ui 디렉터리 내 모든 파일 무시
+    "src/components/common/CustomShadcnCalendar.tsx" // 특정 파일 무시
   ],
   "settings": {
     "react": {
