@@ -61,15 +61,13 @@ export default function BookmarkMemoPanel({
 
   const { mutate: updateMissionStatus } = useUpdateMissionStatus();
 
-  const handleSaveNewNote = () => {
+  const handleSaveNewNote = async () => {
     if (selectedSentenceIndex !== null) {
-      addMemo(selectedSentenceIndex, newNoteText);
+      const result = await addMemo(selectedSentenceIndex, newNoteText);
       setIsAddingNote(false);
       setIsPlaying(true);
 
-      // TODO(@smosco): 현재 북마크 생성 성공 여부에 관계 없이 북마크 미션 업데이트 요청을 보냄
-      // 심지어 순서도 안 지켜짐
-      if (!missionStatus?.bookmark) {
+      if (result && !missionStatus?.bookmark) {
         updateMissionStatus({ bookmark: true });
       }
     }

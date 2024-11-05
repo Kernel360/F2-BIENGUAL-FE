@@ -12,16 +12,23 @@ export default function useHandleBookmark(contentId: number) {
   const deleteBookmarkMutation = useDeleteBookmark(contentId);
   const updateBookmarkMutation = useUpdateBookmark(contentId);
 
-  const addBookmark = (targetSubtitleIndex: number) => {
+  const addBookmark = async (targetSubtitleIndex: number) => {
     if (targetSubtitleIndex !== null && targetSubtitleIndex !== undefined) {
-      createBookmarkMutation.mutate({
-        sentenceIndex: targetSubtitleIndex,
-      });
+      try {
+        await createBookmarkMutation.mutateAsync({
+          sentenceIndex: targetSubtitleIndex,
+        });
+        return true;
+      } catch (error) {
+        console.error('Bookmark creation failed', error);
+        return false;
+      }
     } else {
       toast({
         title: '이미 해당 시간에 북마크가 존재합니다.',
         duration: 1000,
       });
+      return false;
     }
   };
 
@@ -49,15 +56,21 @@ export default function useHandleBookmark(contentId: number) {
     });
   };
 
-  const addMemo = (targetSubtitleIndex: number, description: string) => {
-    createBookmarkMutation.mutate({
-      sentenceIndex: targetSubtitleIndex,
-      description,
-    });
+  const addMemo = async (targetSubtitleIndex: number, description: string) => {
+    try {
+      await createBookmarkMutation.mutateAsync({
+        sentenceIndex: targetSubtitleIndex,
+        description,
+      });
+      return true;
+    } catch (error) {
+      console.error('메모 생성 실패', error);
+      return false;
+    }
   };
 
   const updateMemo = (bookmarkId: number, description: string) => {
-    updateBookmarkMutation.mutate({ bookmarkId, description });
+    updateBookmarkMutation.mutateAsync({ bookmarkId, description });
   };
 
   return {

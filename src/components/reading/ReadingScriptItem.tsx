@@ -44,13 +44,12 @@ export default function ReadingScriptItem({
 
   const { mutate: updateMissionStatus } = useUpdateMissionStatus();
 
-  const handleAddBookmark = () => {
+  const handleAddBookmark = async () => {
     if (!script.bookmarkId) {
-      addBookmark(index);
+      const result = await addBookmark(index);
 
-      // TODO(@smosco): 현재 북마크 생성 성공 여부에 관계 없이 북마크 미션 업데이트 요청을 보냄
-      // 심지어 순서도 안 지켜짐
-      if (!missionStatus?.bookmark) {
+      if (result && !missionStatus?.bookmark) {
+        // 북마크가 성공적으로 생성된 후에만 수행
         updateMissionStatus({ bookmark: true });
       }
     }
@@ -88,7 +87,7 @@ export default function ReadingScriptItem({
     setIsSelected(false);
   };
 
-  const handleSaveMemo = () => {
+  const handleSaveMemo = async () => {
     const memoTextTrimmed = memoText.trim();
 
     if (memoTextTrimmed === '') {
@@ -96,12 +95,14 @@ export default function ReadingScriptItem({
         removeBookmarkMemo(script.bookmarkId);
       }
     } else if (script.bookmarkId) {
+      // 이미 북마크 되어 있는 경우 업데이트
       updateMemo(script.bookmarkId, memoTextTrimmed);
     } else {
-      addMemo(index, memoTextTrimmed);
-      // TODO(@smosco): 현재 북마크 생성 성공 여부에 관계 없이 북마크 미션 업데이트 요청을 보냄
-      // 심지어 순서도 안 지켜짐
-      if (!missionStatus?.bookmark) {
+      // 북마크가 아예 안되어 있는 경우만 생성
+      const result = await addMemo(index, memoTextTrimmed);
+
+      if (result && !missionStatus?.bookmark) {
+        // 메모 추가가 성공한 후에만 미션 상태 업데이트
         updateMissionStatus({ bookmark: true });
       }
     }
