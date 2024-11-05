@@ -1,8 +1,8 @@
-import { Category } from '@/types/Category';
+import { FetchCategoryResponse } from '@/types/Category';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
 
-export const fetchAllCategories = async (): Promise<Category> => {
+export const fetchAllCategories = async (): Promise<FetchCategoryResponse> => {
   const response = await fetch(`${BASE_URL}/categories/all`, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
