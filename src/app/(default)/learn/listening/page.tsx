@@ -6,7 +6,6 @@ import { Clock } from 'lucide-react';
 
 import { usePaginatedListeningPreview } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
-import EmptyAlert from '@/components/common/EmptyAlert';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Pagination from '@/components/common/Pagination';
 import ContentCard from '@/components/items/ContentCard';
@@ -18,13 +17,24 @@ function ListeningPage() {
 
   const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page'));
+  // 기본값 지정해줘야만 null, undefined가 queryparams로 들어가지 않음
+  const size = Number(searchParams.get('size')) || 10;
+  const sort = searchParams.get('sort') || 'createdAt';
+  const direction = searchParams.get('direction') || 'DESC';
+  const categoryId = Number(searchParams.get('categoryId')) || undefined;
 
   const {
     data: listeningContents,
     isLoading,
     isError,
     error,
-  } = usePaginatedListeningPreview(currentPage);
+  } = usePaginatedListeningPreview(
+    currentPage,
+    size,
+    sort,
+    direction,
+    categoryId,
+  );
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -34,10 +44,12 @@ function ListeningPage() {
     return <p className="text-red-500">에러가 발생했습니다: {error.message}</p>;
   }
 
-  if (!listeningContents || listeningContents.data.contents.length === 0) {
-    return <EmptyAlert alertDescription="북마크가 없습니다." />;
-  }
+  // TODO(@godhyzzang): 컨텐츠가 없을 때 보여줄 컴포넌트 만들 것
+  // if (!listeningContents || listeningContents.data.contents.length === 0) {
+  //   return <EmptyAlert alertDescription="컨텐츠가 없습니다." />;
+  // }
 
+  // 페이지네이션 버튼 누를때마다 페이지 이동
   const handlePageChange = (page: number) => {
     router.push(`?page=${page}`);
   };
@@ -46,7 +58,7 @@ function ListeningPage() {
     <main>
       <ContentTypeFilter />
       <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-7 mt-8">
-        {listeningContents.data.contents.map((content) => (
+        {listeningContents?.data.contents.map((content) => (
           <ContentCard
             key={content.contentId}
             href={`/learn/listening/detail/${content.contentId}`}
@@ -72,7 +84,7 @@ function ListeningPage() {
         ))}
       </div>
       <Pagination
-        totalPages={listeningContents.data.totalPages}
+        totalPages={listeningContents?.data.totalPages ?? 0}
         onPageChange={handlePageChange}
       />
     </main>
