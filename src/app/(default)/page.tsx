@@ -1,3 +1,5 @@
+import { cookies } from 'next/headers';
+
 import {
   fetchReadingPreview,
   fetchListeningPreview,
@@ -6,8 +8,12 @@ import {
 import HomePageClient from '../../components/HomePageClient';
 
 export default async function HomePage() {
-  const initialReadingContents = await fetchReadingPreview();
-  const initialListeningContents = await fetchListeningPreview();
+  const initialReadingContents = await fetchReadingPreview({
+    Cookie: cookies().toString(),
+  });
+  const initialListeningContents = await fetchListeningPreview({
+    Cookie: cookies().toString(),
+  });
 
   return (
     <HomePageClient

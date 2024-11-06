@@ -6,7 +6,7 @@ const queryClientOptions = {
   defaultOptions: {
     queries: {
       // TODO(@godhyzzang) : staleTime설정하고도 scrap데이터 잘 불러오는 방법 고민 필요
-      // staleTime: 60 * 1000, // 캐시된 데이터가 1분 동안 신선함 유지
+      staleTime: 60 * 1000, // 캐시된 데이터가 1분 동안 신선함 유지
     },
   },
 };

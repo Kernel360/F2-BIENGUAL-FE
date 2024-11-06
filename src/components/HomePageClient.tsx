@@ -44,6 +44,8 @@ export default function HomePageClient({
     // staleTime: 1000 * 60 * 10,
   });
 
+  console.log(listeningList.data.listeningPreview);
+
   if (readingLoading || listeningLoading) {
     return <LoadingSpinner />;
   }
