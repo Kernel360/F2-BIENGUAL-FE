@@ -19,6 +19,7 @@ export type ContentDetail = {
   videoUrl?: string;
   hits: number;
   isScrapped: boolean;
+  learningRate: number;
   scriptList: Script[];
 };
 
