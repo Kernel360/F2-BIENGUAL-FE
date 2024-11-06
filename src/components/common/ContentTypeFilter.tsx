@@ -7,6 +7,13 @@ import { usePathname, useSearchParams } from 'next/navigation';
 
 import { useFetchAllCategories } from '@/api/hooks/useCategories';
 import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 
 export default function ContentTypeFilter() {
   const path = usePathname();
@@ -40,6 +47,7 @@ export default function ContentTypeFilter() {
               href={{
                 pathname: href,
                 query: {
+                  ...Object.fromEntries(searchParams.entries()), // 이전에 선택한 queryparams 유지
                   page: 1,
                 },
               }} // 항상 page=1로 이동
@@ -59,12 +67,21 @@ export default function ContentTypeFilter() {
         <Link
           href={{
             pathname: path,
+            query: {
+              // 이전에 선택한 queryparams 유지
+              ...Object.fromEntries(
+                Array.from(searchParams.entries()).filter(
+                  ([key]) => key !== 'categoryId',
+                ),
+              ),
+            },
           }}
         >
           <button
             type="button"
+            onClick={() => toggleCategory(0)}
             className={`px-3 py-1 rounded-full text-sm ${
-              params.length === 0
+              !searchParams.get('categoryId')
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-gray-200 text-gray-800'
             }`}
@@ -79,6 +96,8 @@ export default function ContentTypeFilter() {
             href={{
               pathname: path,
               query: {
+                ...Object.fromEntries(searchParams.entries()), // 이전에 선택한 queryparams 유지
+
                 categoryId:
                   params === String(category.id) ? '' : String(category.id),
               },
@@ -97,6 +116,32 @@ export default function ContentTypeFilter() {
             </button>
           </Link>
         ))}
+      </div>
+      <div className="flex justify-end">
+        <div className="flex flex-col gap-2 mt-4">
+          <Select
+            onValueChange={(value) => {
+              window.location.href = `${path}?${new URLSearchParams({
+                ...Object.fromEntries(searchParams.entries()), // 이전에 선택한 queryparams 유지
+                sort: value,
+              }).toString()}`;
+            }}
+            value={searchParams.get('sort') || 'createdAt'}
+          >
+            {/* TODO(@godhyzzang w-100px적용이 안됨) */}
+            <SelectTrigger className="w-[100px]">
+              <SelectValue placeholder="정렬 기준" className="w-[100px]" />
+            </SelectTrigger>
+            <SelectContent className="w-[100px]">
+              <SelectItem value="createdAt" className="w-[100px]">
+                최신순
+              </SelectItem>
+              <SelectItem value="hits" className="w-[100px]">
+                인기순
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
     </div>
   );
