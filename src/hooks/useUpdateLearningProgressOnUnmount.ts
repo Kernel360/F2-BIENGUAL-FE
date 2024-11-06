@@ -6,7 +6,8 @@ export const useUpdateLearningProgressOnUnmount = (
   contentId: number,
   progress: number,
 ) => {
-  const { mutate: updateLearningProgress } = useUpdateLearningProgress();
+  const { mutate: updateLearningProgress } =
+    useUpdateLearningProgress(contentId);
   const scrollProgressRef = useRef<number>(progress);
 
   useEffect(() => {

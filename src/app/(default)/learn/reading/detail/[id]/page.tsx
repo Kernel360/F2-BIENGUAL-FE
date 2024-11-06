@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useParams } from 'next/navigation';
 
@@ -31,10 +31,6 @@ export default function DetailReadingPage() {
   const params = useParams();
   const contentId = Number(params.id);
   const { data, isLoading, isError, error } = useContentDetail(contentId);
-
-  // const [scrollPercent, setScrollPercent] = useState(
-  //   data?.data.learningRate || 0,
-  // );
 
   const scrollProgress = useScrollProgress();
   useUpdateLearningProgressOnUnmount(contentId, scrollProgress);
@@ -73,6 +69,17 @@ export default function DetailReadingPage() {
 
     toggleScrap(data?.data.isScrapped);
   };
+
+  useEffect(() => {
+    if (data?.data.learningRate) {
+      const scrollPosition =
+        (document.documentElement.scrollHeight - window.innerHeight) *
+        (Number(data?.data.learningRate) / 100);
+
+      window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+    }
+  }, [data?.data.learningRate]);
+
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <div>Error: {error?.message}</div>;
 

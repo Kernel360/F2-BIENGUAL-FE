@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 
 import { useParams } from 'next/navigation';
 
@@ -77,6 +77,19 @@ export default function DetailListeningPage() {
       playerRef.current.seekTo(timeInSeconds, 'seconds');
     }
   };
+
+  useEffect(() => {
+    if (
+      playerRef.current &&
+      playerRef.current.getDuration() &&
+      listeningDetailData?.data.learningRate
+    ) {
+      seekTo(
+        Number(playerRef.current?.getDuration()) *
+          (listeningDetailData.data.learningRate / 100),
+      );
+    }
+  }, [playerRef.current]);
 
   // 90% 이상 재생되면 콘텐츠 학습 미션 업데이트 요청 보냄(콜백 함수)
   const handleProgress = (playedSeconds: number) => {
