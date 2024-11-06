@@ -63,8 +63,8 @@ export default function BookmarkMemoPanel({
 
   const handleSaveNewNote = async () => {
     if (selectedSentenceIndex !== null) {
-      const result = await addMemo(selectedSentenceIndex, newNoteText);
       setIsAddingNote(false);
+      const result = await addMemo(selectedSentenceIndex, newNoteText);
       setIsPlaying(true);
 
       if (result && !missionStatus?.bookmark) {

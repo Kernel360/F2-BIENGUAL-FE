@@ -169,6 +169,7 @@ export const useDeleteBookmark = (contentId: number) => {
               if (script.bookmarkId === bookmarkId) {
                 return {
                   ...script,
+                  // bookmarkId: null,
                   isHighlighted: false, // isHighlighted를 false로 업데이트
                   description: null, // description을 빈 문자열로 업데이트
                 };
