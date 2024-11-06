@@ -118,7 +118,7 @@ export default function ContentTypeFilter() {
         ))}
       </div>
       <div className="flex justify-end">
-        <div className="flex flex-col gap-2 mt-4">
+        <div className="flex min-w-[100px]">
           <Select
             onValueChange={(value) => {
               window.location.href = `${path}?${new URLSearchParams({
@@ -129,14 +129,14 @@ export default function ContentTypeFilter() {
             value={searchParams.get('sort') || 'createdAt'}
           >
             {/* TODO(@godhyzzang w-100px적용이 안됨) */}
-            <SelectTrigger className="w-[100px]">
-              <SelectValue placeholder="정렬 기준" className="w-[100px]" />
+            <SelectTrigger>
+              <SelectValue placeholder="정렬 기준" />
             </SelectTrigger>
-            <SelectContent className="w-[100px]">
-              <SelectItem value="createdAt" className="w-[100px]">
+            <SelectContent className="min-w-[100px]">
+              <SelectItem value="createdAt" className="">
                 최신순
               </SelectItem>
-              <SelectItem value="hits" className="w-[100px]">
+              <SelectItem value="hits" className="">
                 인기순
               </SelectItem>
             </SelectContent>
