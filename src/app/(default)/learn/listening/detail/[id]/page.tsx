@@ -28,6 +28,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
+import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
 import { CustomScriptLanguageCode } from '@/types/Scripts';
 
 type Mode = 'line' | 'block';
@@ -89,6 +90,14 @@ export default function DetailListeningPage() {
       updateMissionStatus({ oneContent: true });
     }
   };
+
+  useUpdateLearningProgressOnUnmount(
+    contentId,
+    playerRef.current
+      ? (playerRef.current.getCurrentTime() / playerRef.current.getDuration()) *
+          100
+      : 0,
+  );
 
   const handleScrapToggle = () => {
     // 로그인 권한 없으면 로그인 모달 띄우기

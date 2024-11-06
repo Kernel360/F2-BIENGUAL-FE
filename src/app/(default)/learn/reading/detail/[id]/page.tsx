@@ -24,11 +24,20 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
+import { useScrollProgress } from '@/hooks/useScrollProgress';
+import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
 
 export default function DetailReadingPage() {
   const params = useParams();
   const contentId = Number(params.id);
   const { data, isLoading, isError, error } = useContentDetail(contentId);
+
+  // const [scrollPercent, setScrollPercent] = useState(
+  //   data?.data.learningRate || 0,
+  // );
+
+  const scrollProgress = useScrollProgress();
+  useUpdateLearningProgressOnUnmount(contentId, scrollProgress);
 
   const { toggleScrap } = useScrapToggle({
     contentId,
@@ -195,7 +204,10 @@ export default function DetailReadingPage() {
         showTranslate={showTranslate}
         onTranslateToggle={toggleTranslation}
       />
-      <MissionScrollProgressbar missionStatus={missionStatus?.data} />
+      <MissionScrollProgressbar
+        scrollPercent={scrollProgress}
+        missionStatus={missionStatus?.data}
+      />
     </>
   );
 }
