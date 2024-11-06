@@ -24,15 +24,23 @@ export default function ContentTypeFilter() {
   // 선택한 카테고리 버튼에 색깔반영 위해 currentCategoryId를 state로 관리
   const searchParams = useSearchParams();
   const currentCategoryId = searchParams.get('categoryId') || '';
-  const [params, setParams] = useState(currentCategoryId || '');
+  const [selectedCategoryId, setSelectedCategoryId] = useState(
+    currentCategoryId || '',
+  );
   // TODO(@godhyzzang)ContentTypeFilter가 여러 페이지에서 쓰이게 될텐데 이렇게 매번 api를 불러오는게 맞는지 의문이 든다.
   const { data: categoriesData } = useFetchAllCategories();
   const categories = categoriesData?.data.categoryList || [];
 
-  const toggleCategory = (categoryId: number) => {
-    setParams((prevParams) =>
-      prevParams === String(categoryId) ? '' : String(categoryId),
+  const handleSelectCategories = (categoryId: number) => {
+    setSelectedCategoryId((prevCategoryId) =>
+      prevCategoryId === String(categoryId) ? '' : String(categoryId),
     );
+  };
+  const generateQueryParams = (additionalParams: Record<string, string>) => {
+    return {
+      ...Object.fromEntries(searchParams.entries()), // 이전에 선택한 queryparams 유지
+      ...additionalParams,
+    };
   };
 
   return (
@@ -47,11 +55,8 @@ export default function ContentTypeFilter() {
               key={key}
               href={{
                 pathname: href,
-                query: {
-                  ...Object.fromEntries(searchParams.entries()), // 이전에 선택한 queryparams 유지
-                  page: 1,
-                },
-              }} // 항상 page=1로 이동
+                query: generateQueryParams({ page: '1' }), // 항상 page=1로 이동
+              }}
             >
               <Button
                 variant={isActive ? 'default' : 'outline'}
@@ -68,19 +73,12 @@ export default function ContentTypeFilter() {
         <Link
           href={{
             pathname: path,
-            query: {
-              // 이전에 선택한 queryparams 유지
-              ...Object.fromEntries(
-                Array.from(searchParams.entries()).filter(
-                  ([key]) => key !== 'categoryId',
-                ),
-              ),
-            },
+            query: generateQueryParams({ categoryId: '' }), // 전체 카테고리 선택
           }}
         >
           <button
             type="button"
-            onClick={() => toggleCategory(0)}
+            onClick={() => handleSelectCategories(0)}
             className={`px-3 py-1 rounded-full text-sm ${
               !searchParams.get('categoryId')
                 ? 'bg-primary text-primary-foreground'
@@ -96,19 +94,19 @@ export default function ContentTypeFilter() {
             key={category.id}
             href={{
               pathname: path,
-              query: {
-                ...Object.fromEntries(searchParams.entries()), // 이전에 선택한 queryparams 유지
-
+              query: generateQueryParams({
                 categoryId:
-                  params === String(category.id) ? '' : String(category.id),
-              },
+                  selectedCategoryId === String(category.id)
+                    ? ''
+                    : String(category.id),
+              }),
             }}
           >
             <button
               type="button"
-              onClick={() => toggleCategory(category.id)}
+              onClick={() => handleSelectCategories(category.id)}
               className={`px-3 py-1 rounded-full text-sm ${
-                params === String(category.id)
+                selectedCategoryId === String(category.id)
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-gray-200 text-gray-800'
               }`}
@@ -123,10 +121,9 @@ export default function ContentTypeFilter() {
         <div className="flex min-w-[100px]">
           <Select
             onValueChange={(value) => {
-              window.location.href = `${path}?${new URLSearchParams({
-                ...Object.fromEntries(searchParams.entries()), // 이전에 선택한 queryparams 유지
-                sort: value,
-              }).toString()}`;
+              window.location.href = `${path}?${new URLSearchParams(
+                generateQueryParams({ sort: value }),
+              ).toString()}`;
             }}
             value={searchParams.get('sort') || 'createdAt'}
           >
