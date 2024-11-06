@@ -38,6 +38,7 @@ export default function ContentTypeFilter() {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex gap-1">
+        {/* 리딩,리스닝 선택 버튼 */}
         {linkItems.map(({ href, label, key }) => {
           const isActive = path.startsWith(href);
 
@@ -62,7 +63,7 @@ export default function ContentTypeFilter() {
           );
         })}
       </div>
-
+      {/* 카테고리 선택 버튼 */}
       <div className="flex flex-wrap gap-2">
         <Link
           href={{
@@ -117,6 +118,7 @@ export default function ContentTypeFilter() {
           </Link>
         ))}
       </div>
+      {/* 정렬 버튼 */}
       <div className="flex justify-end">
         <div className="flex min-w-[100px]">
           <Select
@@ -128,7 +130,6 @@ export default function ContentTypeFilter() {
             }}
             value={searchParams.get('sort') || 'createdAt'}
           >
-            {/* TODO(@godhyzzang w-100px적용이 안됨) */}
             <SelectTrigger>
               <SelectValue placeholder="정렬 기준" />
             </SelectTrigger>
