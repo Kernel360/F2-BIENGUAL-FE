@@ -71,15 +71,19 @@ export default function DetailReadingPage() {
   };
 
   useEffect(() => {
-    if (data?.data.learningRate) {
+    if (!data?.data.learningRate) return; // 학습률이 없으면 실행하지 않음
+
+    const handleScrollPosition = () => {
       const scrollPosition =
         (document.documentElement.scrollHeight - window.innerHeight) *
         (Number(data?.data.learningRate) / 100);
 
       window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
-    }
-  }, [data?.data.learningRate]);
+    };
 
+    // 페이지 로딩 시에만 실행
+    handleScrollPosition();
+  }, [contentId, data?.data.learningRate]);
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <div>Error: {error?.message}</div>;
 
