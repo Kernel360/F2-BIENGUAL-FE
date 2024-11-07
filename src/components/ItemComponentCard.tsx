@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+'use client';
+
 import { Clock } from 'lucide-react';
 
 import PointCover from './common/PointCover';

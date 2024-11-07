@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+'use client';
+
 import PointCover from './common/PointCover';
 import ListItem from './items/ListItem';
 import PreviewScrapButton from './PreviewScrapButton';
