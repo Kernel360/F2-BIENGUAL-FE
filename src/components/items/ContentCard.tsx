@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 
 import Link, { LinkProps } from 'next/link';
@@ -27,21 +25,21 @@ export default function ContentCard({
   description,
 }: ContentCardProps) {
   return (
-    <Link href={href} className="w-full h-fit mr-3">
-      <Card className=" overflow-hidden shadow-card hover:shadow-card-hover hover:border-border">
-        <CardContent className={`p-0 h-full `}>
-          <div
-            className={`relative w-full h-40 overflow-hidden
-       
-               `}
-          >
-            <div className="absolute top-3 right-3 z-10">{topRightButton}</div>
-            <img src={coverImageUrl} alt={title} className="object-cover" />
-            <div className="absolute bottom-3 right-3 z-10">
+    <Link href={href} className="block w-full h-full">
+      <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border h-full">
+        <CardContent className="p-0 h-full">
+          <div className="relative w-full h-40 overflow-hidden">
+            <div className="absolute top-3 right-3 z-20">{topRightButton}</div>
+            <img
+              src={coverImageUrl}
+              alt={title}
+              className="object-cover w-full h-full"
+            />
+            <div className="absolute bottom-3 right-3 z-20">
               {bottomRightButton}
             </div>
           </div>
-          <div className="p-4 space-y-2 h-40">
+          <div className="p-4 space-y-2 flex-1">
             <div className="flex justify-between">
               {leftBadge}
               {rightBadge}
