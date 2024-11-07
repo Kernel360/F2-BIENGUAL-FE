@@ -22,7 +22,7 @@ export default function PointCover({ data, children }: PointCoverProps) {
   const router = useRouter();
 
   const handleOpen = (event: React.MouseEvent) => {
-    if (data.isPointRequired && !isConfirmed) {
+    if (true && !isConfirmed) {
       event.preventDefault();
       setShowPointModal(true);
     }
@@ -46,7 +46,7 @@ export default function PointCover({ data, children }: PointCoverProps) {
       >
         {children}
         {/* 포인트가 필요한 경우 오버레이 표시 */}
-        {data.isPointRequired && !isConfirmed && (
+        {true && !isConfirmed && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 rounded-xl">
             <div className="bg-black/80 rounded-lg p-2 backdrop-blur-sm flex items-center gap-2 text-white">
               <CircleParking className="w-4 h-4" />
