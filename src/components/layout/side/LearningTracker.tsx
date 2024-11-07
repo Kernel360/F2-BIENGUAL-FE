@@ -106,7 +106,7 @@ export default function LearningTracker({
                       : 'bg-gray-300'
                   }`}
                 >
-                  <div className="ml-2 text-sm flex justify-center">
+                  <div className="ml-2 text-sm flex justify-center items-center gap-2">
                     {item.icon} <span>{item.label}</span>
                   </div>
                 </div>

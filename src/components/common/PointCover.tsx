@@ -4,7 +4,7 @@ import { useState, ReactNode } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import { Clock } from 'lucide-react';
+import { CircleParking } from 'lucide-react';
 
 import Modal from './Modal';
 import { Button } from '../ui/button';
@@ -49,7 +49,7 @@ export default function PointCover({ data, children }: PointCoverProps) {
         {data.isPointRequired && !isConfirmed && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10 rounded-xl">
             <div className="bg-black/80 rounded-lg p-2 backdrop-blur-sm flex items-center gap-2 text-white">
-              <Clock className="w-4 h-4" />
+              <CircleParking className="w-4 h-4" />
               <span className="text-sm font-medium">포인트 필요</span>
             </div>
           </div>
