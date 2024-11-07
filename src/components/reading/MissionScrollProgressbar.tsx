@@ -1,17 +1,17 @@
 import { useEffect } from 'react';
 
 import { useUpdateMissionStatus } from '@/api/hooks/useMission';
-import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { MissionStatus } from '@/types/Mission';
 
 import ScrollProgressBar from '../common/ScrollProgressBar';
 
 export default function MissionScrollProgressbar({
+  scrollPercent,
   missionStatus,
 }: {
+  scrollPercent: number;
   missionStatus: MissionStatus | undefined;
 }) {
-  const scrollPercent = useScrollProgress();
   const { mutate: updateMissionStatus } = useUpdateMissionStatus();
 
   useEffect(() => {

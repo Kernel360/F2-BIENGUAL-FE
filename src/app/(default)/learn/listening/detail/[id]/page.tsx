@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 
 import { useParams } from 'next/navigation';
 
@@ -28,6 +28,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
+import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
 import { CustomScriptLanguageCode } from '@/types/Scripts';
 
 type Mode = 'line' | 'block';
@@ -37,7 +38,7 @@ export default function DetailListeningPage() {
   const contentId = Number(param.id);
 
   const {
-    data: ListeningDetailData,
+    data: listeningDetailData,
     isLoading,
     isError,
     error,
@@ -77,6 +78,19 @@ export default function DetailListeningPage() {
     }
   };
 
+  useEffect(() => {
+    if (
+      playerRef.current &&
+      playerRef.current.getDuration() &&
+      listeningDetailData?.data.learningRate
+    ) {
+      seekTo(
+        Number(playerRef.current?.getDuration()) *
+          (listeningDetailData.data.learningRate / 100),
+      );
+    }
+  }, [playerRef.current]);
+
   // 90% 이상 재생되면 콘텐츠 학습 미션 업데이트 요청 보냄(콜백 함수)
   const handleProgress = (playedSeconds: number) => {
     const duration = playerRef.current?.getDuration();
@@ -90,6 +104,24 @@ export default function DetailListeningPage() {
     }
   };
 
+  useUpdateLearningProgressOnUnmount(
+    contentId,
+    playerRef.current
+      ? (playerRef.current.getCurrentTime() / playerRef.current.getDuration()) *
+          100
+      : 0,
+  );
+
+  const bookmarkList = useMemo(() => {
+    if (!listeningDetailData) {
+      return [];
+    }
+
+    return listeningDetailData.data.scriptList.filter(
+      (item) => item.isHighlighted,
+    );
+  }, [listeningDetailData]);
+
   const handleScrapToggle = () => {
     // 로그인 권한 없으면 로그인 모달 띄우기
     if (!isLogin) {
@@ -97,11 +129,11 @@ export default function DetailListeningPage() {
       return;
     }
     // 데이터가 아직 로드되지 않은 경우 실행 방지
-    if (isLoading || ListeningDetailData?.data.isScrapped === undefined) {
+    if (isLoading || listeningDetailData?.data.isScrapped === undefined) {
       return;
     }
 
-    toggleScrap(ListeningDetailData?.data.isScrapped);
+    toggleScrap(listeningDetailData?.data.isScrapped);
   };
 
   if (isLoading) {
@@ -112,7 +144,7 @@ export default function DetailListeningPage() {
     return <p className="text-red-500">에러가 발생했습니다: {error.message}</p>;
   }
 
-  if (!ListeningDetailData || !ListeningDetailData.data) {
+  if (!listeningDetailData || !listeningDetailData.data) {
     return (
       <div className="flex flex-col items-center justify-center h-full">
         <p className="text-lg text-gray-500">리스닝 콘텐츠가 없습니다.</p>
@@ -120,19 +152,15 @@ export default function DetailListeningPage() {
     );
   }
 
-  const bookmarkList = ListeningDetailData.data.scriptList.filter(
-    (item) => item.bookmarkId,
-  );
-
   return (
     <div className="max-w-[830px] flex flex-col ">
       <div>
         <h1 className="text-2xl font-bold">
-          {ListeningDetailData?.data.title}
+          {listeningDetailData?.data.title}
         </h1>
-        <Badge>{ListeningDetailData?.data.category}</Badge>
+        <Badge>{listeningDetailData?.data.category}</Badge>
         <div className="text-sm flex justify-end w-full">
-          {ListeningDetailData?.data.hits} 회
+          {listeningDetailData?.data.hits} 회
         </div>
       </div>
       <Separator />
@@ -142,7 +170,7 @@ export default function DetailListeningPage() {
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         ref={playerRef}
-        videoUrl={ListeningDetailData?.data.videoUrl as string}
+        videoUrl={listeningDetailData?.data.videoUrl as string}
         setCurrentTime={setCurrentTime}
         onProgress={handleProgress}
       />
@@ -158,7 +186,7 @@ export default function DetailListeningPage() {
       {/* 자막 컨테이너 */}
       <ReactScriptPlayer
         mode={mode}
-        scripts={ListeningDetailData?.data.scriptList || []}
+        scripts={listeningDetailData?.data.scriptList || []}
         selectedLanguages={selectedLanguages}
         seekTo={seekTo}
         currentTime={currentTime}
@@ -196,7 +224,7 @@ export default function DetailListeningPage() {
       <BookmarkMemoPanel
         bookmarkList={bookmarkList}
         seekTo={seekTo}
-        scriptsData={ListeningDetailData?.data.scriptList}
+        scriptsData={listeningDetailData?.data.scriptList}
         currentTime={currentTime}
         setIsPlaying={setIsPlaying}
         setShowLoginModal={setShowLoginModal}
@@ -269,7 +297,7 @@ export default function DetailListeningPage() {
 
       {/* 번역, 스크랩 버튼 */}
       <FloatingButtons
-        isScrapped={ListeningDetailData.data.isScrapped}
+        isScrapped={listeningDetailData.data.isScrapped}
         onScrapToggle={handleScrapToggle}
       />
     </div>

@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { useParams } from 'next/navigation';
 
@@ -24,11 +24,16 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
+import { useScrollProgress } from '@/hooks/useScrollProgress';
+import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
 
 export default function DetailReadingPage() {
   const params = useParams();
   const contentId = Number(params.id);
   const { data, isLoading, isError, error } = useContentDetail(contentId);
+
+  const scrollProgress = useScrollProgress();
+  useUpdateLearningProgressOnUnmount(contentId, scrollProgress);
 
   const { toggleScrap } = useScrapToggle({
     contentId,
@@ -64,6 +69,21 @@ export default function DetailReadingPage() {
 
     toggleScrap(data?.data.isScrapped);
   };
+
+  useEffect(() => {
+    if (!data?.data.learningRate) return; // 학습률이 없으면 실행하지 않음
+
+    const handleScrollPosition = () => {
+      const scrollPosition =
+        (document.documentElement.scrollHeight - window.innerHeight) *
+        (Number(data?.data.learningRate) / 100);
+
+      window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+    };
+
+    // 페이지 로딩 시에만 실행
+    handleScrollPosition();
+  }, [contentId, data?.data.learningRate]);
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <div>Error: {error?.message}</div>;
 
@@ -195,7 +215,10 @@ export default function DetailReadingPage() {
         showTranslate={showTranslate}
         onTranslateToggle={toggleTranslation}
       />
-      <MissionScrollProgressbar missionStatus={missionStatus?.data} />
+      <MissionScrollProgressbar
+        scrollPercent={scrollProgress}
+        missionStatus={missionStatus?.data}
+      />
     </>
   );
 }

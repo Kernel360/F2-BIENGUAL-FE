@@ -32,17 +32,12 @@ export default function HomePageClient({
     queryKey: ['readingPreview'],
     queryFn: () => fetchReadingPreview(),
     initialData: initialReadingContents,
-    // TODO(@godhyzzang) : staleTime설정하고도 scrap데이터 잘 불러오는 방법 고민 필요
-    // staleTime: 1000 * 60 * 10,
   });
 
   const { data: listeningList, isLoading: listeningLoading } = useQuery({
     queryKey: ['listeningPreview'],
     queryFn: () => fetchListeningPreview(),
     initialData: initialListeningContents,
-    // TODO(@godhyzzang) : staleTime설정하고도 scrap데이터 잘 불러오는 방법 고민 필요
-
-    // staleTime: 1000 * 60 * 10,
   });
 
   if (readingLoading || listeningLoading) {
