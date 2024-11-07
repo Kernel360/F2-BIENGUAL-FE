@@ -22,7 +22,7 @@ export default function ListItem({
 }: ListItemProps) {
   return (
     <Link href={href}>
-      <div className="pb-6 border-b border-gray-200 flex justify-between items-start">
+      <div className="p-6 border-b border-gray-200 flex justify-between items-start">
         <div className="flex-1 pr-4">
           <div className="flex justify-between">
             {leftBadge}

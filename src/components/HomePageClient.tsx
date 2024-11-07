@@ -11,13 +11,14 @@ import {
 } from '@/api/queries/contentsQueries';
 import Carousel from '@/components/common/Carousel';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import ItemComponent from '@/components/ItemComponent';
 import SentenceComponent, { sentences } from '@/components/SentenceComponent';
 import { Button } from '@/components/ui/button';
 import {
   ReadingPreviewResponse,
   ListeningPreviewResponse,
 } from '@/types/Preview';
+
+import ItemComponentCard from './ItemComponentCard';
 
 interface HomePageClientProps {
   initialReadingContents: ReadingPreviewResponse;
@@ -59,7 +60,7 @@ export default function HomePageClient({
             </Link>
           </div>
         }
-        itemComponent={ItemComponent}
+        itemComponent={ItemComponentCard}
         itemWidth={280}
         itemsPerPage={3}
       />
@@ -83,7 +84,7 @@ export default function HomePageClient({
             </Link>
           </div>
         }
-        itemComponent={ItemComponent}
+        itemComponent={ItemComponentCard}
         itemWidth={280}
         itemsPerPage={3}
       />
