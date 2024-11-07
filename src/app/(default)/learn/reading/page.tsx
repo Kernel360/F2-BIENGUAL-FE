@@ -6,9 +6,7 @@ import { usePaginatedReadingPreview } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Pagination from '@/components/common/Pagination';
-import ListItem from '@/components/items/ListItem';
-import PreviewScrapButton from '@/components/PreviewScrapButton';
-import { Badge } from '@/components/ui/badge';
+import ItemComponentList from '@/components/ItemComponentList';
 // import { formatDate } from '@/lib/formatDate';
 
 export default function ReadingPage() {
@@ -21,7 +19,6 @@ export default function ReadingPage() {
   const sort = searchParams.get('sort') || 'createdAt';
   const direction = searchParams.get('direction') || 'DESC';
   const categoryId = Number(searchParams.get('categoryId')) || undefined;
-  console.log('categoryId', categoryId);
 
   const {
     data: readingContents,
@@ -58,32 +55,7 @@ export default function ReadingPage() {
       <ContentTypeFilter />
       <ul className="flex flex-col gap-6 mt-8">
         {readingContents?.data.contents.map((content) => (
-          <ListItem
-            key={content.contentId}
-            href={`/learn/reading/detail/${content.contentId}`}
-            coverImageUrl={content.thumbnailUrl}
-            topRightButton={
-              <PreviewScrapButton
-                contentId={content.contentId}
-                isScrappedData={content.isScrapped}
-                target="paginatedReadingPreview"
-              />
-            }
-            leftBadge={<Badge>{content.category}</Badge>}
-            rightBadge={
-              <p className="text-sm text-muted-foreground">{content.hits}회</p>
-            }
-            title={content.title}
-            description={content.preScripts}
-            footerContent={
-              <>
-                {/*  TODO(@godhyzzang): 날짜 보여주기 */}
-                {/* <p className="text-sm mb-3">
-                  {content.createdAt && `${formatDate(content.createdAt)} 저장`}
-                </p> */}
-              </>
-            }
-          />
+          <ItemComponentList data={content} key={content.contentId} />
         ))}
       </ul>
       <Pagination
