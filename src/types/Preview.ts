@@ -7,6 +7,7 @@ export interface Preview {
   preScripts: string;
   hits: number;
   isScrapped: boolean;
+  isPointRequired: boolean;
 }
 
 export interface ReadingPreviewResponse {
