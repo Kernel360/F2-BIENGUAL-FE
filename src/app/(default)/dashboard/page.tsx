@@ -89,7 +89,7 @@ export default function Component() {
               최근 학습 강의
             </CardTitle>
             <Link
-              href="/recent"
+              href="/dashboard/learning/recent"
               className="text-md text-muted-foreground hover:text-primary"
             >
               학습 목록 <ChevronRight className="inline h-4 w-4" />
