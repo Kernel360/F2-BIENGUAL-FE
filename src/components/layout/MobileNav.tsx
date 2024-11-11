@@ -100,7 +100,7 @@ export function MobileNav() {
               href={item.href}
               className={`flex flex-col items-center py-1 px-3 rounded-lg transition-colors ${
                 pathname === item.href
-                  ? 'text-blue-600 bg-blue-50'
+                  ? 'text-violet-600 bg-violet-50'
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
