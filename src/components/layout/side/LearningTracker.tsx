@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+/* eslint-disable no-nested-ternary */
+import React from 'react';
 
 import { Book, HelpCircle, Highlighter } from 'lucide-react';
 
 import { useFetchMissionStatus } from '@/api/hooks/useMission';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 interface DailyHistory {
   date: string;
@@ -22,8 +29,6 @@ export default function LearningTracker({
 }: LearningTrackerProps) {
   const { data: todayMissionData } = useFetchMissionStatus();
   const todayMissionStatus = todayMissionData?.data;
-
-  const [selectedIndex, setSelectedIndex] = useState(0);
 
   // 미션 목록 정의
   const missionItems = [
@@ -48,6 +53,12 @@ export default function LearningTracker({
   const completedGoals = missionItems.filter((item) => item.status).length;
   const progress = (completedGoals / missionItems.length) * 100;
 
+  // 날짜 포맷팅
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return `${date.getMonth() + 1}/${date.getDate()}`;
+  };
+
   return (
     <Card className="fixed w-[260px] bg-white my-[60px]">
       <CardHeader className="pb-2">
@@ -57,33 +68,65 @@ export default function LearningTracker({
       </CardHeader>
       <CardContent>
         <Progress value={progress} className="w-full mb-4" />
-        {missionItems.map((item, index) => (
-          <div
-            // eslint-disable-next-line react/no-array-index-key
-            key={index}
-            className={`flex items-center p-2 rounded-md ${item.status ? 'bg-green-400' : 'bg-gray-300'}`}
-          >
-            {item.icon}
-            <span className="ml-2 text-sm">{item.label}</span>
-          </div>
-        ))}
-        <div className="flex justify-between items-center mt-4">
-          {history.map((day, index) => (
-            <button
-              type="button"
+        <div className="space-y-2">
+          {missionItems.map((item, index) => (
+            <div
               // eslint-disable-next-line react/no-array-index-key
               key={index}
-              className={`w-8 h-8 rounded-full ${day.completedMissions > 0 ? 'bg-green-500' : 'bg-gray-300'}`}
-              onClick={() => setSelectedIndex(index)}
-              aria-label={`${day.date}: ${day.completedMissions} 미션 완료`}
+              className={`flex items-center p-2 rounded-md transition-colors ${
+                item.status
+                  ? 'bg-violet-100 text-violet-900'
+                  : 'bg-gray-100 text-gray-500'
+              }`}
             >
-              {day.completedMissions || ''}
-            </button>
+              <div
+                className={`${item.status ? 'text-violet-500' : 'text-gray-400'}`}
+              >
+                {item.icon}
+              </div>
+              <span className="ml-2 text-sm font-medium">{item.label}</span>
+            </div>
           ))}
         </div>
-        <div className="text-sm text-center mt-4">
-          {history[selectedIndex].date}일 미션{' '}
-          {history[selectedIndex].completedMissions}개 완료
+
+        <div className="mt-6">
+          <div className="text-sm font-medium text-gray-500 mb-2">
+            최근 5일 미션 달성
+          </div>
+          <TooltipProvider>
+            <div className="flex items-end justify-between h-20 px-2">
+              {history.map((day, index) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <Tooltip key={index}>
+                  <TooltipTrigger>
+                    <div className="flex flex-col items-center gap-1">
+                      <div
+                        className={`w-8 rounded-md ${
+                          day.completedMissions > 0 &&
+                          day.completedMissions === 1
+                            ? 'bg-violet-200'
+                            : day.completedMissions === 2
+                              ? 'bg-violet-400'
+                              : 'bg-violet-600'
+                        }`}
+                        style={{
+                          height: `${day.completedMissions * 20}px`,
+                        }}
+                      />
+                      <span className="text-xs text-gray-500">
+                        {formatDate(day.date)}
+                      </span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>
+                      {formatDate(day.date)}: {day.completedMissions}개 달성
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </TooltipProvider>
         </div>
       </CardContent>
     </Card>
