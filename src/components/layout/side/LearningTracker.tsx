@@ -4,6 +4,7 @@ import React from 'react';
 import { Book, HelpCircle, Highlighter } from 'lucide-react';
 
 import { useFetchMissionStatus } from '@/api/hooks/useMission';
+import { useUserTime } from '@/api/hooks/useUserInfo';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import {
@@ -13,21 +14,21 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
-interface DailyHistory {
-  date: string;
-  completedMissions: number;
-}
-
-interface LearningTrackerProps {
-  totalLearningDays: number;
-  history: DailyHistory[];
-}
-
-export default function LearningTracker({
-  totalLearningDays,
-  history,
-}: LearningTrackerProps) {
+export default function LearningTracker() {
+  const { data: userMembershipDurationData } = useUserTime();
   const { data: todayMissionData } = useFetchMissionStatus();
+
+  const totalLearningDays = userMembershipDurationData?.data.createdAt
+    ? Math.max(
+        Math.floor(
+          (new Date().getTime() -
+            new Date(userMembershipDurationData.data.createdAt).getTime()) /
+            (1000 * 60 * 60 * 24),
+        ),
+        0,
+      )
+    : null;
+
   const todayMissionStatus = todayMissionData?.data;
 
   // 미션 목록 정의
@@ -47,6 +48,14 @@ export default function LearningTracker({
       label: '퀴즈 완료',
       icon: <HelpCircle className="h-4 w-4" />,
     },
+  ];
+
+  const mockHistory = [
+    { date: '2024.11.07', completedMissions: 3 },
+    { date: '2024.11.08', completedMissions: 2 },
+    { date: '2024.11.09', completedMissions: 1 },
+    { date: '2024.11.10', completedMissions: 0 },
+    { date: '2024.11.11', completedMissions: 1 },
   ];
 
   // 진행도 계산
@@ -95,7 +104,7 @@ export default function LearningTracker({
           </div>
           <TooltipProvider>
             <div className="flex items-end justify-between h-20 px-2">
-              {history.map((day, index) => (
+              {mockHistory.map((day, index) => (
                 // eslint-disable-next-line react/no-array-index-key
                 <Tooltip key={index}>
                   <TooltipTrigger>
