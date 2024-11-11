@@ -2,36 +2,12 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { Book, HelpCircle, Highlighter } from 'lucide-react';
-
 import { useUserTime } from '@/api/hooks/useUserInfo';
 import { calculateDaysBetweenDates } from '@/lib/calculateDaysBetweenDates';
 
 import LearningTracker from './side/LearningTracker';
 
 export default function SideArea() {
-  const mockDailyGoals = [
-    {
-      id: 'study',
-      icon: <Book className="h-4 w-4" />,
-      label: '10분 학습',
-      completed: false,
-    },
-
-    {
-      id: 'highlight',
-      icon: <Highlighter className="h-4 w-4" />,
-      label: '형광펜 1개',
-      completed: false,
-    },
-    {
-      id: 'quiz',
-      icon: <HelpCircle className="h-4 w-4" />,
-      label: '퀴즈 1개',
-      completed: true,
-    },
-  ];
-
   const mockHistory = [
     { date: '2023.06.15', completedMissions: 3 },
     { date: '2023.06.14', completedMissions: 2 },
@@ -55,10 +31,10 @@ export default function SideArea() {
   }, [userMembershipDurationData?.data.createdAt]);
 
   return (
-    <div className="h-fit w-[260px] ml-[50px] py-[60px]">
+    <div className="hidden md:block h-fit w-[260px] ml-[50px] py-[60px]">
+      {/* TODO(@smosco): 학습 트래커 동그라미로 만들것 */}
       <LearningTracker
         totalLearningDays={totalLearningDays}
-        dailyGoals={mockDailyGoals}
         history={mockHistory}
       />
     </div>
