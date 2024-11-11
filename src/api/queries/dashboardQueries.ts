@@ -1,9 +1,9 @@
-import { RecentLearningPreviewResponse } from '@/types/Dashboard';
+import { FetchRecentLearningPreviewResponse } from '@/types/Dashboard';
 
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/dashboard`;
 
 export const fetchRecentLearningPreview =
-  async (): Promise<RecentLearningPreviewResponse> => {
+  async (): Promise<FetchRecentLearningPreviewResponse> => {
     const response = await fetch(`${BASE_URL}/learning/recent`, {
       method: 'GET',
       headers: {

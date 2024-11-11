@@ -1,12 +1,13 @@
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { UseQueryResult } from '@tanstack/react-query';
 
-import { RecentLearningPreviewResponse } from '@/types/Dashboard';
+import { FetchRecentLearningPreviewResponse } from '@/types/Dashboard';
 
+import { useQueryLoginOnly } from './common';
 import { fetchRecentLearningPreview } from '../queries/dashboardQueries';
 
 export const useRecentLearningPreview =
-  (): UseQueryResult<RecentLearningPreviewResponse> => {
-    return useQuery({
+  (): UseQueryResult<FetchRecentLearningPreviewResponse> => {
+    return useQueryLoginOnly({
       queryKey: ['recentLearningPreview'],
       queryFn: () => fetchRecentLearningPreview(),
     });

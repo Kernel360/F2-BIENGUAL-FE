@@ -10,7 +10,7 @@ export interface RecentLearningPreview {
   learningRate: number;
 }
 
-export interface RecentLearningPreviewResponse {
+export interface FetchRecentLearningPreviewResponse {
   code: string;
   message: string;
   data: { recentLearningPreview: RecentLearningPreview[] };
