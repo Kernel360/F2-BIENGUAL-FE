@@ -1,6 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-
 'use client';
 
 import {
@@ -35,12 +32,12 @@ const VideoPlayer = forwardRef<ReactPlayer, VideoPlayerProps>(
     }: VideoPlayerProps,
     playerRef,
   ) {
-    const [mounted, setMounted] = useState(false); // 추가: 마운트 상태 확인
+    const [mounted, setMounted] = useState(false);
     const [volume, setVolume] = useState(0.5);
     const [playbackRate, setPlayBackRate] = useState(1);
 
     useEffect(() => {
-      setMounted(true); // 컴포넌트가 클라이언트에서 마운트되었음을 표시
+      setMounted(true);
     }, []);
 
     const handleProgress = (state: { playedSeconds: number }) => {
@@ -76,15 +73,13 @@ const VideoPlayer = forwardRef<ReactPlayer, VideoPlayerProps>(
       setPlayBackRate,
     };
 
-    // 클라이언트에서만 렌더링되도록 조건부 렌더링
     if (!mounted) return null;
 
     return (
-      <div className="container mx-auto py-5 grid grid-cols-3 gap-4">
-        {/* 비디오 플레이어 */}
-        <div className="col-span-2 space-y-4">
-          <Card>
-            <CardContent className="p-0 h-[400px] relative rounded-xl overflow-hidden">
+      <div className="w-full max-w-4xl mx-auto">
+        <Card className="overflow-hidden">
+          <CardContent className="p-0">
+            <div className="relative w-full aspect-video">
               <ReactPlayer
                 ref={playerRef}
                 url={videoUrl}
@@ -99,14 +94,17 @@ const VideoPlayer = forwardRef<ReactPlayer, VideoPlayerProps>(
                 controls={false}
                 playbackRate={playbackRate}
                 progressInterval={100}
+                className="absolute top-0 left-0"
               />
-              <ControlBar
-                playerRef={playerRef}
-                BasicControlBarProps={BasicControlBarProps}
-              />
-            </CardContent>
-          </Card>
-        </div>
+              <div className="absolute bottom-0 left-0 right-0">
+                <ControlBar
+                  playerRef={playerRef}
+                  BasicControlBarProps={BasicControlBarProps}
+                />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     );
   },

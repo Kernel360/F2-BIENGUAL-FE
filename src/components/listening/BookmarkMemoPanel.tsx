@@ -114,12 +114,12 @@ export default function BookmarkMemoPanel({
 
   return (
     <div className="col-span-1">
-      <Card className="h-full flex flex-col justify-between p-4 bg-violet-100">
-        <CardHeader className="p-0">
+      <Card className="flex flex-col justify-between p-4 bg-violet-100">
+        <CardHeader className="px-0 py-2">
           <CardTitle className="text-xl">Bookmarks & Notes</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
-          <ScrollArea className="h-[560px] mb-4 rounded-lg">
+          <ScrollArea className="min-h-40 mb-4 rounded-lg">
             {/* 메모 추가 컴포넌트 */}
             {isAddingNote && selectedSentenceIndex !== null && (
               <div className="mb-4 p-2 bg-white rounded-lg">

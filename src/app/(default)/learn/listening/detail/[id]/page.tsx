@@ -153,7 +153,7 @@ export default function DetailListeningPage() {
   }
 
   return (
-    <div className="max-w-[830px] flex flex-col ">
+    <div className="max-w-[830px] flex flex-col gap-5">
       <div>
         <h1 className="text-2xl font-bold">
           {listeningDetailData?.data.title}
