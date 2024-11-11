@@ -9,6 +9,7 @@ interface ContentCardProps extends Pick<LinkProps, 'href'> {
   topRightButton?: React.ReactNode;
   leftBadge?: React.ReactNode;
   rightBadge?: React.ReactNode;
+  footerContent?: React.ReactNode;
   coverImageUrl: string;
   title: string;
   description: string;
@@ -20,6 +21,7 @@ export default function ContentCard({
   topRightButton,
   leftBadge,
   rightBadge,
+  footerContent,
   coverImageUrl,
   title,
   description,
@@ -50,6 +52,7 @@ export default function ContentCard({
             <p className="text-sm text-gray-500 text-muted-foreground line-clamp-2">
               {description}
             </p>
+            {footerContent}
           </div>
         </CardContent>
       </Card>
