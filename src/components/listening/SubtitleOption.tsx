@@ -52,7 +52,7 @@ export default function SubtitleOption({
   };
 
   return (
-    <div className="flex justify-between items-center mb-2">
+    <div className="flex justify-between items-center">
       <Button variant="outline" size="sm" onClick={toggleViewMode}>
         {mode === 'line' ? (
           <>
