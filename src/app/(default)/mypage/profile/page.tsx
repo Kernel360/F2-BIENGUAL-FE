@@ -6,7 +6,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { Camera, X } from 'lucide-react';
 
 import { useUserInfo, useUpdateUserInfo } from '@/api/hooks/useUserInfo';
-import { fetchAllCategories } from '@/api/queries/fetchAllCategories';
+import { fetchAllCategories } from '@/api/queries/categoryQueries';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
