@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useUpdateMissionStatus } from '@/api/hooks/useMission';
 import { MissionStatus } from '@/types/Mission';
@@ -13,12 +13,17 @@ export default function MissionScrollProgressbar({
   missionStatus: MissionStatus | undefined;
 }) {
   const { mutate: updateMissionStatus } = useUpdateMissionStatus();
+  const missionHasUpdated = useRef(false);
 
   useEffect(() => {
-    // TODO(@smosco): 미션 상태 확인이 답이 늦게 와서 미션 업데이트 요청을 상태 확인으로 true가 올 때까지 계속 보냄
-    // 요청 보냈다는 상태를 통해서 안 보내게 만들어야 할듯
-    if (scrollPercent >= 90 && missionStatus && !missionStatus.oneContent) {
+    if (
+      scrollPercent >= 90 &&
+      missionStatus &&
+      !missionStatus.oneContent &&
+      !missionHasUpdated.current
+    ) {
       // 미션 완료 요청을 한 번만 보냄
+      missionHasUpdated.current = true;
       updateMissionStatus({
         oneContent: true,
       });
