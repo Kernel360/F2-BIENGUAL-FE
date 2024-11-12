@@ -1,52 +1,31 @@
+import { apiClient } from '@/lib/apiClient';
 import {
   FetchScrapResponse,
   CreateScrapResponse,
   DeleteScrapResponse,
 } from '@/types/Scrap';
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/scrap`;
-
-// 스크랩 조회
+// 스크랩 조회 (GET)
 export const fetchScrap = async (): Promise<FetchScrapResponse> => {
-  const response = await fetch(`${BASE_URL}/view`, {
+  return apiClient<FetchScrapResponse>('/scrap/view', {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
   });
-  if (!response.ok) {
-    throw new Error('Failed to fetch scrap');
-  }
-  return response.json();
 };
 
-// 스크랩 생성
+// 스크랩 생성 (POST)
 export const createScrap = async (
   contentId: number,
 ): Promise<CreateScrapResponse> => {
-  const response = await fetch(`${BASE_URL}/create/${contentId}`, {
+  return apiClient<CreateScrapResponse>(`/scrap/create/${contentId}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    // body: JSON.stringify({ contentId }),
   });
-  if (!response.ok) {
-    throw new Error('Failed to create scrap');
-  }
-  return response.json();
 };
 
-// 스크랩 삭제
+// 스크랩 삭제 (DELETE)
 export const deleteScrap = async (
   contentId: number,
 ): Promise<DeleteScrapResponse> => {
-  const response = await fetch(`${BASE_URL}/delete/${contentId}`, {
+  return apiClient<DeleteScrapResponse>(`/scrap/delete/${contentId}`, {
     method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    // body: JSON.stringify({ contentId }),
   });
-  if (!response.ok) {
-    throw new Error('Failed to delete scrap');
-  }
-  return response.json();
 };

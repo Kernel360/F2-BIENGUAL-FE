@@ -2,7 +2,7 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
 import { FetchCategoryResponse } from '@/types/Category';
 
-import { fetchAllCategories } from '../queries/fetchAllCategories';
+import { fetchAllCategories } from '../queries/categoryQueries';
 
 export const useFetchAllCategories =
   (): UseQueryResult<FetchCategoryResponse> => {
