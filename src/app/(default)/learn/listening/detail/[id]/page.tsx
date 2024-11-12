@@ -61,6 +61,7 @@ export default function DetailListeningPage() {
 
   const { data: missionStatus } = useFetchMissionStatus();
   const { mutate: updateMissionStatus } = useUpdateMissionStatus();
+  const contentMissionHasUpdated = useRef(false);
 
   const [mode, setMode] = useState<Mode>('line');
   const availableLanguages: CustomScriptLanguageCode[] = [
@@ -98,8 +99,10 @@ export default function DetailListeningPage() {
     if (
       duration &&
       (playedSeconds / duration) * 100 >= 90 &&
-      !missionStatus?.data.oneContent
+      !missionStatus?.data.oneContent &&
+      !contentMissionHasUpdated.current
     ) {
+      contentMissionHasUpdated.current = true;
       updateMissionStatus({ oneContent: true });
     }
   };
