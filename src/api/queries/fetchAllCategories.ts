@@ -1,15 +1,9 @@
+import { apiClient } from '@/lib/apiClient';
 import { FetchCategoryResponse } from '@/types/Category';
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
-
+// 모든 카테고리 조회 (GET)
 export const fetchAllCategories = async (): Promise<FetchCategoryResponse> => {
-  const response = await fetch(`${BASE_URL}/categories/all`, {
+  return apiClient<FetchCategoryResponse>('/categories/all', {
     method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
   });
-  if (!response.ok) {
-    throw new Error('Failed to fetch categories');
-  }
-  return response.json();
 };
