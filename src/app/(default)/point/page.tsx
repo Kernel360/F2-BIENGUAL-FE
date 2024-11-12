@@ -1,15 +1,20 @@
+/* eslint-disable react/no-array-index-key */
+
 'use client';
 
 import { useState } from 'react';
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { Trophy } from 'lucide-react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectValue,
+  SelectItem,
+} from '@/components/ui/select';
 import { formatDateToMonthDay } from '@/lib/formDateToMonthDay';
 import PointsHistory from '@/mock/pointsHistory.json';
 
@@ -23,26 +28,28 @@ interface DayActivity {
   activities: Activity[];
 }
 
-type MonthData = DayActivity[];
-
 function PointHistoryItem({ date, activities }: DayActivity) {
   return (
-    <div className="py-2 border-b last:border-b-0">
+    <div className="py-4 border-b last:border-b-0">
       {activities.map((activity, index) => (
         <div
           // eslint-disable-next-line react/no-array-index-key
           key={index}
-          className="flex justify-between items-center"
+          className="flex justify-between items-center gap-4"
         >
-          {/* 첫 번째 활동일 경우에만 날짜를 표시 */}
-          <div className="flex gap-4 items-center">
-            <span className="font-medium w-16 text-sm">
+          <div className="flex gap-4 items-start">
+            {/* 첫 번째 활동일 경우에만 날짜를 표시 */}
+            <span className="text-sm text-gray-500 w-20">
               {index === 0 ? formatDateToMonthDay(date) : ''}
             </span>
-            <span>{activity.description}</span>
+            <span className="text-sm text-gray-800">
+              {activity.description}
+            </span>
           </div>
           <span
-            className={`font-bold ${activity.points >= 0 ? 'text-blue-500' : 'text-red-500'}`}
+            className={`font-bold text-base ${
+              activity.points >= 0 ? 'text-blue-500' : 'text-red-500'
+            }`}
           >
             {activity.points >= 0 ? '+' : '-'}
             {Math.abs(activity.points)}원
@@ -53,43 +60,29 @@ function PointHistoryItem({ date, activities }: DayActivity) {
   );
 }
 
-function MonthAccordion({ month }: { month: string }) {
-  const [data, setData] = useState<MonthData>([]);
+function MonthPointData({ month }: { month: string }) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleToggle = (isOpen: boolean) => {
-    if (isOpen && data.length === 0) {
-      setIsLoading(true);
-      //  TODO(@smosco): tanstack query로 전환하면 isOpen에 따라서 enabled 만 변경
-      const monthData =
-        PointsHistory[2024][month as keyof (typeof PointsHistory)[2024]] || [];
-      setData(monthData);
-      setIsLoading(false);
-    }
-  };
+  const data =
+    PointsHistory[2024][month as keyof (typeof PointsHistory)[2024]] || [];
 
   return (
-    <AccordionItem value={month}>
-      <AccordionTrigger
-        onClickCapture={() => handleToggle(true)}
-        className="hover:no-underline text-base"
-      >
-        <div className="flex justify-between items-center w-full">
-          <span>{month}월</span>
-        </div>
-      </AccordionTrigger>
-      <AccordionContent className="text-base">
+    <div>
+      <div className="text-sm">
         {isLoading ? (
           <div className="text-center py-4">로딩 중...</div>
         ) : (
           data.map((dayActivity, index) => (
-            // eslint-disable-next-line react/no-array-index-key, react/jsx-props-no-spreading
+            // eslint-disable-next-line react/jsx-props-no-spreading
             <PointHistoryItem key={index} {...dayActivity} />
           ))
         )}
-        {data.length === 0 && <p className="text-sm">포인트 내역이 없어요</p>}
-      </AccordionContent>
-    </AccordionItem>
+        {data.length === 0 && (
+          <p className="text-center text-gray-500 py-4">포인트 내역이 없어요</p>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -108,21 +101,58 @@ export default function PointHistory() {
     '2',
     '1',
   ];
+  const [currentMonth, setCurrentMonth] = useState<(typeof months)[number]>(
+    months[0],
+  );
 
   return (
-    <Card className="w-full mx-auto">
-      <CardHeader>
-        <CardTitle>포인트 내역</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ScrollArea className="h-[800px] pr-4">
-          <Accordion type="single" collapsible className="w-full">
-            {months.map((month) => (
-              <MonthAccordion key={month} month={month} />
-            ))}
-          </Accordion>
-        </ScrollArea>
-      </CardContent>
-    </Card>
+    <div className="p-4 max-w-2xl mx-auto">
+      <Card className="w-full shadow-md rounded-lg overflow-hidden">
+        {/* 총 포인트 */}
+        <Card>
+          <CardHeader className="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6 flex flex-col items-center">
+            <Trophy className="h-10 w-10 mb-2" />
+            <CardTitle className="text-xl font-bold">내 포인트</CardTitle>
+            <div className="text-2xl font-extrabold mt-2">500 P</div>
+          </CardHeader>
+        </Card>
+
+        {/* 세부 포인트 내역 */}
+        <CardHeader className="bg-gray-100 p-4 border-b">
+          <CardTitle className="text-lg font-semibold text-gray-700">
+            포인트 내역
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex justify-center mt-4">
+            <Select
+              onValueChange={(value) => {
+                setCurrentMonth(value);
+              }}
+              value={currentMonth}
+            >
+              <SelectTrigger className="text-base font-medium shadow border rounded-md p-2 focus:outline-none">
+                <SelectValue placeholder={`${currentMonth}월`} />
+              </SelectTrigger>
+              <SelectContent className="text-base max-h-48 overflow-y-auto">
+                {months.map((month) => (
+                  <SelectItem key={month} value={month}>
+                    {`${month}월`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <ScrollArea className="h-[400px] mt-4 p-4">
+            {months.map((month) =>
+              month === currentMonth ? (
+                <MonthPointData key={month} month={month} />
+              ) : null,
+            )}
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
