@@ -102,6 +102,7 @@ export default function DetailListeningPage() {
       !missionStatus?.data.oneContent &&
       !contentMissionHasUpdated.current
     ) {
+      // TODO(@smosco): updateMissionStatus가 성공했을 때만 contentMissionHasupdated true로 변경
       contentMissionHasUpdated.current = true;
       updateMissionStatus({ oneContent: true });
     }
