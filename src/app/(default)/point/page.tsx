@@ -2,14 +2,17 @@
 
 import { useState } from 'react';
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import { Trophy } from 'lucide-react';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectValue,
+  SelectItem,
+} from '@/components/ui/select';
 import { formatDateToMonthDay } from '@/lib/formDateToMonthDay';
 import PointsHistory from '@/mock/pointsHistory.json';
 
@@ -22,8 +25,6 @@ interface DayActivity {
   date: string;
   activities: Activity[];
 }
-
-type MonthData = DayActivity[];
 
 function PointHistoryItem({ date, activities }: DayActivity) {
   return (
@@ -53,32 +54,16 @@ function PointHistoryItem({ date, activities }: DayActivity) {
   );
 }
 
-function MonthAccordion({ month }: { month: string }) {
-  const [data, setData] = useState<MonthData>([]);
+function MonthPointData({ month }: { month: string }) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleToggle = (isOpen: boolean) => {
-    if (isOpen && data.length === 0) {
-      setIsLoading(true);
-      //  TODO(@smosco): tanstack query로 전환하면 isOpen에 따라서 enabled 만 변경
-      const monthData =
-        PointsHistory[2024][month as keyof (typeof PointsHistory)[2024]] || [];
-      setData(monthData);
-      setIsLoading(false);
-    }
-  };
+  const data =
+    PointsHistory[2024][month as keyof (typeof PointsHistory)[2024]] || [];
 
   return (
-    <AccordionItem value={month}>
-      <AccordionTrigger
-        onClickCapture={() => handleToggle(true)}
-        className="hover:no-underline text-base"
-      >
-        <div className="flex justify-between items-center w-full">
-          <span>{month}월</span>
-        </div>
-      </AccordionTrigger>
-      <AccordionContent className="text-base">
+    <div>
+      <div className="text-base">
         {isLoading ? (
           <div className="text-center py-4">로딩 중...</div>
         ) : (
@@ -88,8 +73,8 @@ function MonthAccordion({ month }: { month: string }) {
           ))
         )}
         {data.length === 0 && <p className="text-sm">포인트 내역이 없어요</p>}
-      </AccordionContent>
-    </AccordionItem>
+      </div>
+    </div>
   );
 }
 
@@ -108,21 +93,62 @@ export default function PointHistory() {
     '2',
     '1',
   ];
-
+  const [currentMonth, setCurrentMonth] = useState<(typeof months)[number]>(
+    months[0],
+  );
   return (
-    <Card className="w-full mx-auto">
-      <CardHeader>
-        <CardTitle>포인트 내역</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <ScrollArea className="h-[800px] pr-4">
-          <Accordion type="single" collapsible className="w-full">
-            {months.map((month) => (
-              <MonthAccordion key={month} month={month} />
-            ))}
-          </Accordion>
-        </ScrollArea>
-      </CardContent>
-    </Card>
+    <div>
+      <Card className="w-full mx-auto p-5">
+        {/* 총 포인트 */}
+        <Card>
+          <CardHeader className="flex flex-row  justify-center items-center p-4">
+            <CardTitle className="text-lg font-medium">내 포인트</CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-center items-center px-4 pb-4 pt-0">
+            <div className="flex ju items-center space-x-3">
+              <Trophy className="h-8 w-8 text-primary" />
+              <div className="text-xl font-bold">500 P</div>
+            </div>
+          </CardContent>
+        </Card>
+        {/* 세부 포인트 내역 */}
+        <CardHeader>
+          <CardTitle>포인트 내역</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ScrollArea className="flex flex-col items-center h-[400px] pr-4">
+            <div className="w-[80px]  mx-auto">
+              <Select
+                onValueChange={(value) => {
+                  setCurrentMonth(value);
+                }}
+                value={currentMonth}
+              >
+                <SelectTrigger className="w-inherit focus:outline-none focus:ring-0 border-none shadow-none text-lg font-medium">
+                  <SelectValue placeholder={`${currentMonth}월`} />
+                </SelectTrigger>
+                <SelectContent className="min-w-[80px] max-h-[150px]">
+                  {months.map((month) => (
+                    <SelectItem key={month} value={month}>
+                      {`${month}월`}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="pt-3">
+              {months.map((month) =>
+                month === currentMonth ? (
+                  <MonthPointData key={month} month={month} />
+                ) : (
+                  ''
+                ),
+              )}
+            </div>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
