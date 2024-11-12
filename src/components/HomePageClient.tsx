@@ -45,15 +45,15 @@ export default function HomePageClient({
     return <LoadingSpinner />;
   }
   return (
-    <div className="w-[830px] flex flex-col gap-6">
+    <div className="w-full flex flex-col gap-6">
       {/* 인기 리스닝 컨텐츠 캐러셀 */}
       <Carousel
         previewDatas={listeningList?.data.listeningPreview || []}
         header={
-          <div className="flex justify-between items-center mb-5">
+          <div className="flex items-center justify-between mb-5">
             <h3 className="text-2xl font-bold">인기 리스닝 컨텐츠</h3>
             <Link href="/learn/listening?page=1">
-              <Button variant="ghost">
+              <Button variant="ghost" className="shrink-0">
                 더보기
                 <ChevronRight size={24} color="#6B6B6B" />
               </Button>
@@ -61,14 +61,12 @@ export default function HomePageClient({
           </div>
         }
         itemComponent={ItemComponentCard}
-        itemWidth={280}
-        itemsPerPage={3}
+        itemWidth={250}
       />
       <Carousel
         previewDatas={sentences}
         itemComponent={SentenceComponent}
         itemWidth={830}
-        itemsPerPage={2}
       />
       {/* 인기 리딩 컨텐츠 캐러셀 */}
       <Carousel
@@ -85,8 +83,7 @@ export default function HomePageClient({
           </div>
         }
         itemComponent={ItemComponentCard}
-        itemWidth={280}
-        itemsPerPage={3}
+        itemWidth={250}
       />
     </div>
   );
