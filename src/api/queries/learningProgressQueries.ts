@@ -1,25 +1,15 @@
+import { apiClient } from '@/lib/apiClient';
 import {
   LearningProgressResponse,
   LearningProgressRequest,
 } from '@/types/LearningProgress';
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/learning/progress`;
-
+// 학습 진행도 업데이트 (POST)
 export const updateLearningProgress = async (
   progressData: LearningProgressRequest,
 ): Promise<LearningProgressResponse> => {
-  const response = await fetch(BASE_URL, {
+  return apiClient<LearningProgressResponse>('/learning/progress', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
     body: JSON.stringify(progressData),
   });
-
-  if (!response.ok) {
-    throw new Error('학습율을 기록하지 못했습니다.');
-  }
-
-  return response.json();
 };

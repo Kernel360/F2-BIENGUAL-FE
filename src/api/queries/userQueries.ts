@@ -1,3 +1,4 @@
+import { apiClient } from '@/lib/apiClient';
 import {
   UserResponse,
   UserUpdateRequest,
@@ -6,88 +7,41 @@ import {
   UserLoginStatusResponse,
 } from '@/types/User';
 
-const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api`;
-
+// 사용자 정보 조회 (GET)
 export const fetchUserInfo = async (): Promise<UserResponse> => {
-  const response = await fetch(`${BASE_URL}/user/me`, {
+  return apiClient<UserResponse>('/user/me', {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
   });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
 };
 
+// 사용자 정보 수정 (PUT)
 export const updateUserInfo = async (
   userInfo: UserUpdateRequest,
 ): Promise<UserUpdateResponse> => {
-  try {
-    const response = await fetch(`${BASE_URL}/user/me`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(userInfo),
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Failed to update user info:', error);
-    throw error;
-  }
-};
-
-export const fetchUserTime = async (): Promise<UserTimeResponse> => {
-  const response = await fetch(`${BASE_URL}/user/time`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
+  return apiClient<UserUpdateResponse>('/user/me', {
+    method: 'PUT',
+    body: JSON.stringify(userInfo),
   });
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
 };
 
+// 사용자 학습 시간 조회 (GET)
+export const fetchUserTime = async (): Promise<UserTimeResponse> => {
+  return apiClient<UserTimeResponse>('/user/time', {
+    method: 'GET',
+  });
+};
+
+// 사용자 로그인 상태 조회 (GET)
 export const fetchUserLoginStatus =
   async (): Promise<UserLoginStatusResponse> => {
-    const response = await fetch(`${BASE_URL}/user/status`, {
+    return apiClient<UserLoginStatusResponse>('/user/status', {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
     });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    return response.json();
   };
 
+// 사용자 로그아웃 (POST)
 export const fetchUserLogout = async (): Promise<UserLoginStatusResponse> => {
-  const response = await fetch(`${BASE_URL}/user/logout`, {
+  return apiClient<UserLoginStatusResponse>('/user/logout', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
   });
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
 };

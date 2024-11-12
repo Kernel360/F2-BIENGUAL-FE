@@ -1,76 +1,47 @@
+import { apiClient } from '@/lib/apiClient';
+import { ContentDetailResponse } from '@/types/ContentDetail';
 import {
   ReadingPreviewResponse,
   ListeningPreviewResponse,
   ContentsResponse,
 } from '@/types/Preview';
 
-import { ContentDetailResponse } from '../../types/ContentDetail';
-
-const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/contents`;
-
-// TODO(@smosco): fetch 공통 모듈로 분리
+// 리딩 프리뷰 조회 (GET)
 export const fetchReadingPreview = async (
-  customHeader?: Record<string, string>,
+  customHeaders?: Record<string, string>,
 ): Promise<ReadingPreviewResponse> => {
-  const response = await fetch(`${BASE_URL}/preview/reading`, {
+  return apiClient<ReadingPreviewResponse>('/contents/preview/reading', {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      ...customHeader,
-    },
-    credentials: 'include',
+    customHeaders,
   });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
 };
 
+// 리스닝 프리뷰 조회 (GET)
 export const fetchListeningPreview = async (
-  customHeader?: Record<string, string>,
+  customHeaders?: Record<string, string>,
 ): Promise<ListeningPreviewResponse> => {
-  const response = await fetch(`${BASE_URL}/preview/listening`, {
+  return apiClient<ListeningPreviewResponse>('/contents/preview/listening', {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      ...customHeader,
-    },
-    credentials: 'include',
+    customHeaders,
   });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
 };
 
+// 콘텐츠 상세 조회 (GET)
 export const fetchContentDetail = async (
   contentId: number,
 ): Promise<ContentDetailResponse> => {
-  const response = await fetch(`${BASE_URL}/details/${contentId}`, {
+  return apiClient<ContentDetailResponse>(`/contents/details/${contentId}`, {
     method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
   });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
 };
 
+// 리딩 프리뷰 페이징 조회 (GET)
 export const fetchPaginatedReadingPreview = async (
   page?: number,
   size?: number,
   sort?: string,
   direction?: string,
-  categoryId?: number | undefined,
+  categoryId?: number,
 ): Promise<ContentsResponse> => {
   const queryParams = new URLSearchParams();
   if (sort) queryParams.append('sort', sort);
@@ -79,31 +50,22 @@ export const fetchPaginatedReadingPreview = async (
   if (size) queryParams.append('size', size.toString());
   if (categoryId !== undefined)
     queryParams.append('categoryId', categoryId.toString());
-  const response = await fetch(
-    // TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
-    `${BASE_URL}/preview/paginated-reading?${queryParams.toString()}`,
+
+  return apiClient<ContentsResponse>(
+    `/contents/preview/paginated-reading?${queryParams.toString()}`,
     {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
     },
   );
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
 };
 
+// 리스닝 프리뷰 페이징 조회 (GET)
 export const fetchPaginatedListeningPreview = async (
   page?: number,
   size?: number,
   sort?: string,
   direction?: string,
-  categoryId?: number | undefined,
+  categoryId?: number,
 ): Promise<ContentsResponse> => {
   const queryParams = new URLSearchParams();
   if (sort) queryParams.append('sort', sort);
@@ -113,22 +75,10 @@ export const fetchPaginatedListeningPreview = async (
   if (categoryId !== undefined)
     queryParams.append('categoryId', categoryId.toString());
 
-  const response = await fetch(
-    // TODO@godhyzzang : page 1부터 시작하도록 api 수정 요청필요
-    `${BASE_URL}/preview/paginated-listening?${queryParams.toString()}`,
-
+  return apiClient<ContentsResponse>(
+    `/contents/preview/paginated-listening?${queryParams.toString()}`,
     {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
     },
   );
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
 };
