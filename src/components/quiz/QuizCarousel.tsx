@@ -15,8 +15,7 @@ export default function QuizCarousel({ quizListData }: QuizCarouselProps) {
       <Carousel
         previewDatas={quizListData}
         itemComponent={Quiz}
-        itemWidth={800}
-        itemsPerPage={1}
+        itemWidth={783}
       />
     </div>
   );
