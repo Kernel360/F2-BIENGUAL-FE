@@ -20,16 +20,16 @@ export default function GeneralQuiz({
   options,
   onNext,
 }: GeneralQuizProps) {
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   const { mutate: checkAnswer } = useCheckQuestionAnswer();
 
-  const handleAnswerSelect = (answer: string) => {
+  const handleAnswerSelect = (answer: number) => {
     setSelectedAnswer(answer);
 
     checkAnswer(
-      { questionId, answer },
+      { questionId, answer: `${answer}` },
       {
         onSuccess: (response) => {
           setIsCorrect(response.data);
@@ -51,7 +51,7 @@ export default function GeneralQuiz({
       </CardHeader>
       <CardContent className="space-y-4">
         {options.map((option, index) => {
-          const isSelected = selectedAnswer === option;
+          const isSelected = selectedAnswer === index;
           const isCorrectAnswer = isSelected && isCorrect === true;
           const isWrongAnswer = isSelected && isCorrect === false;
 
@@ -59,7 +59,7 @@ export default function GeneralQuiz({
             <Button
               // eslint-disable-next-line react/no-array-index-key
               key={index}
-              onClick={() => handleAnswerSelect(option)}
+              onClick={() => handleAnswerSelect(index)}
               disabled={isCorrect !== null}
               className={cn(
                 'w-full justify-start text-left h-auto p-4 text-base font-normal',
