@@ -17,14 +17,14 @@ export default function Quiz({ data, onNext }: QuizProps) {
         <OrderQuiz
           questionId={data.questionId}
           question={data.question}
-          examples={data.examples}
+          options={data.examples}
           onNext={onNext}
         />
       ) : (
         <GeneralQuiz
           questionId={data.questionId}
           question={data.question}
-          examples={data.examples}
+          options={data.examples}
           onNext={onNext}
         />
       )}

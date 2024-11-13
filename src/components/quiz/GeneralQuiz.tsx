@@ -10,14 +10,14 @@ import { cn } from '@/lib/utils';
 interface GeneralQuizProps {
   question: string;
   questionId: string;
-  examples: string[];
+  options: string[];
   onNext?: () => void;
 }
 
 export default function GeneralQuiz({
   question,
   questionId,
-  examples,
+  options,
   onNext,
 }: GeneralQuizProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
@@ -50,15 +50,16 @@ export default function GeneralQuiz({
         <CardTitle className="text-xl font-medium">{question}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
-        {examples.map((example) => {
-          const isSelected = selectedAnswer === example;
+        {options.map((option, index) => {
+          const isSelected = selectedAnswer === option;
           const isCorrectAnswer = isSelected && isCorrect === true;
           const isWrongAnswer = isSelected && isCorrect === false;
 
           return (
             <Button
-              key={example}
-              onClick={() => handleAnswerSelect(example)}
+              // eslint-disable-next-line react/no-array-index-key
+              key={index}
+              onClick={() => handleAnswerSelect(option)}
               disabled={isCorrect !== null}
               className={cn(
                 'w-full justify-start text-left h-auto p-4 text-base font-normal',
@@ -69,7 +70,7 @@ export default function GeneralQuiz({
               )}
               variant="outline"
             >
-              {example}
+              {option}
             </Button>
           );
         })}

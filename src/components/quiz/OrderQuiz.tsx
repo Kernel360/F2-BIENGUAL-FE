@@ -13,14 +13,14 @@ import { cn } from '@/lib/utils';
 interface OrderQuizProps {
   question: string;
   questionId: string;
-  examples: string[];
+  options: string[];
   onNext?: () => void;
 }
 
 export default function OrderQuiz({
   question,
   questionId,
-  examples,
+  options,
   onNext,
 }: OrderQuizProps) {
   const [selectedOrder, setSelectedOrder] = useState<number[]>([]);
@@ -92,7 +92,7 @@ export default function OrderQuiz({
             </div>
           ))}
         </div>
-        {examples.map((item, index) => (
+        {options.map((option, index) => (
           <div
             // eslint-disable-next-line react/no-array-index-key
             key={index}
@@ -110,7 +110,7 @@ export default function OrderQuiz({
               'relative overflow-hidden',
             )}
           >
-            {item}
+            {option}
             {/* {selectedOrder.includes(index) && (
               <span className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center font-bold">
                 {selectedOrder.indexOf(index) + 1}
