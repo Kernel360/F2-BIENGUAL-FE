@@ -3,7 +3,7 @@
 import type { Metadata } from 'next';
 
 import { fetchContentDetail } from '@/api/queries/contentsQueries';
-import ListeningDetail from '@/app/(default)/learn/listening/detail/ListeningDetail';
+import ListeningDetailClient from '@/app/(default)/learn/listening/detail/ListeningDetailClient';
 
 // 메타데이터 설정 함수
 export async function generateMetadata({
@@ -36,5 +36,5 @@ export default async function DetailListeningPage({
   const resolvedParams = await params;
   const contentId = Number(resolvedParams.id);
 
-  return <ListeningDetail contentId={contentId} />;
+  return <ListeningDetailClient contentId={contentId} />;
 }

@@ -13,6 +13,7 @@ import {
 } from '@/api/hooks/useMission';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import Carousel from '@/components/common/Carousel';
 import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
@@ -20,7 +21,7 @@ import Modal from '@/components/common/Modal';
 import BookmarkMemoPanel from '@/components/listening/BookmarkMemoPanel';
 import SubtitleOption from '@/components/listening/SubtitleOption';
 import VideoPlayer from '@/components/listening/VideoPlayer';
-import QuizCarousel from '@/components/quiz/QuizCarousel';
+import Quiz from '@/components/quiz/Quiz';
 import QuizCover from '@/components/quiz/QuizCover';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -31,7 +32,7 @@ import { CustomScriptLanguageCode } from '@/types/Scripts';
 
 type Mode = 'line' | 'block';
 
-export default function DetailListeningPage({
+export default function ListeningDetailClient({
   contentId,
 }: {
   contentId: number;
@@ -233,11 +234,10 @@ export default function DetailListeningPage({
         setShowLoginModal={setShowLoginModal}
         missionStatus={missionStatus?.data}
       />
-
       {/* 퀴즈 */}
       {isLogin ? (
         // 로그인 했을 때 퀴즈커버
-        <div className="relative w-full h-[400px] overflow-hidden rounded-lg shadow-lg ">
+        <div className="w-full h-fit overflow-hidden rounded-lg shadow-lg ">
           {!showQuiz && (
             <QuizCover
               startColor="from-blue-400"
@@ -256,10 +256,14 @@ export default function DetailListeningPage({
           )}
 
           {showQuiz && (
-            <div className="absolute inset-0 bg-white flex shadow-lg">
+            <div className="inset-0 bg-white flex">
               {/* 퀴즈 */}
               {quizData && quizData.data.questionAnswer.length > 0 ? (
-                <QuizCarousel quizListData={quizData.data.questionAnswer} />
+                <Carousel
+                  previewDatas={quizData.data.questionAnswer}
+                  itemComponent={Quiz}
+                  itemWidth={783}
+                />
               ) : (
                 <QuizCover
                   startColor="white"

@@ -1,8 +1,8 @@
 export interface QuestionAnswer {
   question: string;
-  questionKo: string;
-  answer: string;
-  type: 'BLANK' | 'ORDER';
+  questionId: string;
+  examples: string[];
+  type: 'MATCH' | 'WORD' | 'BLANK' | 'ORDER';
 }
 
 export interface FetchQuizResponse {
@@ -11,4 +11,15 @@ export interface FetchQuizResponse {
   data: {
     questionAnswer: QuestionAnswer[];
   };
+}
+
+export interface CheckQuizAnswerResponse {
+  code: string;
+  message: string;
+  data: boolean;
+}
+
+export interface CheckAnswerRequest {
+  questionId: string;
+  answer: string;
 }

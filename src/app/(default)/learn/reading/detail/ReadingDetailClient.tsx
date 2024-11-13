@@ -6,16 +6,16 @@ import { useState, useEffect } from 'react';
 
 import { ArrowUp } from 'lucide-react';
 
-// import { Helmet } from 'react-helmet-async';
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import { useFetchMissionStatus } from '@/api/hooks/useMission';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import Carousel from '@/components/common/Carousel';
 import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
-import QuizCarousel from '@/components/quiz/QuizCarousel';
+import Quiz from '@/components/quiz/Quiz';
 import QuizCover from '@/components/quiz/QuizCover';
 import MissionScrollProgressbar from '@/components/reading/MissionScrollProgressbar';
 import ReadingScriptItem from '@/components/reading/ReadingScriptItem';
@@ -26,7 +26,7 @@ import { useScrapToggle } from '@/hooks/useScrapToggle';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
 
-export default function DetailReadingPage({
+export default function ReadingDetailClient({
   contentId,
 }: {
   contentId: number;
@@ -132,7 +132,7 @@ export default function DetailReadingPage({
           {/* 퀴즈 */}
           {isLogin ? (
             // 로그인 했을 때 퀴즈커버
-            <div className="relative w-full h-[400px] overflow-hidden rounded-lg shadow-lg ">
+            <div className="w-full h-fit overflow-hidden rounded-lg shadow-lg ">
               {!showQuiz && (
                 <QuizCover
                   startColor="from-blue-400"
@@ -151,10 +151,14 @@ export default function DetailReadingPage({
               )}
 
               {showQuiz && (
-                <div className="absolute inset-0 bg-white flex">
+                <div className="inset-0 bg-white flex">
                   {/* 퀴즈 */}
                   {quizData && quizData.data.questionAnswer.length > 0 ? (
-                    <QuizCarousel quizListData={quizData.data.questionAnswer} />
+                    <Carousel
+                      previewDatas={quizData.data.questionAnswer}
+                      itemComponent={Quiz}
+                      itemWidth={783}
+                    />
                   ) : (
                     <QuizCover
                       startColor="white"

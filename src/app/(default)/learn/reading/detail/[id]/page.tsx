@@ -3,7 +3,7 @@
 import type { Metadata } from 'next';
 
 import { fetchContentDetail } from '@/api/queries/contentsQueries';
-import ReadingDetail from '@/app/(default)/learn/reading/detail/ReadingDetail';
+import ReadingDetailClient from '@/app/(default)/learn/reading/detail/ReadingDetailClient';
 
 // 메타데이터 설정 함수
 export async function generateMetadata({
@@ -36,5 +36,5 @@ export default async function DetailReadingPage({
   const resolvedParams = await params;
   const contentId = Number(resolvedParams.id);
 
-  return <ReadingDetail contentId={contentId} />;
+  return <ReadingDetailClient contentId={contentId} />;
 }
