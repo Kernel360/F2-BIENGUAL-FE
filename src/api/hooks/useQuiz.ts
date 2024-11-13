@@ -1,9 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import { FetchQuizResponse } from '@/types/Quiz';
+import {
+  CheckQuizAnswerResponse,
+  CheckAnswerRequest,
+  FetchQuizResponse,
+} from '@/types/Quiz';
 
-import { fetchQuiz } from '../queries/quizQueries';
+import { checkQuizAnswer, fetchQuiz } from '../queries/quizQueries';
 
 export const useFetchQuiz = (contentId: number) => {
   const { data: isLoginData } = useUserLoginStatus();
@@ -12,5 +16,12 @@ export const useFetchQuiz = (contentId: number) => {
     queryKey: ['quiz', contentId],
     queryFn: () => fetchQuiz(contentId),
     enabled: !!isLogin,
+  });
+};
+
+export const useCheckQuestionAnswer = () => {
+  return useMutation<CheckQuizAnswerResponse, Error, CheckAnswerRequest>({
+    mutationFn: (questionAnswer: { questionId: string; answer: string }) =>
+      checkQuizAnswer(questionAnswer),
   });
 };
