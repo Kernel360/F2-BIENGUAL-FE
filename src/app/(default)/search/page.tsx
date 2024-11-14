@@ -57,7 +57,7 @@ function SearchResultsList() {
                 result.contentType !== 'READING' && (
                   <Badge className="flex items-center gap-1 bg-gray-200 bg-opacity-70">
                     <Clock className="w-3 h-3" color="purple" />
-                    <span className="text-violet-800">24:00</span>
+                    <span className="text-violet-800">{result.duration}</span>
                   </Badge>
                 )
               }
