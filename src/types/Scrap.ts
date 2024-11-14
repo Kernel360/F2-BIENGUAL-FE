@@ -3,10 +3,11 @@ export interface ScrapListItem {
   scrapId: number;
   contentId: number;
   title: string;
+  contentType: 'READING' | 'LISTENING';
   createdAt: string;
   preScripts: string;
   thumbnailUrl: string;
-  contentType: 'READING' | 'LISTENING';
+  isActive: boolean;
 }
 
 export interface FetchScrapResponse {
