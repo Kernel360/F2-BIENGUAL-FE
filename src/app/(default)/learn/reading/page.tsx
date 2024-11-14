@@ -22,7 +22,6 @@ export default function ReadingPage() {
 
   const {
     data: readingContents,
-    isLoading,
     isError,
     error,
   } = usePaginatedReadingPreview(
@@ -33,35 +32,37 @@ export default function ReadingPage() {
     categoryId,
   );
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
   if (isError) {
     return <p className="text-red-500">에러가 발생했습니다: {error.message}</p>;
   }
-
-  // TODO(@godhyzzang): 컨텐츠가 없을 때 보여줄 컴포넌트 만들 것
-  // if (!readingContents || readingContents.data.contents.length === 0) {
-  //   return <p>콘텐츠가 없습니다.</p>;
-  // }
 
   const handlePageChange = (page: number) => {
     router.push(`?page=${page}`);
   };
 
   return (
-    <div>
+    <main>
       <ContentTypeFilter />
-      <ul className="flex flex-col gap-6 mt-8">
-        {readingContents?.data.contents.map((content) => (
-          <ItemComponentList data={content} key={content.contentId} />
-        ))}
-      </ul>
-      <Pagination
-        totalPages={readingContents?.data.totalPages || 0}
-        onPageChange={handlePageChange}
-      />
-    </div>
+      {/* TODO(@godhyzzang) : loading중인데도 컨텐트가 없습니다 잠깐 뜨는 경우 있음 */}
+
+      {!readingContents || readingContents.data.contents.length === 0 ? (
+        <div className="flex justify-center items-center mt-8">
+          컨텐츠가 없습니다
+        </div>
+      ) : (
+        <div>
+          <ul className="flex flex-col gap-6 mt-8">
+            {readingContents?.data.contents.map((content) => (
+              <ItemComponentList data={content} key={content.contentId} />
+            ))}
+          </ul>
+          {/* TODO(@godhyzzang): 페이지네이션도 url state적용되게 해야함 */}
+          <Pagination
+            totalPages={readingContents?.data.totalPages || 0}
+            onPageChange={handlePageChange}
+          />
+        </div>
+      )}
+    </main>
   );
 }
