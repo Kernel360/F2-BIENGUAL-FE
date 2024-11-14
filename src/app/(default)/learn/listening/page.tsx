@@ -1,16 +1,14 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-
 import { usePaginatedListeningPreview } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
 import Pagination from '@/components/common/Pagination';
 import ItemComponent from '@/components/ItemComponentCard';
+import { useSetSearchParams } from '@/hooks/useSetSearchParams';
 
 function ListeningPage() {
-  const router = useRouter();
+  const { path, searchParams, setSearchParams } = useSetSearchParams();
 
-  const searchParams = useSearchParams();
   const currentPage = Number(searchParams.get('page'));
   // 기본값 지정해줘야만 null, undefined가 queryparams로 들어가지 않음
   const size = Number(searchParams.get('size')) || 10;
@@ -35,8 +33,9 @@ function ListeningPage() {
   }
 
   // 페이지네이션 버튼 누를때마다 페이지 이동
+
   const handlePageChange = (page: number) => {
-    router.push(`?page=${page}`);
+    setSearchParams({ path, params: { page: String(page) } });
   };
 
   return (
