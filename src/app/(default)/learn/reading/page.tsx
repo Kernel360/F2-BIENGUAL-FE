@@ -1,17 +1,14 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-
 import { usePaginatedReadingPreview } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
 import Pagination from '@/components/common/Pagination';
 import ItemComponentList from '@/components/ItemComponentList';
+import { useSetSearchParams } from '@/hooks/useSetSearchParams';
 // import { formatDate } from '@/lib/formatDate';
 
 export default function ReadingPage() {
-  const router = useRouter();
-
-  const searchParams = useSearchParams();
+  const { path, searchParams, setSearchParams } = useSetSearchParams();
   const currentPage = Number(searchParams.get('page'));
   // 기본값 지정해줘야만 null, undefined가 queryparams로 들어가지 않음
   const size = Number(searchParams.get('size')) || 10;
@@ -36,7 +33,7 @@ export default function ReadingPage() {
   }
 
   const handlePageChange = (page: number) => {
-    router.push(`?page=${page}`);
+    setSearchParams({ path, params: { page: String(page) } });
   };
 
   return (
