@@ -1,5 +1,10 @@
 /* eslint-disable react/no-array-index-key */
 
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 import type { Metadata } from 'next';
 
 import { fetchContentDetail } from '@/api/queries/contentsQueries';
@@ -36,5 +41,16 @@ export default async function DetailReadingPage({
   const resolvedParams = await params;
   const contentId = Number(resolvedParams.id);
 
-  return <ReadingDetailClient contentId={contentId} />;
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['contentDetail', contentId],
+    queryFn: () => fetchContentDetail(contentId),
+  });
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ReadingDetailClient contentId={contentId} />
+    </HydrationBoundary>
+  );
 }

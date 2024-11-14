@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { useFetchAllCategories } from '@/api/hooks/useCategories';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,8 @@ import {
 } from '@/components/ui/select';
 
 export default function ContentTypeFilter() {
+  const router = useRouter();
+
   const path = usePathname();
   const linkItems = [
     { href: `/learn/listening`, label: '리스닝', key: 'listening' },
@@ -47,6 +50,7 @@ export default function ContentTypeFilter() {
     <div className="flex flex-col gap-3">
       <div className="flex gap-1">
         {/* 리딩,리스닝 선택 버튼 */}
+        {/* TODO(@godhyzzang): router.replace로 변경 */}
         {linkItems.map(({ href, label, key }) => {
           const isActive = path.startsWith(href);
 
@@ -69,6 +73,8 @@ export default function ContentTypeFilter() {
         })}
       </div>
       {/* 카테고리 선택 버튼 */}
+      {/* TODO(@godhyzzang): router.replace로 변경 */}
+
       <div className="flex flex-wrap gap-2">
         <Link
           href={{
@@ -119,11 +125,14 @@ export default function ContentTypeFilter() {
       {/* 정렬 버튼 */}
       <div className="flex justify-end">
         <div className="flex min-w-[100px]">
+          {/* TODO(@godhyzzang): 새로고침하면 최신순이 잠깐 안 보였다가 보임 */}
           <Select
             onValueChange={(value) => {
-              window.location.href = `${path}?${new URLSearchParams(
-                generateQueryParams({ sort: value }),
-              ).toString()}`;
+              router.replace(
+                `${path}?${new URLSearchParams(
+                  generateQueryParams({ sort: value }),
+                ).toString()}`,
+              );
             }}
             value={searchParams.get('sort') || 'createdAt'}
           >
@@ -131,12 +140,8 @@ export default function ContentTypeFilter() {
               <SelectValue placeholder="정렬 기준" />
             </SelectTrigger>
             <SelectContent className="min-w-[100px]">
-              <SelectItem value="createdAt" className="">
-                최신순
-              </SelectItem>
-              <SelectItem value="hits" className="">
-                인기순
-              </SelectItem>
+              <SelectItem value="createdAt">최신순</SelectItem>
+              <SelectItem value="hits">인기순</SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -4,7 +4,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import { usePaginatedListeningPreview } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Pagination from '@/components/common/Pagination';
 import ItemComponent from '@/components/ItemComponentCard';
 
@@ -21,7 +20,6 @@ function ListeningPage() {
 
   const {
     data: listeningContents,
-    isLoading,
     isError,
     error,
   } = usePaginatedListeningPreview(
@@ -32,18 +30,9 @@ function ListeningPage() {
     categoryId,
   );
 
-  if (isLoading) {
-    return <LoadingSpinner />;
-  }
-
   if (isError) {
     return <p className="text-red-500">에러가 발생했습니다: {error.message}</p>;
   }
-
-  // TODO(@godhyzzang): 컨텐츠가 없을 때 보여줄 컴포넌트 만들 것
-  // if (!listeningContents || listeningContents.data.contents.length === 0) {
-  //   return <EmptyAlert alertDescription="컨텐츠가 없습니다." />;
-  // }
 
   // 페이지네이션 버튼 누를때마다 페이지 이동
   const handlePageChange = (page: number) => {
@@ -53,11 +42,18 @@ function ListeningPage() {
   return (
     <main>
       <ContentTypeFilter />
-      <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-7 mt-8">
-        {listeningContents?.data.contents.map((content) => (
-          <ItemComponent key={content.contentId} data={content} />
-        ))}
-      </div>
+      {!listeningContents || listeningContents.data.contents.length === 0 ? (
+        <div className="flex justify-center items-center mt-8">
+          컨텐츠가 없습니다
+        </div>
+      ) : (
+        <div className="grid grid-cols-2 xl:grid-cols-3 gap-x-4 gap-y-7 mt-8">
+          {listeningContents?.data.contents.map((content) => (
+            <ItemComponent key={content.contentId} data={content} />
+          ))}
+        </div>
+      )}
+
       <Pagination
         totalPages={listeningContents?.data.totalPages ?? 0}
         onPageChange={handlePageChange}
