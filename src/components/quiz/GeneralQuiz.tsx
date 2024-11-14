@@ -6,36 +6,32 @@ import { useCheckQuestionAnswer } from '@/api/hooks/useQuiz';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useQuizStore, ExtendedQuestion } from '@/stores/quizStore';
 
 interface GeneralQuizProps {
-  question: string;
-  questionId: string;
-  options: string[];
+  question: ExtendedQuestion;
   onNext?: () => void;
 }
 
-export default function GeneralQuiz({
-  question,
-  questionId,
-  options,
-  onNext,
-}: GeneralQuizProps) {
+export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   const { mutate: checkAnswer } = useCheckQuestionAnswer();
+  const { setQuestionIsCorrect } = useQuizStore();
 
   const handleAnswerSelect = (answer: number) => {
     setSelectedAnswer(answer);
 
     checkAnswer(
-      { questionId, answer: `${answer}` },
+      { questionId: question.questionId, answer: `${answer}` },
       {
         onSuccess: (response) => {
-          setIsCorrect(response.data);
+          const correct = response.data;
+
+          setQuestionIsCorrect(question.questionId, correct);
         },
         onError: () => {
-          setIsCorrect(false);
+          setQuestionIsCorrect(question.questionId, false);
         },
       },
     );
@@ -45,22 +41,25 @@ export default function GeneralQuiz({
     <div className="w-full">
       <CardHeader className="space-y-4">
         <div className="flex justify-between items-center">
-          <span className="text-sm text-muted-foreground">Question 2 of 5</span>
+          <span className="text-sm text-muted-foreground">Question</span>
         </div>
-        <CardTitle className="text-xl font-medium">{question}</CardTitle>
+        <CardTitle className="text-xl font-medium">
+          {question.question}
+        </CardTitle>
       </CardHeader>
+
       <CardContent className="space-y-4">
-        {options.map((option, index) => {
+        {question.examples.map((option, index) => {
           const isSelected = selectedAnswer === index;
-          const isCorrectAnswer = isSelected && isCorrect === true;
-          const isWrongAnswer = isSelected && isCorrect === false;
+          const isCorrectAnswer = isSelected && question.isCorrect;
+          const isWrongAnswer = isSelected && !question.isCorrect;
 
           return (
             <Button
               // eslint-disable-next-line react/no-array-index-key
               key={index}
               onClick={() => handleAnswerSelect(index)}
-              disabled={isCorrect !== null}
+              // disabled={question.isCorrect !== null}
               className={cn(
                 'w-full justify-start text-left h-auto p-4 text-base font-normal',
                 isCorrectAnswer &&
@@ -74,7 +73,8 @@ export default function GeneralQuiz({
             </Button>
           );
         })}
-        {isCorrect !== null && (
+
+        {question.isCorrect !== null && (
           <Button className="w-full mt-6" onClick={onNext} variant="default">
             다음 문제 풀기
           </Button>
