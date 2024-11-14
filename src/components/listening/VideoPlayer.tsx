@@ -73,35 +73,43 @@ const VideoPlayer = forwardRef<ReactPlayer, VideoPlayerProps>(
       setPlayBackRate,
     };
 
-    if (!mounted) return null;
+    // if (!mounted) return null;
 
     return (
       <div className="w-full max-w-4xl mx-auto">
         <Card className="overflow-hidden">
           <CardContent className="p-0">
             <div className="relative w-full aspect-video">
-              <ReactPlayer
-                ref={playerRef}
-                url={videoUrl}
-                playing={isPlaying}
-                width="100%"
-                height="100%"
-                onPlay={() => setIsPlaying(true)}
-                onStart={() => setIsPlaying(true)}
-                onPause={() => setIsPlaying(false)}
-                onProgress={handleProgress}
-                volume={volume}
-                controls={false}
-                playbackRate={playbackRate}
-                progressInterval={100}
-                className="absolute top-0 left-0"
-              />
-              <div className="absolute bottom-0 left-0 right-0">
-                <ControlBar
-                  playerRef={playerRef}
-                  BasicControlBarProps={BasicControlBarProps}
-                />
-              </div>
+              {mounted ? (
+                <>
+                  <ReactPlayer
+                    ref={playerRef}
+                    url={videoUrl}
+                    playing={isPlaying}
+                    width="100%"
+                    height="100%"
+                    onPlay={() => setIsPlaying(true)}
+                    onStart={() => setIsPlaying(true)}
+                    onPause={() => setIsPlaying(false)}
+                    onProgress={handleProgress}
+                    volume={volume}
+                    controls={false}
+                    playbackRate={playbackRate}
+                    progressInterval={100}
+                    className="absolute top-0 left-0"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0">
+                    <ControlBar
+                      playerRef={playerRef}
+                      BasicControlBarProps={BasicControlBarProps}
+                    />
+                  </div>
+                </>
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gray-200">
+                  Loading...
+                </div>
+              )}
             </div>
           </CardContent>
         </Card>
