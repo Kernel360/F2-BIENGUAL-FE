@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Clock } from 'lucide-react';
+import { Clock, BookOpen, Headphones } from 'lucide-react';
 
 import { useRecentLearningPreview } from '@/api/hooks/useDashboard';
 import ContentCard from '@/components/items/ContentCard';
@@ -31,25 +31,42 @@ function RecentLearning() {
               item.contentType !== 'READING' && (
                 <Badge className="flex items-center gap-1 bg-gray-200 bg-opacity-70">
                   <Clock className="w-3 h-3" color="purple" />
-                  <span className="text-violet-800">24:00</span>
+                  <span className="text-violet-800">{item.duration}</span>
                 </Badge>
               )
             }
             footerContent={
               <div className="space-y-1">
-                <div className="w-full bg-gray-200 rounded-full h-1.5">
+                <div className="w-full relative bg-gray-200 rounded-full h-1.5">
                   <div
-                    className="bg-violet-500 h-1.5 rounded-full"
-                    style={{ width: `${item.learningRate}%` }}
+                    className="bg-violet-500 absolute z-50 h-1.5 rounded-full"
+                    style={{ width: `${item.currentLearningRate}%` }}
+                  />
+                  <div
+                    className="bg-pink-200 absolute z-10 top-0 h-1.5 rounded-full"
+                    style={{ width: `${item.completedLearningRate}%` }}
                   />
                 </div>
                 <div className="text-right text-sm text-gray-500">
-                  {item.learningRate}%
+                  {item.currentLearningRate}%
                 </div>
               </div>
             }
             coverImageUrl={item.thumbnailUrl}
-            leftBadge={<Badge>{item.category}</Badge>}
+            leftBadge={
+              <div className="flex gap-1">
+                <Badge className="">{item.category}</Badge>
+                {item.contentType !== 'READING' ? (
+                  <div className="flex justify-center items-center bg-gradient-to-l from-red-500 to-orange-500 rounded-sm shadow-sm  ">
+                    <Headphones className="p-1 h-6 w-6  text-white" />
+                  </div>
+                ) : (
+                  <div className="flex justify-center items-center bg-gradient-to-l from-blue-500 to-sky-500 rounded-sm shadow-sm  ">
+                    <BookOpen className="p-1 h-6 w-6  text-white" />
+                  </div>
+                )}
+              </div>
+            }
             rightBadge={`조회수 ${item.hits}`}
             title={item.title}
             description={item.preScripts}

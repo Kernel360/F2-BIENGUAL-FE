@@ -1,5 +1,7 @@
 'use client';
 
+import { Clock } from 'lucide-react';
+
 import { useFetchScrap } from '@/api/hooks/useScrap';
 import EmptyAlert from '@/components/common/EmptyAlert';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -35,19 +37,32 @@ export default function RecentContent() {
           }
           leftBadge={
             // TODO@godhyzzang : 리딩, 리스닝 다르면 글자 대신 그림 아이콘을 바꿔주는게 좋을듯
-            <Badge
-              variant="secondary"
-              className={`${
-                item.contentType === 'READING' ? 'bg-green-300' : 'bg-blue-200'
-              } text-gray-800`}
-            >
-              {item.contentType}
-            </Badge>
+            <div>
+              <Badge
+                variant="secondary"
+                className={`${
+                  item.contentType === 'READING'
+                    ? 'bg-green-300'
+                    : 'bg-blue-200'
+                } text-gray-800`}
+              >
+                {item.contentType}
+                {/* TODO@godhyzzang : 일반 previewcomponent처럼 카테고리, 리스닝리딩 디자인 통일 필요  */}
+              </Badge>
+            </div>
           }
           rightBadge={
             <span className="text-sm text-muted-foreground">
               {formatDate(item.createdAt)} 저장
             </span>
+          }
+          bottomRightButton={
+            item.contentType !== 'READING' && (
+              <Badge className="flex items-center gap-1 bg-gray-200 bg-opacity-70">
+                <Clock className="w-3 h-3" color="purple" />
+                {/* <span className="text-violet-800">{item.duration}</span> // TODO(@godhyzzang) :  scrap도 duration추가 필요 */}
+              </Badge>
+            )
           }
           coverImageUrl={item.thumbnailUrl}
           title={item.title}

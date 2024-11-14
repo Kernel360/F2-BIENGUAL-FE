@@ -4,6 +4,7 @@ export interface Preview {
   category: string;
   thumbnailUrl: string;
   contentType: 'READING' | 'LISTENING';
+  duration: string;
   preScripts: string;
   hits: number;
   isScrapped: boolean;
