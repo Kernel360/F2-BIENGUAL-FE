@@ -9,26 +9,21 @@ import { useCheckQuestionAnswer } from '@/api/hooks/useQuiz';
 import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { ExtendedQuestion, useQuizStore } from '@/stores/quizStore';
 
 interface OrderQuizProps {
-  question: string;
-  questionId: string;
-  options: string[];
+  question: ExtendedQuestion;
   onNext?: () => void;
 }
 
-export default function OrderQuiz({
-  question,
-  questionId,
-  options,
-  onNext,
-}: OrderQuizProps) {
+export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
   const [selectedOrder, setSelectedOrder] = useState<number[]>([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   const { mutate: checkAnswer } = useCheckQuestionAnswer();
+  const { setQuestionIsCorrect } = useQuizStore();
 
+  // 사용자가 선택한 순서를 저장하는 함수
   const handleSelect = (index: number) => {
     if (isSubmitted) return;
 
@@ -46,21 +41,25 @@ export default function OrderQuiz({
     });
   };
 
+  // 정답 제출 함수
   const handleSubmit = async () => {
     if (selectedOrder.length !== 4) return;
 
     const userAnswer = selectedOrder.map((index) => index + 1).join(' ');
 
     checkAnswer(
-      { questionId, answer: userAnswer },
+      { questionId: question.questionId, answer: userAnswer },
       {
         onSuccess: (response) => {
-          setIsCorrect(response.data);
+          const correct = response.data;
           setIsSubmitted(true);
+
+          setQuestionIsCorrect(question.questionId, correct);
         },
         onError: () => {
-          setIsCorrect(false);
           setIsSubmitted(true);
+
+          setQuestionIsCorrect(question.questionId, false);
         },
       },
     );
@@ -70,29 +69,35 @@ export default function OrderQuiz({
     <div className="w-full">
       <CardHeader className="space-y-4">
         <div className="flex justify-between items-center">
-          <span className="text-sm text-muted-foreground">Question 2 of 5</span>
+          <span className="text-sm text-muted-foreground">2/5 Questions</span>
         </div>
-        <CardTitle className="text-xl font-medium">{question}</CardTitle>
+        <CardTitle className="text-xl font-medium">
+          {question.question}
+        </CardTitle>
       </CardHeader>
+
+      {/* 사용자 선택 순서를 보여주는 UI */}
+      <div className="flex justify-center space-x-4 mb-6">
+        {[0, 1, 2, 3].map((index) => (
+          <div
+            key={index}
+            className={cn(
+              'w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold',
+              selectedOrder[index] !== undefined
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary text-secondary-foreground',
+            )}
+          >
+            {selectedOrder[index] !== undefined
+              ? selectedOrder[index] + 1
+              : '-'}
+          </div>
+        ))}
+      </div>
+
+      {/* 문제 선택 옵션 */}
       <div className="flex flex-col gap-2 px-4">
-        <div className="flex justify-center space-x-4 mb-6">
-          {[0, 1, 2, 3].map((index) => (
-            <div
-              key={index}
-              className={cn(
-                'w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold',
-                selectedOrder[index] !== undefined
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-secondary text-secondary-foreground',
-              )}
-            >
-              {selectedOrder[index] !== undefined
-                ? selectedOrder[index] + 1
-                : '-'}
-            </div>
-          ))}
-        </div>
-        {options.map((option, index) => (
+        {question.examples.map((option, index) => (
           <div
             // eslint-disable-next-line react/no-array-index-key
             key={index}
@@ -103,21 +108,18 @@ export default function OrderQuiz({
               selectedOrder.includes(index) &&
                 'bg-primary/10 border-primary text-black',
               isSubmitted &&
-                isCorrect &&
+                question.isCorrect &&
                 selectedOrder[index] === index &&
                 'bg-green-500 text-white',
-              isSubmitted && !isCorrect && 'bg-red-100 border-red-300',
+              isSubmitted && !question.isCorrect && 'bg-red-100 border-red-300',
               'relative overflow-hidden',
             )}
           >
             {option}
-            {/* {selectedOrder.includes(index) && (
-              <span className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary text-primary-foreground rounded-full w-8 h-8 flex items-center justify-center font-bold">
-                {selectedOrder.indexOf(index) + 1}
-              </span>
-            )} */}
           </div>
         ))}
+
+        {/* 제출 버튼 또는 다음 문제 버튼 */}
         {!isSubmitted ? (
           <Button
             className="w-full mt-6"
@@ -131,14 +133,16 @@ export default function OrderQuiz({
             다음 문제
           </Button>
         )}
+
+        {/* 정답 여부 표시 */}
         {isSubmitted && (
           <div
             className={cn(
-              'text-center font-bold',
-              isCorrect ? 'text-green-600' : 'text-red-600',
+              'text-center font-bold mt-4',
+              question.isCorrect ? 'text-green-600' : 'text-red-600',
             )}
           >
-            {isCorrect ? '정답' : '오답'}
+            {question.isCorrect ? '정답입니다!' : '오답입니다!'}
           </div>
         )}
       </div>

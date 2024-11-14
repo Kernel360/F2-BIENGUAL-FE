@@ -15,11 +15,8 @@ export const checkQuizAnswer = async (quizAnswer: {
   questionId: string;
   answer: string;
 }): Promise<CheckQuizAnswerResponse> => {
-  return apiClient<CheckQuizAnswerResponse>(
-    `/questions/verify/${quizAnswer.questionId}`,
-    {
-      method: 'POST',
-      body: JSON.stringify(quizAnswer),
-    },
-  );
+  return apiClient<CheckQuizAnswerResponse>('/questions/verify', {
+    method: 'POST',
+    body: JSON.stringify(quizAnswer),
+  });
 };
