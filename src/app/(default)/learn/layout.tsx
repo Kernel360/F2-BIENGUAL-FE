@@ -1,9 +1,10 @@
-import { fetchAllCategories } from '@/api/queries/categoryQueries';
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
+
+import { fetchAllCategories } from '@/api/queries/categoryQueries';
 
 export default async function LearnPageLayout({
   children,

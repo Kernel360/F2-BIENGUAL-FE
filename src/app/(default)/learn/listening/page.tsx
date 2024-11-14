@@ -4,7 +4,6 @@ import { useRouter, useSearchParams } from 'next/navigation';
 
 import { usePaginatedListeningPreview } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Pagination from '@/components/common/Pagination';
 import ItemComponent from '@/components/ItemComponentCard';
 
@@ -21,7 +20,6 @@ function ListeningPage() {
 
   const {
     data: listeningContents,
-    isLoading,
     isError,
     error,
   } = usePaginatedListeningPreview(
