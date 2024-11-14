@@ -10,12 +10,11 @@ import { useContentDetail } from '@/api/hooks/useContentDetail';
 import { useFetchMissionStatus } from '@/api/hooks/useMission';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-import Carousel from '@/components/common/Carousel';
 import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
-import Quiz from '@/components/quiz/Quiz';
+import QuizCarousel from '@/components/quiz/QuizCarousel';
 import QuizCover from '@/components/quiz/QuizCover';
 import MissionScrollProgressbar from '@/components/reading/MissionScrollProgressbar';
 import ReadingScriptItem from '@/components/reading/ReadingScriptItem';
@@ -25,6 +24,7 @@ import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
+import { useQuizStore } from '@/stores/quizStore';
 
 export default function ReadingDetailClient({
   contentId,
@@ -70,6 +70,14 @@ export default function ReadingDetailClient({
 
     toggleScrap(data?.data.isScrapped);
   };
+
+  const { setContentQuestions } = useQuizStore();
+
+  useEffect(() => {
+    if (quizData) {
+      setContentQuestions(contentId, quizData.data.questionAnswer);
+    }
+  }, [contentId, quizData, setContentQuestions]);
 
   useEffect(() => {
     if (!data?.data.learningRate) return; // 학습률이 없으면 실행하지 않음
@@ -154,11 +162,7 @@ export default function ReadingDetailClient({
                 <div className="inset-0 bg-white flex">
                   {/* 퀴즈 */}
                   {quizData && quizData.data.questionAnswer.length > 0 ? (
-                    <Carousel
-                      previewDatas={quizData.data.questionAnswer}
-                      itemComponent={Quiz}
-                      itemWidth={783}
-                    />
+                    <QuizCarousel />
                   ) : (
                     <QuizCover
                       startColor="white"
