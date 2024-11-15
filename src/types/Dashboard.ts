@@ -1,3 +1,5 @@
+import { MissionStatus } from '@/types/Mission';
+
 export interface RecentLearningPreview {
   contentId: number;
   title: string;
@@ -34,4 +36,15 @@ export interface FetchMonthlyCategoryRatioResponse {
   code: string;
   message: string;
   data: { totalCount: number; categoryLearningList: MonthlyCategoryRatio[] };
+}
+
+export interface MonthlyHistoryList {
+  date: string;
+  missionStatus: MissionStatus;
+}
+
+export interface MissonCalendarResponse {
+  code: string;
+  message: string;
+  data: { monthlyHistoryList: MonthlyHistoryList[] };
 }

@@ -1,4 +1,5 @@
 /* eslint-disable react/no-array-index-key */
+import { cookies } from 'next/headers';
 
 import {
   QueryClient,
@@ -45,7 +46,10 @@ export default async function DetailListeningPage({
 
   await queryClient.prefetchQuery({
     queryKey: ['contentDetail', contentId],
-    queryFn: () => fetchContentDetail(contentId),
+    queryFn: () =>
+      fetchContentDetail(contentId, {
+        Cookie: cookies().toString(),
+      }),
   });
 
   return (

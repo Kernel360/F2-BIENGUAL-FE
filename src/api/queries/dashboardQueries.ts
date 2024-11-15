@@ -3,6 +3,7 @@ import {
   FetchRecentLearningPreviewResponse,
   FetchOneRecentLearningPreviewResponse,
   FetchMonthlyCategoryRatioResponse,
+  MissonCalendarResponse,
 } from '@/types/Dashboard';
 
 // 최근 학습 콘텐츠 조회 (GET)
@@ -15,6 +16,18 @@ export const fetchRecentLearningPreview =
       },
     );
   };
+
+// 월간 미션 달력 조회 (GET)
+export const fetchMissionCalendar = async (
+  date: string,
+): Promise<MissonCalendarResponse> => {
+  return apiClient<MissonCalendarResponse>(
+    `/dashboard/missions/calendar?date=${date}`,
+    {
+      method: 'GET',
+    },
+  );
+};
 
 // 최근 학습 콘텐츠 1개 조회 (GET)
 export const fetchOneRecentLearningPreview =

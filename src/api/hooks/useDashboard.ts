@@ -4,6 +4,7 @@ import {
   FetchRecentLearningPreviewResponse,
   FetchOneRecentLearningPreviewResponse,
   FetchMonthlyCategoryRatioResponse,
+  MissonCalendarResponse,
 } from '@/types/Dashboard';
 
 import { useQueryLoginOnly } from './common';
@@ -11,6 +12,7 @@ import {
   fetchRecentLearningPreview,
   fetchOneRecentLearningPreview,
   fetchMonthlyCategoryRatio,
+  fetchMissionCalendar,
 } from '../queries/dashboardQueries';
 
 export const useRecentLearningPreview =
@@ -20,6 +22,13 @@ export const useRecentLearningPreview =
       queryFn: () => fetchRecentLearningPreview(),
     });
   };
+
+export const useFetchMissionCalendar = (date: string) => {
+  return useQueryLoginOnly<MissonCalendarResponse>({
+    queryKey: ['missionCalendar', date],
+    queryFn: () => fetchMissionCalendar(date),
+  });
+};
 
 export const useOneRecentLearningPreview =
   (): UseQueryResult<FetchOneRecentLearningPreviewResponse> => {

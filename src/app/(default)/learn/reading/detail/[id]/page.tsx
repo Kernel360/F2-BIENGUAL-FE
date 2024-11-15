@@ -1,5 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 
+import { cookies } from 'next/headers';
+
 import {
   dehydrate,
   HydrationBoundary,
@@ -45,7 +47,8 @@ export default async function DetailReadingPage({
 
   await queryClient.prefetchQuery({
     queryKey: ['contentDetail', contentId],
-    queryFn: () => fetchContentDetail(contentId),
+    queryFn: () =>
+      fetchContentDetail(contentId, { Cookie: cookies().toString() }),
   });
 
   return (

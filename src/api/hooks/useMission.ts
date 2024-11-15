@@ -3,12 +3,14 @@ import { useQueryClient, useMutation } from '@tanstack/react-query';
 import {
   FetchMissionStatusResponse,
   UpdateMissionStatusResponse,
+  FetchRecentMissionHistoryResponse,
 } from '@/types/Mission';
 
 import { useQueryLoginOnly } from './common';
 import {
   fetchMissionStatus,
   updateMissionStatus,
+  fetchRecentMissionHistory,
 } from '../queries/missionQueries';
 
 export const useFetchMissionStatus = () => {
@@ -30,5 +32,12 @@ export const useUpdateMissionStatus = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['missionStatus'] });
     },
+  });
+};
+
+export const useFetchRecentMissionHistory = () => {
+  return useQueryLoginOnly<FetchRecentMissionHistoryResponse>({
+    queryKey: ['recentMissionHistory'],
+    queryFn: () => fetchRecentMissionHistory(),
   });
 };

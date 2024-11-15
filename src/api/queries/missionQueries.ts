@@ -2,6 +2,7 @@ import { apiClient } from '@/lib/apiClient';
 import {
   FetchMissionStatusResponse,
   UpdateMissionStatusResponse,
+  FetchRecentMissionHistoryResponse,
 } from '@/types/Mission';
 
 // 미션 상태 확인 (GET)
@@ -23,3 +24,13 @@ export const updateMissionStatus = async (missionStatusData: {
     body: JSON.stringify({ ...missionStatusData }),
   });
 };
+
+export const fetchRecentMissionHistory =
+  async (): Promise<FetchRecentMissionHistoryResponse> => {
+    return apiClient<FetchRecentMissionHistoryResponse>(
+      '/mission-history/recent',
+      {
+        method: 'GET',
+      },
+    );
+  };
