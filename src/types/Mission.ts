@@ -15,3 +15,14 @@ export interface UpdateMissionStatusResponse {
   code: string;
   message: string;
 }
+
+export interface RecentHistories {
+  date: string;
+  count: number;
+}
+
+export interface FetchRecentMissionHistoryResponse {
+  code: string;
+  message: string;
+  data: { recentHistories: RecentHistories[] };
+}

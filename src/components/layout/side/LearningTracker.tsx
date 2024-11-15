@@ -3,7 +3,10 @@ import React from 'react';
 
 import { Book, HelpCircle, Highlighter } from 'lucide-react';
 
-import { useFetchMissionStatus } from '@/api/hooks/useMission';
+import {
+  useFetchMissionStatus,
+  useFetchRecentMissionHistory,
+} from '@/api/hooks/useMission';
 import { useUserTime } from '@/api/hooks/useUserInfo';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -17,6 +20,7 @@ import {
 export default function LearningTracker() {
   const { data: userMembershipDurationData } = useUserTime();
   const { data: todayMissionData } = useFetchMissionStatus();
+  const { data: recentMissionHistory } = useFetchRecentMissionHistory();
 
   const totalLearningDays = userMembershipDurationData?.data.createdAt
     ? Math.max(
@@ -104,36 +108,37 @@ export default function LearningTracker() {
           </div>
           <TooltipProvider>
             <div className="flex items-end justify-between h-20 px-2">
-              {mockHistory.map((day, index) => (
-                // eslint-disable-next-line react/no-array-index-key
-                <Tooltip key={index}>
-                  <TooltipTrigger>
-                    <div className="flex flex-col items-center gap-1">
-                      <div
-                        className={`w-8 rounded-md ${
-                          day.completedMissions > 0 &&
-                          day.completedMissions === 1
-                            ? 'bg-violet-200'
-                            : day.completedMissions === 2
-                              ? 'bg-violet-400'
-                              : 'bg-violet-600'
-                        }`}
-                        style={{
-                          height: `${day.completedMissions * 20}px`,
-                        }}
-                      />
-                      <span className="text-xs text-gray-500">
-                        {formatDate(day.date)}
-                      </span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>
-                      {formatDate(day.date)}: {day.completedMissions}개 달성
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              ))}
+              {recentMissionHistory?.data.recentHistories.map(
+                (history, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <Tooltip key={index}>
+                    <TooltipTrigger>
+                      <div className="flex flex-col items-center gap-1">
+                        <div
+                          className={`w-8 rounded-md ${
+                            history.count > 0 && history.count === 1
+                              ? 'bg-violet-200'
+                              : history.count === 2
+                                ? 'bg-violet-400'
+                                : 'bg-violet-600'
+                          }`}
+                          style={{
+                            height: `${history.count * 20}px`,
+                          }}
+                        />
+                        <span className="text-xs text-gray-500">
+                          {formatDate(history.date)}
+                        </span>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>
+                        {formatDate(history.date)}: {history.count}개 달성
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                ),
+              )}
             </div>
           </TooltipProvider>
         </div>
