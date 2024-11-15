@@ -12,8 +12,26 @@ export interface RecentLearningPreview {
   completedLearningRate: number;
 }
 
+export interface MonthlyCategoryRatio {
+  categoryId: number;
+  categoryName: string;
+  count: number;
+}
+
 export interface FetchRecentLearningPreviewResponse {
   code: string;
   message: string;
   data: { recentLearningPreview: RecentLearningPreview[] };
+}
+
+export interface FetchOneRecentLearningPreviewResponse {
+  code: string;
+  message: string;
+  data: { title: string; learningRate: number };
+}
+
+export interface FetchMonthlyCategoryRatioResponse {
+  code: string;
+  message: string;
+  data: { totalCount: number; categoryLearningList: MonthlyCategoryRatio[] };
 }
