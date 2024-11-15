@@ -27,7 +27,10 @@ export const updateMissionStatus = async (missionStatusData: {
 
 export const fetchRecentMissionHistory =
   async (): Promise<FetchRecentMissionHistoryResponse> => {
-    return apiClient<FetchRecentMissionHistoryResponse>('/missions/history', {
-      method: 'GET',
-    });
+    return apiClient<FetchRecentMissionHistoryResponse>(
+      '/mission-history/recent',
+      {
+        method: 'GET',
+      },
+    );
   };
