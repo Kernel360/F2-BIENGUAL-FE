@@ -29,9 +29,11 @@ export const fetchListeningPreview = async (
 // 콘텐츠 상세 조회 (GET)
 export const fetchContentDetail = async (
   contentId: number,
+  customHeaders?: Record<string, string>,
 ): Promise<ContentDetailResponse> => {
   return apiClient<ContentDetailResponse>(`/contents/details/${contentId}`, {
     method: 'GET',
+    customHeaders,
   });
 };
 
