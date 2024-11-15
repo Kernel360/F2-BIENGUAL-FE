@@ -1,9 +1,15 @@
 import { UseQueryResult } from '@tanstack/react-query';
 
-import { FetchRecentLearningPreviewResponse } from '@/types/Dashboard';
+import {
+  FetchRecentLearningPreviewResponse,
+  MissonCalendarResponse,
+} from '@/types/Dashboard';
 
 import { useQueryLoginOnly } from './common';
-import { fetchRecentLearningPreview } from '../queries/dashboardQueries';
+import {
+  fetchRecentLearningPreview,
+  fetchMissionCalendar,
+} from '../queries/dashboardQueries';
 
 export const useRecentLearningPreview =
   (): UseQueryResult<FetchRecentLearningPreviewResponse> => {
@@ -12,3 +18,10 @@ export const useRecentLearningPreview =
       queryFn: () => fetchRecentLearningPreview(),
     });
   };
+
+export const useFetchMissionCalendar = (date: string) => {
+  return useQueryLoginOnly<MissonCalendarResponse>({
+    queryKey: ['missionCalendar', date],
+    queryFn: () => fetchMissionCalendar(date),
+  });
+};
