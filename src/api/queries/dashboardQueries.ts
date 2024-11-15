@@ -29,13 +29,12 @@ export const fetchOneRecentLearningPreview =
 
 // 월간 카테고리별 학습 콘텐츠 비율 조회 (GET)
 export const fetchMonthlyCategoryRatio = async (
-  date?: string,
+  date: string,
 ): Promise<FetchMonthlyCategoryRatioResponse> => {
-  const url = date
-    ? `/dashboard/learning/categories?date=${encodeURIComponent(date)}`
-    : '/dashboard/learning/categories';
-
-  return apiClient<FetchMonthlyCategoryRatioResponse>(url, {
-    method: 'GET',
-  });
+  return apiClient<FetchMonthlyCategoryRatioResponse>(
+    `/dashboard/learning/categories?date=${encodeURIComponent(date)}`,
+    {
+      method: 'GET',
+    },
+  );
 };

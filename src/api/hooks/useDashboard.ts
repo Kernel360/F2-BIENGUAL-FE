@@ -29,10 +29,11 @@ export const useOneRecentLearningPreview =
     });
   };
 
-export const useMonthlyCategoryRatio =
-  (): UseQueryResult<FetchMonthlyCategoryRatioResponse> => {
-    return useQueryLoginOnly({
-      queryKey: ['categoryRatioMonth'],
-      queryFn: () => fetchMonthlyCategoryRatio(),
-    });
-  };
+export const useMonthlyCategoryRatio = (
+  date: string,
+): UseQueryResult<FetchMonthlyCategoryRatioResponse> => {
+  return useQueryLoginOnly({
+    queryKey: ['categoryRatioMonth', date],
+    queryFn: () => fetchMonthlyCategoryRatio(date),
+  });
+};
