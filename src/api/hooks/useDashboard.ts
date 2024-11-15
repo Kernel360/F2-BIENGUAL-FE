@@ -1,9 +1,17 @@
 import { UseQueryResult } from '@tanstack/react-query';
 
-import { FetchRecentLearningPreviewResponse } from '@/types/Dashboard';
+import {
+  FetchRecentLearningPreviewResponse,
+  FetchOneRecentLearningPreviewResponse,
+  FetchMonthlyCategoryRatioResponse,
+} from '@/types/Dashboard';
 
 import { useQueryLoginOnly } from './common';
-import { fetchRecentLearningPreview } from '../queries/dashboardQueries';
+import {
+  fetchRecentLearningPreview,
+  fetchOneRecentLearningPreview,
+  fetchMonthlyCategoryRatio,
+} from '../queries/dashboardQueries';
 
 export const useRecentLearningPreview =
   (): UseQueryResult<FetchRecentLearningPreviewResponse> => {
@@ -12,3 +20,20 @@ export const useRecentLearningPreview =
       queryFn: () => fetchRecentLearningPreview(),
     });
   };
+
+export const useOneRecentLearningPreview =
+  (): UseQueryResult<FetchOneRecentLearningPreviewResponse> => {
+    return useQueryLoginOnly({
+      queryKey: ['recentOneLearningPreview'],
+      queryFn: () => fetchOneRecentLearningPreview(),
+    });
+  };
+
+export const useMonthlyCategoryRatio = (
+  date: string,
+): UseQueryResult<FetchMonthlyCategoryRatioResponse> => {
+  return useQueryLoginOnly({
+    queryKey: ['categoryRatioMonth', date],
+    queryFn: () => fetchMonthlyCategoryRatio(date),
+  });
+};
