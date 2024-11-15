@@ -148,6 +148,9 @@ export default function DashboardPage() {
             <CardTitle className="text-lg font-medium">학습 캘린더</CardTitle>
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
+            <p className="text-center text-sm">
+              🥹캘린더에는 오늘 데이터는 반영되지 않아요
+            </p>
             <Calendar />
           </CardContent>
         </Card>
