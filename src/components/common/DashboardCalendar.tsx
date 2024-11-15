@@ -40,6 +40,11 @@ export default function DashboardCalendar() {
   };
 
   const completedStyle = {
+    // tailwind문법이 modifierStyles에 호환되지 않아서 일반 css문법으로 변경
+    //  zero: 'bg-gray-500 text-white rounded-full',
+    // one: 'bg-green-500 text-white rounded-full',
+    // two: 'bg-blue-500 text-white rounded-full',
+    // three: 'bg-purple-500 text-white rounded-full',
     zero: {
       backgroundColor: '#d1d5db', // bg-gray-300
       color: 'white',
