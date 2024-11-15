@@ -54,14 +54,6 @@ export default function LearningTracker() {
     },
   ];
 
-  const mockHistory = [
-    { date: '2024.11.07', completedMissions: 3 },
-    { date: '2024.11.08', completedMissions: 2 },
-    { date: '2024.11.09', completedMissions: 1 },
-    { date: '2024.11.10', completedMissions: 0 },
-    { date: '2024.11.11', completedMissions: 1 },
-  ];
-
   // 진행도 계산
   const completedGoals = missionItems.filter((item) => item.status).length;
   const progress = (completedGoals / missionItems.length) * 100;
