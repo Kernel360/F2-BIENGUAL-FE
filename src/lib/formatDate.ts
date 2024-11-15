@@ -12,3 +12,10 @@ export const formatDate = (createdAt: string) => {
 
   return `${year}. ${month}. ${day}.`;
 };
+
+export const getCurrentMonth = (): string => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
+  return `${year}-${month}`;
+};
