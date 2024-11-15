@@ -5,6 +5,10 @@ import Link from 'next/link';
 import { PlayCircle, ChevronRight, Trophy } from 'lucide-react';
 import { Bar, BarChart, Pie, PieChart } from 'recharts';
 
+import {
+  useMonthlyCategoryRatio,
+  useOneRecentLearningPreview,
+} from '@/api/hooks/useDashboard';
 import Calendar from '@/components/common/DashboardCalendar';
 import {
   Card,
@@ -19,6 +23,8 @@ import {
   ChartTooltipContent,
   ChartConfig,
 } from '@/components/ui/chart';
+import { getCurrentMonth } from '@/lib/formatDate';
+import { processCategoryData } from '@/lib/processCategoryData';
 
 const quizData = [
   { month: 'Jan', total: 20, correct: 15, accuracy: 75 },
@@ -29,14 +35,7 @@ const quizData = [
   { month: 'Jun', total: 45, correct: 40, accuracy: 89 },
 ];
 
-const categoryData = [
-  { category: 'sports', percent: 30, fill: 'hsl(var(--chart-1))' },
-  { category: 'health', percent: 25, fill: 'hsl(var(--chart-2))' },
-  { category: 'news', percent: 20, fill: 'hsl(var(--chart-3))' },
-  { category: 'politics', percent: 15, fill: 'hsl(var(--chart-4))' },
-  { category: 'science', percent: 10, fill: 'hsl(var(--chart-5))' },
-];
-
+// TODO(@smosco): shadncn 차트 config 더 알아보고 수정 필요
 const categoryChartConfig = {
   percent: {
     label: 'Percent',
@@ -78,7 +77,19 @@ const quizChartConfig = {
   },
 } satisfies ChartConfig;
 
-export default function Component() {
+export default function DashboardPage() {
+  const { data: oneRecentLearningContent } = useOneRecentLearningPreview();
+  // TODO(@smosco): 월 선택 캐러셀 추가
+  const { data: monthlyCategoryRatio } =
+    useMonthlyCategoryRatio(getCurrentMonth());
+
+  const monthlyCategoryChartData = monthlyCategoryRatio
+    ? processCategoryData(
+        monthlyCategoryRatio.data.categoryLearningList,
+        monthlyCategoryRatio.data.totalCount,
+      )
+    : [];
+
   return (
     <div className="p-6 space-y-6">
       {/* 최근 학습 강의 포인트 */}
@@ -100,9 +111,11 @@ export default function Component() {
               <PlayCircle className="h-8 w-8 text-primary" />
               <div>
                 <p className="text-md font-medium leading-tight line-clamp-1">
-                  Robert Irwin and Jimmy Bottle Feed a Baby Miniature Horse
+                  {oneRecentLearningContent?.data.title}
                 </p>
-                <p className="text-sm text-muted-foreground">24.00%</p>
+                <p className="text-sm text-muted-foreground">
+                  {oneRecentLearningContent?.data.learningRate}%
+                </p>
               </div>
             </div>
           </CardContent>
@@ -154,19 +167,17 @@ export default function Component() {
             >
               <PieChart className="h-[300px] w-full">
                 <Pie
-                  data={categoryData}
+                  data={monthlyCategoryChartData}
                   dataKey="percent"
                   nameKey="category"
                   cx="50%"
                   cy="50%"
                   outerRadius={100}
+                  label={({ category, percent }) =>
+                    `${category}: ${percent.toFixed(1)}%`
+                  }
                 />
-
                 <ChartTooltip content={<ChartTooltipContent />} />
-                {/* <ChartLegend
-                  content={<ChartLegendContent nameKey="name" />}
-                  className="flex-wrap gap-2 [&>*]:basis-1/4 [&>*]:justify-center"
-                /> */}
               </PieChart>
             </ChartContainer>
           </CardContent>
