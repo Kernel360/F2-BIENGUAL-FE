@@ -11,7 +11,7 @@ import {
   useFetchAllBookmarks,
   useUpdateBookmark,
 } from '@/api/hooks/useBookmarks';
-import { formatDate } from '@/lib/formatDate';
+import { formatFullDateWithPad } from '@/lib/formatDate';
 import { Bookmark } from '@/types/Bookmark';
 
 import { Button } from '../ui/button';
@@ -89,7 +89,7 @@ export default function MemoItem({
         </h2>
       </Link>
       <span className="text-xs text-muted-foreground">
-        {updatedAt && `${formatDate(updatedAt)} 저장`}
+        {updatedAt && `${formatFullDateWithPad(updatedAt)} 저장`}
       </span>
       {/* 북마크된 문장 */}
       <div className="flex items-start space-x-2 mb-2">

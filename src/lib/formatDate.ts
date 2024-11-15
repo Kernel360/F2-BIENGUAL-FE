@@ -3,7 +3,7 @@ const convertStringToDate = (stringDate: string) => {
   return DateOfDateType;
 };
 
-export const formatDate = (createdAt: string) => {
+export const formatFullDateWithPad = (createdAt: string) => {
   const date = convertStringToDate(createdAt);
 
   const year = date.getFullYear();
@@ -13,9 +13,14 @@ export const formatDate = (createdAt: string) => {
   return `${year}. ${month}. ${day}.`;
 };
 
-export const getCurrentMonth = (): string => {
+export const getCurrentMonthWithPad = (): string => {
   const today = new Date();
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
   return `${year}-${month}`;
+};
+
+export const formatDateToMonthDay = (dateString: string): string => {
+  const [, month, day] = dateString.split('-');
+  return `${parseInt(month, 10)}.${parseInt(day, 10)}`;
 };

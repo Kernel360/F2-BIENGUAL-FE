@@ -11,6 +11,7 @@ import EmptyAlert from '@/components/common/EmptyAlert';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import ContentCard from '@/components/items/ContentCard';
 import { Badge } from '@/components/ui/badge';
+import { formatViewCount } from '@/lib/formatViewCount';
 
 function SearchResultsList() {
   const searchParams = useSearchParams();
@@ -63,7 +64,7 @@ function SearchResultsList() {
               }
               coverImageUrl={result.thumbnailUrl}
               leftBadge={<Badge>{result.category}</Badge>}
-              rightBadge={`조회수 ${result.hits}`}
+              rightBadge={`조회수 ${formatViewCount(result.hits)}`}
               title={result.title}
               description={result.preScripts}
             />

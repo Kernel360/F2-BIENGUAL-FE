@@ -23,7 +23,7 @@ import {
   ChartTooltipContent,
   ChartConfig,
 } from '@/components/ui/chart';
-import { getCurrentMonth } from '@/lib/formatDate';
+import { getCurrentMonthWithPad } from '@/lib/formatDate';
 import { processCategoryData } from '@/lib/processCategoryData';
 
 const quizData = [
@@ -80,8 +80,9 @@ const quizChartConfig = {
 export default function DashboardPage() {
   const { data: oneRecentLearningContent } = useOneRecentLearningPreview();
   // TODO(@smosco): 월 선택 캐러셀 추가
-  const { data: monthlyCategoryRatio } =
-    useMonthlyCategoryRatio(getCurrentMonth());
+  const { data: monthlyCategoryRatio } = useMonthlyCategoryRatio(
+    getCurrentMonthWithPad(),
+  );
 
   const monthlyCategoryChartData = monthlyCategoryRatio
     ? processCategoryData(
