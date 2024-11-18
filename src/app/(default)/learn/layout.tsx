@@ -20,7 +20,7 @@ export default async function LearnPageLayout({
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="w-full mx-auto pl-6">
+      <div className="w-full mx-auto px-6">
         <main className="flex-1">{children}</main>
       </div>
     </HydrationBoundary>
