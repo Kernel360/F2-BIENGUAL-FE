@@ -5,6 +5,7 @@ import {
   FetchOneRecentLearningPreviewResponse,
   FetchMonthlyCategoryRatioResponse,
   MissonCalendarResponse,
+  FetchWeeklyQuizAccuracyResponse,
 } from '@/types/Dashboard';
 
 import { useQueryLoginOnly } from './common';
@@ -13,6 +14,7 @@ import {
   fetchOneRecentLearningPreview,
   fetchMonthlyCategoryRatio,
   fetchMissionCalendar,
+  fetchWeeklyQuizAccuracy,
 } from '../queries/dashboardQueries';
 
 export const useRecentLearningPreview =
@@ -44,5 +46,14 @@ export const useMonthlyCategoryRatio = (
   return useQueryLoginOnly({
     queryKey: ['categoryRatioMonth', date],
     queryFn: () => fetchMonthlyCategoryRatio(date),
+  });
+};
+
+export const useWeeklyQuizAccuracy = (
+  date: string,
+): UseQueryResult<FetchWeeklyQuizAccuracyResponse> => {
+  return useQueryLoginOnly({
+    queryKey: ['quizAccuracyWeekly', date],
+    queryFn: () => fetchWeeklyQuizAccuracy(date),
   });
 };

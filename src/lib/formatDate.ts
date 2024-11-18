@@ -16,11 +16,20 @@ export const formatFullDateWithPad = (
   return '';
 };
 
-export const getCurrentMonthWithPad = (): string => {
+export const getFormattedDate = (type: 'date' | 'month'): string => {
   const today = new Date();
   const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 필요
-  return `${year}-${month}`;
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+
+  if (type === 'date') {
+    return `${year}-${month}-${day}`; // 예: 2024-11-18
+  }
+  if (type === 'month') {
+    return `${year}-${month}`; // 예: 2024-11
+  }
+
+  return '';
 };
 
 export const formatDateToMonthDay = (dateString: string): string => {
