@@ -16,6 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { formatDateToMonthDayWithAdjustNumber } from '@/lib/formatDate';
 
 export default function LearningTracker() {
   const { data: userMembershipDurationData } = useUserTime();
@@ -58,12 +59,6 @@ export default function LearningTracker() {
   const completedGoals = missionItems.filter((item) => item.status).length;
   const progress = (completedGoals / missionItems.length) * 100;
 
-  // 날짜 포맷팅
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return `${date.getMonth() + 1}/${date.getDate()}`;
-  };
-
   return (
     <Card className="fixed w-[260px] bg-white my-[60px]">
       <CardHeader className="pb-2">
@@ -73,6 +68,10 @@ export default function LearningTracker() {
       </CardHeader>
       <CardContent>
         <Progress value={progress} className="w-full mb-4" />
+        <div className="font-bold text-center pb-1">
+          오늘 {formatDateToMonthDayWithAdjustNumber(new Date().toISOString())}
+          의 미션
+        </div>
         <div className="space-y-2">
           {missionItems.map((item, index) => (
             <div
@@ -100,8 +99,10 @@ export default function LearningTracker() {
           </div>
           <TooltipProvider>
             <div className="flex items-end justify-between h-20 px-2">
-              {recentMissionHistory?.data.recentHistories.map(
-                (history, index) => (
+              {recentMissionHistory?.data.recentHistories
+                .slice()
+                .reverse()
+                .map((history, index) => (
                   // eslint-disable-next-line react/no-array-index-key
                   <Tooltip key={index}>
                     <TooltipTrigger>
@@ -119,18 +120,21 @@ export default function LearningTracker() {
                           }}
                         />
                         <span className="text-xs text-gray-500">
-                          {formatDate(history.date)}
+                          {formatDateToMonthDayWithAdjustNumber(
+                            history.date,
+                            -1,
+                          )}
                         </span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>
-                        {formatDate(history.date)}: {history.count}개 달성
+                        {formatDateToMonthDayWithAdjustNumber(history.date, -1)}
+                        : {history.count}개 달성
                       </p>
                     </TooltipContent>
                   </Tooltip>
-                ),
-              )}
+                ))}
             </div>
           </TooltipProvider>
         </div>

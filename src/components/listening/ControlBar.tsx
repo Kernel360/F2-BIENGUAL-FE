@@ -7,7 +7,7 @@ import React, { ForwardedRef, MutableRefObject, useState } from 'react';
 import { Volume2, Play, Rewind, FastForward, Pause, Gauge } from 'lucide-react';
 import ReactPlayer from 'react-player';
 
-import formatTime from '@/lib/formatTime';
+import { formatTime } from '@/lib/formatTime';
 
 interface BasicControlBarProps {
   handlePlayPause: () => void;
