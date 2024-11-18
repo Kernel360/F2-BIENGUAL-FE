@@ -15,7 +15,7 @@ import {
   SelectValue,
   SelectItem,
 } from '@/components/ui/select';
-import { formatDateToMonthDay } from '@/lib/formDateToMonthDay';
+import { formatDateToMonthDay } from '@/lib/formatDate';
 import PointsHistory from '@/mock/pointsHistory.json';
 
 interface Activity {

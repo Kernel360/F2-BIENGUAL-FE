@@ -23,7 +23,7 @@ import {
   ChartTooltipContent,
   ChartConfig,
 } from '@/components/ui/chart';
-import { getCurrentMonth } from '@/lib/formatDate';
+import { getCurrentMonthWithPad } from '@/lib/formatDate';
 import { processCategoryData } from '@/lib/processCategoryData';
 
 const quizData = [
@@ -80,8 +80,9 @@ const quizChartConfig = {
 export default function DashboardPage() {
   const { data: oneRecentLearningContent } = useOneRecentLearningPreview();
   // TODO(@smosco): 월 선택 캐러셀 추가
-  const { data: monthlyCategoryRatio } =
-    useMonthlyCategoryRatio(getCurrentMonth());
+  const { data: monthlyCategoryRatio } = useMonthlyCategoryRatio(
+    getCurrentMonthWithPad(),
+  );
 
   const monthlyCategoryChartData = monthlyCategoryRatio
     ? processCategoryData(
@@ -147,6 +148,9 @@ export default function DashboardPage() {
             <CardTitle className="text-lg font-medium">학습 캘린더</CardTitle>
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
+            <p className="text-center text-sm">
+              🥹캘린더에는 오늘 데이터는 반영되지 않아요
+            </p>
             <Calendar />
           </CardContent>
         </Card>

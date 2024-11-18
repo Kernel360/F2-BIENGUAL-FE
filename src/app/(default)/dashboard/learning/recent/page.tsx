@@ -7,6 +7,7 @@ import { Clock, BookOpen, Headphones } from 'lucide-react';
 import { useRecentLearningPreview } from '@/api/hooks/useDashboard';
 import ContentCard from '@/components/items/ContentCard';
 import { Badge } from '@/components/ui/badge';
+import { formatViewCount } from '@/lib/formatViewCount';
 
 function RecentLearning() {
   const { data: recentLearningPreview, isLoading } = useRecentLearningPreview();
@@ -67,7 +68,7 @@ function RecentLearning() {
                 )}
               </div>
             }
-            rightBadge={`조회수 ${item.hits}`}
+            rightBadge={`조회수 ${formatViewCount(item.hits)}`}
             title={item.title}
             description={item.preScripts}
           />
