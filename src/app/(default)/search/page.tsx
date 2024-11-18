@@ -33,7 +33,7 @@ function SearchResultsList() {
   }
 
   return (
-    <div>
+    <div className="px-6">
       <h1 className="text-2xl font-[600] mb-8">
         &apos;{query}&apos; 에 대한 검색 결과
       </h1>
