@@ -16,7 +16,7 @@ import {
   SelectValue,
   SelectItem,
 } from '@/components/ui/select';
-import { REASON_KR_MAPPING } from '@/lib/constants/point';
+import { getReasonInKorean } from '@/lib/constants/point';
 import { formatDateToMonthDay } from '@/lib/formDateToMonthDay';
 import {
   MonthlyHistory,
@@ -38,7 +38,7 @@ function PointHistoryItem({ date, pointsHistory }: MonthlyHistory) {
               {index === 0 ? formatDateToMonthDay(date) : ''}
             </span>
             <span className="text-sm text-gray-800">
-              {activity.reason && REASON_KR_MAPPING[activity.reason]}
+              {getReasonInKorean(activity.reason)}
             </span>
           </div>
           <span

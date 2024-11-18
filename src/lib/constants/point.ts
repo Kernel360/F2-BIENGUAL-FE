@@ -12,3 +12,8 @@ export const REASON_KR_MAPPING = {
 
 // 타입 정의 (선택 사항)
 export type ReasonKey = keyof typeof REASON_KR_MAPPING;
+
+// 이유를 한글로 매핑하는 함수
+export const getReasonInKorean = (reason: string): string => {
+  return REASON_KR_MAPPING[reason as ReasonKey] || reason;
+};
