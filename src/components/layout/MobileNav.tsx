@@ -88,7 +88,7 @@ export default function SwipeablePanel({
 
 export function MobileNav() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+  const [isTrackerOpen, setIsTrackerOpen] = useState(false);
 
   return (
     <>
@@ -110,7 +110,7 @@ export function MobileNav() {
           ))}
           <button
             type="button"
-            onClick={() => setIsOpen((prev) => !prev)}
+            onClick={() => setIsTrackerOpen((prev) => !prev)}
             className="flex flex-col items-center py-1 px-3 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
           >
             <ChevronUp className="h-6 w-6" />
@@ -118,7 +118,7 @@ export function MobileNav() {
           </button>
         </div>
       </nav>
-      <SwipeablePanel isOpen={isOpen} setIsOpen={setIsOpen}>
+      <SwipeablePanel isOpen={isTrackerOpen} setIsOpen={setIsTrackerOpen}>
         <MobileLearningTracker />
       </SwipeablePanel>
     </>

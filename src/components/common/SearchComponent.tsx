@@ -42,7 +42,7 @@ export default function SearchComponent() {
   return (
     <div
       ref={searchRef}
-      className="  flex items-center min-w-[200px] w-[300px] space-x-1"
+      className="hidden md:flex items-center min-w-[200px] w-[300px] space-x-1"
     >
       <input
         ref={inputRef}
