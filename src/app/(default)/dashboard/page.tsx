@@ -15,6 +15,7 @@ import {
 } from 'recharts';
 
 import {
+  useFetchCurrentPoints,
   useMonthlyCategoryRatio,
   useOneRecentLearningPreview,
   useWeeklyQuizAccuracy,
@@ -93,6 +94,8 @@ export default function DashboardPage() {
         monthlyCategoryRatio.data.totalCount,
       )
     : [];
+  const { data: currentPointsData } = useFetchCurrentPoints();
+  const currentPoints = currentPointsData?.data.currentPoint;
 
   const { data: weeklyQuizAccuracy } = useWeeklyQuizAccuracy(
     getFormattedDate('date'),
@@ -146,7 +149,7 @@ export default function DashboardPage() {
           <CardContent className="px-4 pb-4 pt-0">
             <div className="flex items-center space-x-3">
               <Trophy className="h-8 w-8 text-primary" />
-              <div className="text-xl font-bold">500 P</div>
+              <div className="text-xl font-bold">{currentPoints || 0} P</div>
             </div>
           </CardContent>
         </Card>
