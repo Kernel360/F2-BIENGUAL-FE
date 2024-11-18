@@ -24,6 +24,7 @@ import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
+import { formatViewCount } from '@/lib/formatViewCount';
 import { useQuizStore } from '@/stores/quizStore';
 
 export default function ReadingDetailClient({
@@ -35,7 +36,6 @@ export default function ReadingDetailClient({
 
   const scrollProgress = useScrollProgress();
   useUpdateLearningProgressOnUnmount(contentId, scrollProgress);
-
   const { toggleScrap } = useScrapToggle({
     contentId,
     target: 'contentDetail',
@@ -80,19 +80,19 @@ export default function ReadingDetailClient({
   }, [contentId, quizData, setContentQuestions]);
 
   useEffect(() => {
-    if (!data?.data.learningRate) return; // 학습률이 없으면 실행하지 않음
+    if (!data?.data.currentLearningRate) return; // 학습률이 없으면 실행하지 않음
 
     const handleScrollPosition = () => {
       const scrollPosition =
         (document.documentElement.scrollHeight - window.innerHeight) *
-        (Number(data?.data.learningRate) / 100);
+        (Number(data?.data.currentLearningRate) / 100);
 
       window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
     };
 
     // 페이지 로딩 시에만 실행
     handleScrollPosition();
-  }, [contentId, data?.data.learningRate]);
+  }, [contentId, data?.data.currentLearningRate]);
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <div>Error: {error?.message}</div>;
 
@@ -110,7 +110,7 @@ export default function ReadingDetailClient({
               {contentData.title}
             </div>
             <div className="text-sm flex justify-end w-full">
-              {contentData.hits} 조회수
+              조회수 {formatViewCount(contentData.hits)}
             </div>
           </div>
           <Separator />

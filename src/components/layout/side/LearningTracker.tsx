@@ -106,7 +106,7 @@ export default function LearningTracker() {
                   // eslint-disable-next-line react/no-array-index-key
                   <Tooltip key={index}>
                     <TooltipTrigger>
-                      <div className="flex flex-col items-center gap-1">
+                      <div className="flex flex-col relative items-center gap-1">
                         <div
                           className={`w-8 rounded-md ${
                             history.count > 0 && history.count === 1
@@ -119,6 +119,12 @@ export default function LearningTracker() {
                             height: `${history.count * 20}px`,
                           }}
                         />
+                        {history.count > 0 && (
+                          <div className="absolute top-0 text-center text-xs text-white font-bold pt-1">
+                            {history.count}
+                          </div>
+                        )}
+                        {history.count === 0}
                         <span className="text-xs text-gray-500">
                           {formatDateToMonthDayWithAdjustNumber(
                             history.date,

@@ -27,6 +27,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
+import { formatViewCount } from '@/lib/formatViewCount';
 import { useQuizStore } from '@/stores/quizStore';
 import { CustomScriptLanguageCode } from '@/types/Scripts';
 
@@ -87,15 +88,16 @@ export default function ListeningDetailClient({
     }
   }, [contentId, quizData, setContentQuestions]);
 
+  // TODO(@godhyzzang): 이전 학습률로 시간 이동 동작하지 않음
   useEffect(() => {
     if (
       playerRef.current &&
       playerRef.current.getDuration() &&
-      listeningDetailData?.data.learningRate
+      listeningDetailData?.data.currentLearningRate
     ) {
       seekTo(
         Number(playerRef.current?.getDuration()) *
-          (listeningDetailData.data.learningRate / 100),
+          (listeningDetailData.data.currentLearningRate / 100),
       );
     }
   }, [playerRef.current]);
@@ -172,7 +174,7 @@ export default function ListeningDetailClient({
         </h1>
         <Badge>{listeningDetailData?.data.category}</Badge>
         <div className="text-sm flex justify-end w-full">
-          {listeningDetailData?.data.hits} 회
+          조회수 {formatViewCount(listeningDetailData?.data.hits)}
         </div>
       </div>
       <Separator />
