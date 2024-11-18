@@ -6,6 +6,7 @@ import { PlayCircle, ChevronRight, Trophy } from 'lucide-react';
 import { Bar, BarChart, Pie, PieChart } from 'recharts';
 
 import {
+  useFetchCurrentPoints,
   useMonthlyCategoryRatio,
   useOneRecentLearningPreview,
 } from '@/api/hooks/useDashboard';
@@ -89,7 +90,8 @@ export default function DashboardPage() {
         monthlyCategoryRatio.data.totalCount,
       )
     : [];
-
+  const { data: currentPointsData } = useFetchCurrentPoints();
+  const currentPoints = currentPointsData?.data.currentPoint;
   return (
     <div className="p-6 space-y-6">
       {/* 최근 학습 강의 포인트 */}
@@ -134,7 +136,7 @@ export default function DashboardPage() {
           <CardContent className="px-4 pb-4 pt-0">
             <div className="flex items-center space-x-3">
               <Trophy className="h-8 w-8 text-primary" />
-              <div className="text-xl font-bold">500 P</div>
+              <div className="text-xl font-bold">{currentPoints || 0} P</div>
             </div>
           </CardContent>
         </Card>

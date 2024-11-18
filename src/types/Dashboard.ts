@@ -48,3 +48,29 @@ export interface MissonCalendarResponse {
   message: string;
   data: { monthlyHistoryList: MonthlyHistoryList[] };
 }
+
+export interface FetchCurrentPointsResponse {
+  code: string;
+  message: string;
+  data: {
+    currentPoint: number;
+  };
+}
+
+export interface PointHistory {
+  reason: string;
+  point: number;
+}
+export interface MonthlyHistory {
+  date: string;
+  pointsHistory: PointHistory[];
+}
+
+export interface FetchMonthlyPointsHistoryResponse {
+  code: string;
+  message: string;
+  data: {
+    currentPoint: number;
+    monthlyHistoryList: MonthlyHistory[];
+  };
+}
