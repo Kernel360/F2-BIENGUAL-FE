@@ -10,6 +10,7 @@ import PointCover from './common/PointCover';
 import ContentCard from './items/ContentCard';
 import PreviewScrapButton from './PreviewScrapButton';
 import { Badge } from './ui/badge';
+import { Eye } from 'lucide-react';
 
 export default function ItemComponentCard({ data }: { data: any }) {
   return (
@@ -50,7 +51,12 @@ export default function ItemComponentCard({ data }: { data: any }) {
             )}
           </div>
         }
-        rightBadge={`조회수 ${formatViewCount(data.hits)}`}
+        rightBadge={
+          <div className="flex items-center gap-1 text-gray-400">
+            <Eye className="w-4 h-4" />
+            {formatViewCount(data.hits)}
+          </div>
+        }
         title={data.title}
         description={data.preScripts}
       />

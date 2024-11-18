@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from 'react';
 
-import { ArrowUp } from 'lucide-react';
+import { ArrowUp, Eye } from 'lucide-react';
 
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import { useFetchMissionStatus } from '@/api/hooks/useMission';
@@ -109,8 +109,9 @@ export default function ReadingDetailClient({
             <div className="font-bold text-2xl mt-2 mb-4">
               {contentData.title}
             </div>
-            <div className="text-sm flex justify-end w-full">
-              조회수 {formatViewCount(contentData.hits)}
+            <div className="text-sm flex justify-end w-full items-center  gap-1 text-gray-400 ">
+              <Eye className="w-4 h-4" />
+              {formatViewCount(contentData.hits)}
             </div>
           </div>
           <Separator />

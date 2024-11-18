@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import { Clock } from 'lucide-react';
+import { Clock, Eye } from 'lucide-react';
 
 import { useFetchSearchResults } from '@/api/hooks/useSearch';
 import EmptyAlert from '@/components/common/EmptyAlert';
@@ -64,7 +64,12 @@ function SearchResultsList() {
               }
               coverImageUrl={result.thumbnailUrl}
               leftBadge={<Badge>{result.category}</Badge>}
-              rightBadge={`조회수 ${formatViewCount(result.hits)}`}
+              rightBadge={
+                <div className="flex items-center gap-1 text-gray-400">
+                  <Eye className="w-4 h-4" />
+                  {formatViewCount(result.hits)}
+                </div>
+              }
               title={result.title}
               description={result.preScripts}
             />

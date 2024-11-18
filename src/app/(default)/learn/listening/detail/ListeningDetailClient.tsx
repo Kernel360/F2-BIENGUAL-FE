@@ -30,6 +30,7 @@ import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningPro
 import { formatViewCount } from '@/lib/formatViewCount';
 import { useQuizStore } from '@/stores/quizStore';
 import { CustomScriptLanguageCode } from '@/types/Scripts';
+import { Eye } from 'lucide-react';
 
 type Mode = 'line' | 'block';
 
@@ -173,8 +174,9 @@ export default function ListeningDetailClient({
           {listeningDetailData?.data.title}
         </h1>
         <Badge>{listeningDetailData?.data.category}</Badge>
-        <div className="text-sm flex justify-end w-full">
-          조회수 {formatViewCount(listeningDetailData?.data.hits)}
+        <div className="text-sm flex justify-end items-center w-full gap-1 text-gray-400">
+          <Eye className="w-4 h-4" />
+          {formatViewCount(listeningDetailData?.data.hits)}
         </div>
       </div>
       <Separator />
