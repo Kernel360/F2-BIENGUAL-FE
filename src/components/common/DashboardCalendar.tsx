@@ -83,7 +83,7 @@ export default function DashboardCalendar() {
       <CustomCalendar
         classNames={{
           day_selected:
-            'bg-purple-200 ring-2 ring-purple-500 ring-offset-2 ring-offset-white', // 날짜 눌렀을 때
+            'bg-white-200 ring-2 ring-purple-500 ring-offset-2 ring-offset-white', // 날짜 눌렀을 때
         }}
         locale={ko}
         mode="single"
