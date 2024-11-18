@@ -5,6 +5,7 @@ import { ko } from 'date-fns/locale';
 
 import { useFetchMissionCalendar } from '@/api/hooks/useDashboard';
 import { Calendar as CustomCalendar } from '@/components/common/CustomShadcnCalendar';
+import { formatFullDateWithPad } from '@/lib/formatDate';
 
 const correctDate = (date: Date) => {
   const formattedDate = new Date(date);
@@ -51,17 +52,17 @@ export default function DashboardCalendar() {
       borderRadius: '50%',
     },
     one: {
-      backgroundColor: '#86efac', // bg-green-300
+      backgroundColor: 'rgb(221 214 254)', // bg-violet-200
       color: 'white',
       borderRadius: '50%',
     },
     two: {
-      backgroundColor: '#93c5fd', // bg-blue-300
+      backgroundColor: 'rgb(167 139 250)', // bg-violet-300
       color: 'white',
       borderRadius: '50%',
     },
     three: {
-      backgroundColor: '#8b5cf6', // bg-violet-500
+      backgroundColor: 'rgb(124 58 237)', // bg-violet-500
       color: 'white',
       borderRadius: '50%',
     },
@@ -73,6 +74,8 @@ export default function DashboardCalendar() {
     );
     return mission ? mission.missionStatus.count : undefined;
   };
+
+  console.log(selectedDate);
 
   return (
     <div className="flex flex-col items-center">
@@ -89,23 +92,31 @@ export default function DashboardCalendar() {
         onMonthChange={handleMonthChange}
         className="rounded-md"
         modifiers={{
+          // n일의 미션 기록은 n+1일 새벽4시에 기록되므로 날짜 조정 필요
           zero: (date: Date) => {
-            const correctedDate = correctDate(date);
+            const correctedDate = correctDate(
+              new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
+            );
 
             return getMissionStatusCount(correctedDate) === 0;
           },
           one: (date: Date) => {
-            const correctedDate = correctDate(date);
+            const correctedDate = correctDate(
+              new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
+            );
             return getMissionStatusCount(correctedDate) === 1;
           },
           two: (date: Date) => {
-            const correctedDate = correctDate(date);
+            const correctedDate = correctDate(
+              new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
+            );
 
             return getMissionStatusCount(correctedDate) === 2;
           },
           three: (date: Date) => {
-            const correctedDate = correctDate(date);
-
+            const correctedDate = correctDate(
+              new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
+            );
             return getMissionStatusCount(correctedDate) === 3;
           },
         }}
@@ -121,10 +132,20 @@ export default function DashboardCalendar() {
         <div className="text-lg font-bold">🔍 어떤 미션을 성공했을까?</div>
         <div>
           {missionCalendarData?.data.monthlyHistoryList.map(
-            ({ date, missionStatus }) =>
-              date === (selectedDate ? correctDate(selectedDate) : '') ? (
+            ({ date, missionStatus }) => {
+              const newDate = new Date(
+                new Date(date).getFullYear(),
+                new Date(date).getMonth(),
+                new Date(date).getDate() - 1,
+              );
+              const newNewDate = formatFullDateWithPad(String(newDate), '-');
+              const newSelectedDate = formatFullDateWithPad(
+                String(selectedDate),
+                '-',
+              );
+              return newNewDate === (newSelectedDate || '') ? (
                 <div key={date} className="flex flex-col mb-2">
-                  <span className="font-bold">{date}</span>
+                  <span className="font-bold">{newNewDate}</span>
                   <span>
                     One Content: {missionStatus.oneContent ? 'Yes' : 'No'}
                   </span>
@@ -132,7 +153,8 @@ export default function DashboardCalendar() {
                   <span>Quiz: {missionStatus.quiz ? 'Yes' : 'No'}</span>
                   <span>Count: {missionStatus.count}</span>
                 </div>
-              ) : null,
+              ) : null;
+            },
           )}
         </div>
       </div>
