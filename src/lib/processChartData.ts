@@ -1,4 +1,4 @@
-import { MonthlyCategoryRatio } from '@/types/Dashboard';
+import { MonthlyCategoryRatio, WeeklyQuizAccuracy } from '@/types/Dashboard';
 
 const colorPalette = [
   'hsl(var(--chart-1))',
@@ -21,3 +21,16 @@ export const processCategoryData = (
     fill: colorPalette[index % colorPalette.length],
   }));
 };
+
+export const processQuizAccuracyData = (data: WeeklyQuizAccuracy[]) =>
+  data.map((item) => ({
+    week: `week ${item.weekNumber} (${item.weekStartDate})`,
+    firstTryRate:
+      item.totalFirstTry > 0
+        ? ((item.firstTryCorrect / item.totalFirstTry) * 100).toFixed(2)
+        : 0,
+    reTryRate:
+      item.totalReTry > 0
+        ? ((item.reTryCorrect / item.totalReTry) * 100).toFixed(2)
+        : 0,
+  }));

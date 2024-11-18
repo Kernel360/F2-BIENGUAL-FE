@@ -4,6 +4,7 @@ import {
   FetchOneRecentLearningPreviewResponse,
   FetchMonthlyCategoryRatioResponse,
   MissonCalendarResponse,
+  FetchWeeklyQuizAccuracyResponse,
   FetchCurrentPointsResponse,
   FetchMonthlyPointsHistoryResponse,
 } from '@/types/Dashboard';
@@ -48,6 +49,18 @@ export const fetchMonthlyCategoryRatio = async (
 ): Promise<FetchMonthlyCategoryRatioResponse> => {
   return apiClient<FetchMonthlyCategoryRatioResponse>(
     `/dashboard/learning/categories?date=${encodeURIComponent(date)}`,
+    {
+      method: 'GET',
+    },
+  );
+};
+
+// 최근 5주간 퀴즈 첫시도 재시도 정답율 조회 (GET)
+export const fetchWeeklyQuizAccuracy = async (
+  date: string,
+): Promise<FetchWeeklyQuizAccuracyResponse> => {
+  return apiClient<FetchWeeklyQuizAccuracyResponse>(
+    `/dashboard/quiz/summary?date=${encodeURIComponent(date)}`,
     {
       method: 'GET',
     },

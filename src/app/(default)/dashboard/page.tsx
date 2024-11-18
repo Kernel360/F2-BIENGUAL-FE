@@ -2,13 +2,23 @@
 
 import Link from 'next/link';
 
-import { PlayCircle, ChevronRight, Trophy } from 'lucide-react';
-import { Bar, BarChart, Pie, PieChart } from 'recharts';
+import { PlayCircle, ChevronRight, Trophy, TrendingUp } from 'lucide-react';
+import {
+  Bar,
+  BarChart,
+  Pie,
+  PieChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  LabelList,
+} from 'recharts';
 
 import {
   useFetchCurrentPoints,
   useMonthlyCategoryRatio,
   useOneRecentLearningPreview,
+  useWeeklyQuizAccuracy,
 } from '@/api/hooks/useDashboard';
 import Calendar from '@/components/common/DashboardCalendar';
 import {
@@ -17,24 +27,21 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from '@/components/ui/card';
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   ChartConfig,
+  ChartLegend,
+  ChartLegendContent,
 } from '@/components/ui/chart';
-import { getCurrentMonth } from '@/lib/formatDate';
-import { processCategoryData } from '@/lib/processCategoryData';
-
-const quizData = [
-  { month: 'Jan', total: 20, correct: 15, accuracy: 75 },
-  { month: 'Feb', total: 25, correct: 20, accuracy: 80 },
-  { month: 'Mar', total: 30, correct: 25, accuracy: 83 },
-  { month: 'Apr', total: 35, correct: 28, accuracy: 80 },
-  { month: 'May', total: 40, correct: 35, accuracy: 87 },
-  { month: 'Jun', total: 45, correct: 40, accuracy: 89 },
-];
+import { getFormattedDate } from '@/lib/formatDate';
+import {
+  processCategoryData,
+  processQuizAccuracyData,
+} from '@/lib/processChartData';
 
 // TODO(@smosco): shadncn 차트 config 더 알아보고 수정 필요
 const categoryChartConfig = {
@@ -63,26 +70,23 @@ const categoryChartConfig = {
   },
 } satisfies ChartConfig;
 
-const quizChartConfig = {
-  total: {
-    label: '총 문제',
-    color: 'hsl(var(--chart-1))',
-  },
-  correct: {
-    label: '정답',
+const chartConfig = {
+  firstTryRate: {
+    label: '첫 시도 (%)',
     color: 'hsl(var(--chart-2))',
   },
-  accuracy: {
-    label: '정답률',
-    color: 'hsl(var(--chart-3))',
+  reTryRate: {
+    label: '재 시도 (%)',
+    color: 'hsl(var(--chart-1))',
   },
 } satisfies ChartConfig;
 
 export default function DashboardPage() {
   const { data: oneRecentLearningContent } = useOneRecentLearningPreview();
   // TODO(@smosco): 월 선택 캐러셀 추가
-  const { data: monthlyCategoryRatio } =
-    useMonthlyCategoryRatio(getCurrentMonth());
+  const { data: monthlyCategoryRatio } = useMonthlyCategoryRatio(
+    getFormattedDate('month'),
+  );
 
   const monthlyCategoryChartData = monthlyCategoryRatio
     ? processCategoryData(
@@ -92,6 +96,15 @@ export default function DashboardPage() {
     : [];
   const { data: currentPointsData } = useFetchCurrentPoints();
   const currentPoints = currentPointsData?.data.currentPoint;
+
+  const { data: weeklyQuizAccuracy } = useWeeklyQuizAccuracy(
+    getFormattedDate('date'),
+  );
+
+  const chartData = weeklyQuizAccuracy
+    ? processQuizAccuracyData(weeklyQuizAccuracy.data.questionSummaryList)
+    : [];
+
   return (
     <div className="p-6 space-y-6">
       {/* 최근 학습 강의 포인트 */}
@@ -149,6 +162,9 @@ export default function DashboardPage() {
             <CardTitle className="text-lg font-medium">학습 캘린더</CardTitle>
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
+            <p className="text-center text-sm">
+              🥹캘린더에는 오늘 데이터는 반영되지 않아요
+            </p>
             <Calendar />
           </CardContent>
         </Card>
@@ -158,15 +174,12 @@ export default function DashboardPage() {
             <CardTitle className="text-lg font-medium">
               학습 카테고리 분포
             </CardTitle>
-            <CardDescription className="text-md">
+            <CardDescription className="text-base">
               카테고리별 학습 비율
             </CardDescription>
           </CardHeader>
           <CardContent className="px-4 pb-4 pt-0">
-            <ChartContainer
-              config={categoryChartConfig}
-              className="w-[350px] h-[300px]"
-            >
+            <ChartContainer config={categoryChartConfig}>
               <PieChart className="h-[300px] w-full">
                 <Pie
                   data={monthlyCategoryChartData}
@@ -187,30 +200,60 @@ export default function DashboardPage() {
       </div>
 
       {/* 퀴즈 성과 누적 */}
-      <Card className="col-span-2">
-        <CardHeader className="p-4">
-          <CardTitle className="text-lg font-medium">퀴즈 성과</CardTitle>
-          <CardDescription className="text-md">
-            월별 퀴즈 정답률 및 완료 현황
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">최근 5주 퀴즈 정답율</CardTitle>
+          <CardDescription className="text-base">
+            Recent 5 Weeks
           </CardDescription>
         </CardHeader>
-        <CardContent className="px-4 pb-4 pt-0">
-          <ChartContainer config={quizChartConfig} className="h-[300px]">
-            <BarChart data={quizData} className="h-[300px]">
-              <ChartTooltip content={<ChartTooltipContent />} />
-              <Bar
-                dataKey="total"
-                fill="var(--color-total)"
-                radius={[4, 4, 0, 0]}
+        <CardContent>
+          <ChartContainer config={chartConfig}>
+            <BarChart
+              className="text-base"
+              data={chartData}
+              margin={{
+                top: 20,
+              }}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="week"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                tickFormatter={(value) => value.slice(0, 6)}
               />
-              <Bar
-                dataKey="correct"
-                fill="var(--color-correct)"
-                radius={[4, 4, 0, 0]}
-              />
+              <YAxis tickLine={false} tickMargin={10} axisLine={false} />
+              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+              <ChartLegend content={<ChartLegendContent />} />
+              <Bar dataKey="firstTryRate" fill="hsl(var(--chart-2))" radius={4}>
+                <LabelList
+                  dataKey="firstTryRate"
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={14}
+                />
+              </Bar>
+              <Bar dataKey="reTryRate" fill="hsl(var(--chart-1))" radius={4}>
+                <LabelList
+                  dataKey="reTryRate"
+                  position="top"
+                  offset={12}
+                  className="fill-foreground"
+                  fontSize={14}
+                />
+              </Bar>
             </BarChart>
           </ChartContainer>
         </CardContent>
+        <CardFooter className="flex-col items-start gap-2">
+          <div className="flex gap-2 font-medium leading-none">
+            Showing quiz accuracy rates for the last 5 weeks
+            <TrendingUp className="h-4 w-4" />
+          </div>
+        </CardFooter>
       </Card>
     </div>
   );

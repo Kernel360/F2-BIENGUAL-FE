@@ -16,6 +16,18 @@ import {
   SelectValue,
   SelectItem,
 } from '@/components/ui/select';
+import { formatDateToMonthDay } from '@/lib/formatDate';
+import PointsHistory from '@/mock/pointsHistory.json';
+
+interface Activity {
+  description: string;
+  points: number;
+}
+
+interface DayActivity {
+  date: string;
+  activities: Activity[];
+}
 import { getReasonInKorean } from '@/lib/constants/point';
 import { formatDateToMonthDay } from '@/lib/formDateToMonthDay';
 import {

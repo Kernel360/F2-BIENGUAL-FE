@@ -20,6 +20,12 @@ export interface MonthlyCategoryRatio {
   count: number;
 }
 
+export interface FetchMonthlyCategoryRatioResponse {
+  code: string;
+  message: string;
+  data: { totalCount: number; categoryLearningList: MonthlyCategoryRatio[] };
+}
+
 export interface FetchRecentLearningPreviewResponse {
   code: string;
   message: string;
@@ -32,12 +38,6 @@ export interface FetchOneRecentLearningPreviewResponse {
   data: { title: string; learningRate: number };
 }
 
-export interface FetchMonthlyCategoryRatioResponse {
-  code: string;
-  message: string;
-  data: { totalCount: number; categoryLearningList: MonthlyCategoryRatio[] };
-}
-
 export interface MonthlyHistoryList {
   date: string;
   missionStatus: MissionStatus;
@@ -47,6 +47,21 @@ export interface MissonCalendarResponse {
   code: string;
   message: string;
   data: { monthlyHistoryList: MonthlyHistoryList[] };
+}
+
+export interface WeeklyQuizAccuracy {
+  weekStartDate: string;
+  weekNumber: number;
+  firstTryCorrect: number;
+  reTryCorrect: number;
+  totalFirstTry: number;
+  totalReTry: number;
+}
+
+export interface FetchWeeklyQuizAccuracyResponse {
+  code: string;
+  message: string;
+  data: { questionSummaryList: WeeklyQuizAccuracy[] };
 }
 
 export interface FetchCurrentPointsResponse {
