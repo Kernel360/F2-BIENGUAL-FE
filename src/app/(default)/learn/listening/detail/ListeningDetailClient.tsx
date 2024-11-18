@@ -88,15 +88,16 @@ export default function ListeningDetailClient({
     }
   }, [contentId, quizData, setContentQuestions]);
 
+  // TODO(@godhyzzang): 이전 학습률로 시간 이동 동작하지 않음
   useEffect(() => {
     if (
       playerRef.current &&
       playerRef.current.getDuration() &&
-      listeningDetailData?.data.learningRate
+      listeningDetailData?.data.currentLearningRate
     ) {
       seekTo(
         Number(playerRef.current?.getDuration()) *
-          (listeningDetailData.data.learningRate / 100),
+          (listeningDetailData.data.currentLearningRate / 100),
       );
     }
   }, [playerRef.current]);
