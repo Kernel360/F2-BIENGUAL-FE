@@ -2,7 +2,7 @@
 
 'use client';
 
-import { BookOpen, Clock, Headphones } from 'lucide-react';
+import { BookOpen, Clock, Headphones, Eye } from 'lucide-react';
 
 import { formatViewCount } from '@/lib/formatViewCount';
 
@@ -10,7 +10,6 @@ import PointCover from './common/PointCover';
 import ContentCard from './items/ContentCard';
 import PreviewScrapButton from './PreviewScrapButton';
 import { Badge } from './ui/badge';
-import { Eye } from 'lucide-react';
 
 export default function ItemComponentCard({ data }: { data: any }) {
   return (

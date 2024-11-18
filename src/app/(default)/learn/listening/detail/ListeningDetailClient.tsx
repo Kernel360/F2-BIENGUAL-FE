@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 
+import { Eye } from 'lucide-react';
 import ReactPlayer from 'react-player';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactScriptPlayer } from 'react-player-plugin-prompter';
@@ -30,7 +31,6 @@ import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningPro
 import { formatViewCount } from '@/lib/formatViewCount';
 import { useQuizStore } from '@/stores/quizStore';
 import { CustomScriptLanguageCode } from '@/types/Scripts';
-import { Eye } from 'lucide-react';
 
 type Mode = 'line' | 'block';
 

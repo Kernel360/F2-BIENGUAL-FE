@@ -1,13 +1,12 @@
 'use client';
 
-import { Clock } from 'lucide-react';
+import { Clock, Headphones, BookOpen } from 'lucide-react';
 
 import { useFetchScrap } from '@/api/hooks/useScrap';
 import EmptyAlert from '@/components/common/EmptyAlert';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import ContentCard from '@/components/items/ContentCard';
 import { Badge } from '@/components/ui/badge';
-import { Headphones, BookOpen } from 'lucide-react';
 
 export default function RecentContent() {
   const { data: allScrapData, isLoading, isError, error } = useFetchScrap();
@@ -28,6 +27,7 @@ export default function RecentContent() {
       <div className="grid grid-cols-2 gap-4 ">
         {allScrapData.data.scrapList.map((item) => (
           <ContentCard
+            key={item.contentId}
             href={`/learn/${item.contentType.toLowerCase()}/detail/${item.contentId}`}
             bottomRightButton={
               item.contentType !== 'READING' && (

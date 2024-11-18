@@ -5,7 +5,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Bookmark, Plus, HighlighterIcon } from 'lucide-react';
+import { Bookmark, HighlighterIcon } from 'lucide-react';
 
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import LogInOutButton from '@/components/common/LogInOutButton';
