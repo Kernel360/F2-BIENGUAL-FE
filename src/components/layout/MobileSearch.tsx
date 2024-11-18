@@ -25,7 +25,7 @@ export default function MobileSearch({ isOpen, setIsOpen }: MobileSearchProps) {
 
   const handleSearch = () => {
     if (inputRef.current) {
-      const query = inputRef.current.value.trim();
+      const query = inputRef.current.value.replace(/\n/g, '').trim();
       if (query) {
         router.push(`/search?q=${encodeURIComponent(query)}`);
         setIsOpen(false);
