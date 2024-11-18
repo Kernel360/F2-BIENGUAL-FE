@@ -20,7 +20,7 @@ interface NavItemProps {
 
 const navItems: NavItemProps[] = [
   {
-    title: '스크랩북',
+    title: '최근 스크랩한 콘텐츠',
     icon: <Bookmark className="h-4 w-4" />,
     href: '/scrapbook/content',
   },
@@ -36,18 +36,24 @@ function NavItem({ item, active }: { item: NavItemProps; active: boolean }) {
     <Link href={item.href} className="w-full">
       <Button
         variant="ghost"
-        className={`w-full justify-start px-2 mb-2
-          ${active && 'bg-purple-100 text-purple-700'}`}
+        className={`flex items-center w-full gap-3 py-3 px-4 text-left rounded-md transition-all 
+          ${
+            active
+              ? 'bg-purple-100 text-purple-700 shadow-md'
+              : 'bg-white text-gray-700 hover:bg-gray-100 hover:shadow'
+          }`}
       >
-        <span className="flex items-center">
-          <span
-            className={`h-4 w-4
-              ${active ? 'text-purple-700' : 'text-purple-500'}`}
-          >
-            {item.icon}
-          </span>
-          <span className="ml-2">{item.title}</span>
+        <span
+          className={`h-5 w-5 flex items-center justify-center rounded-md 
+            ${
+              active
+                ? 'bg-purple-700 text-white'
+                : 'bg-gray-200 text-purple-500 hover:bg-purple-500 hover:text-white'
+            }`}
+        >
+          {item.icon}
         </span>
+        <span className="font-medium">{item.title}</span>
       </Button>
     </Link>
   );
@@ -57,24 +63,16 @@ function SideNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="w-64 bg-background h-screen">
-      <div className="px-4 pb-4">
-        <h2 className="text-lg font-semibold mb-4">Navigation</h2>
-        <div className="space-y-1">
-          {navItems.map((item) => (
-            <NavItem
-              key={item.href}
-              item={item}
-              active={pathname.startsWith(item.href)}
-            />
-          ))}
-        </div>
-      </div>
-      <div className="p-4 border-t">
-        <Button variant="outline" className="w-full justify-start">
-          <Plus className="mr-2 h-4 w-4" />
-          콜렉션 추가
-        </Button>
+    <nav className="flex flex-col w-full px-4 ">
+      <h2 className="text-xl font-bold text-purple-700 ">내 스크랩북</h2>
+      <div className="flex  gap-2  border-b-2 border-b-purple-50 my-8">
+        {navItems.map((item) => (
+          <NavItem
+            key={item.href}
+            item={item}
+            active={pathname.startsWith(item.href)}
+          />
+        ))}
       </div>
     </nav>
   );
@@ -92,7 +90,7 @@ export default function ScrapbookLayout({
   const [showLoginModal, setShowLoginModal] = useState(!isLogin);
   return (
     <>
-      <div className="flex w-full mx-auto">
+      <div className="flex flex-col w-full h-screen">
         <SideNav />
         <main className="flex-1">{children}</main>
       </div>
