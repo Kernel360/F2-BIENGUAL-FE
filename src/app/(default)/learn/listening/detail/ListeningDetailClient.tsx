@@ -168,11 +168,9 @@ export default function ListeningDetailClient({
   }
 
   return (
-    <div className="w-full flex flex-col gap-5">
+    <div className="w-full flex flex-col gap-2">
       <div>
-        <h1 className="text-2xl font-bold">
-          {listeningDetailData?.data.title}
-        </h1>
+        <h1 className="text-lg font-bold">{listeningDetailData?.data.title}</h1>
         <Badge>{listeningDetailData?.data.category}</Badge>
         <div className="text-sm flex justify-end items-center w-full gap-1 text-gray-400">
           <Eye className="w-4 h-4" />
