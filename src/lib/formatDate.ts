@@ -1,4 +1,7 @@
-export const formatFullDateWithPad = (createdAt: string, operation: string) => {
+export const formatFullDateWithPad = (
+  createdAt: string,
+  operation: string = '.',
+) => {
   const date = new Date(createdAt);
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
