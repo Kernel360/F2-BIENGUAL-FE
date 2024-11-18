@@ -27,6 +27,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
+import { formatViewCount } from '@/lib/formatViewCount';
 import { useQuizStore } from '@/stores/quizStore';
 import { CustomScriptLanguageCode } from '@/types/Scripts';
 
@@ -172,7 +173,7 @@ export default function ListeningDetailClient({
         </h1>
         <Badge>{listeningDetailData?.data.category}</Badge>
         <div className="text-sm flex justify-end w-full">
-          {listeningDetailData?.data.hits} 회
+          조회수 {formatViewCount(listeningDetailData?.data.hits)}
         </div>
       </div>
       <Separator />
