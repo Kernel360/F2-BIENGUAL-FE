@@ -4,7 +4,7 @@ import { BookOpen, Headphones, Eye } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { formatDate } from '@/lib/formatDate';
+import { formatFullDateWithPad } from '@/lib/formatDate';
 
 interface ContentPreviewData {
   scrapId?: number;
@@ -64,7 +64,7 @@ export default function ContentPreview({
                 </Badge>
                 {createdAt && (
                   <span className="text-sm text-muted-foreground">
-                    {formatDate(createdAt)} 저장
+                    {formatFullDateWithPad(createdAt)} 저장
                   </span>
                 )}
               </div>

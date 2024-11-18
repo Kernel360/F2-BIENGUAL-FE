@@ -4,6 +4,8 @@
 
 import { BookOpen, Clock, Headphones } from 'lucide-react';
 
+import { formatViewCount } from '@/lib/formatViewCount';
+
 import PointCover from './common/PointCover';
 import ContentCard from './items/ContentCard';
 import PreviewScrapButton from './PreviewScrapButton';
@@ -48,7 +50,7 @@ export default function ItemComponentCard({ data }: { data: any }) {
             )}
           </div>
         }
-        rightBadge={`조회수 ${data.hits}`}
+        rightBadge={`조회수 ${formatViewCount(data.hits)}`}
         title={data.title}
         description={data.preScripts}
       />

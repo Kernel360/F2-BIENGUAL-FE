@@ -9,7 +9,7 @@ import { Trash2 } from 'lucide-react';
 import ListeningMemoForm from '@/components/listening/ListeningMemoForm';
 import { Button } from '@/components/ui/button';
 import useHandleBookmark from '@/hooks/useHandleBookmark';
-import { convertTime } from '@/lib/convertTime';
+import { convertTime } from '@/lib/formatTime';
 import { Script } from '@/types/ContentDetail';
 
 interface BookmarkMemoItemProps {

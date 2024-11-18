@@ -7,6 +7,7 @@ import {
   useFetchRecentMissionHistory,
 } from '@/api/hooks/useMission';
 import { useUserTime } from '@/api/hooks/useUserInfo';
+import { formatDateToMonthDayWithAdjustNumber } from '@/lib/formatDate';
 
 function MobileLearningTracker() {
   const { data: userMembershipDurationData } = useUserTime();
@@ -30,11 +31,6 @@ function MobileLearningTracker() {
     { status: todayMissionStatus?.bookmark, label: '형광펜 사용' },
     { status: todayMissionStatus?.quiz, label: '퀴즈 완료' },
   ];
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return `${date.getMonth() + 1}/${date.getDate()}`;
-  };
 
   return (
     <div className="space-y-6">
@@ -64,32 +60,35 @@ function MobileLearningTracker() {
       {/* 최근 5일 미션 달성 표시 */}
       <h3 className="font-semibold mb-2">최근 5일 미션 달성</h3>
       <div className="flex justify-between items-end h-25">
-        {recentMissionHistory?.data.recentHistories.map((history, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={index} className="flex flex-col items-center w-1/6">
-            <div
-              className={`w-full rounded-t transition-all duration-300 ${
-                history.count > 0 && history.count === 1
-                  ? 'bg-violet-200'
-                  : history.count === 2
-                    ? 'bg-violet-400'
-                    : 'bg-violet-600'
-              }`}
-              style={{
-                height: `${history.count * 30}px`,
-              }}
-            >
-              {history.count > 0 && (
-                <div className="text-center text-xs text-white font-bold pt-1">
-                  {history.count}
-                </div>
-              )}
+        {recentMissionHistory?.data.recentHistories
+          .slice()
+          .reverse()
+          .map((history, index) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={index} className="flex flex-col items-center w-1/6">
+              <div
+                className={`w-full rounded-t transition-all duration-300 ${
+                  history.count > 0 && history.count === 1
+                    ? 'bg-violet-200'
+                    : history.count === 2
+                      ? 'bg-violet-400'
+                      : 'bg-violet-600'
+                }`}
+                style={{
+                  height: `${history.count * 30}px`,
+                }}
+              >
+                {history.count > 0 && (
+                  <div className="text-center text-xs text-white font-bold pt-1">
+                    {history.count}
+                  </div>
+                )}
+              </div>
+              <div className="text-center text-sm text-gray-700 mt-1">
+                {formatDateToMonthDayWithAdjustNumber(history.date)}
+              </div>
             </div>
-            <div className="text-center text-sm text-gray-700 mt-1">
-              {formatDate(history.date)}
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
     </div>
   );
