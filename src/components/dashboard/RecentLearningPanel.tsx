@@ -15,13 +15,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 export default function RecentLearningPanel() {
   const { data, isLoading, isError } = useOneRecentLearningPreview();
 
-  if (isLoading) return <LoadingPanel title="최근 학습 강의" />;
-  if (isError) return <ErrorPanel title="최근 학습 강의" />;
-  if (!data?.data.title)
-    return (
-      <EmptyPanel title="최근 학습 강의" message="학습 기록이 없습니다." />
-    );
-
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between p-4">
@@ -34,17 +27,24 @@ export default function RecentLearningPanel() {
         </Link>
       </CardHeader>
       <CardContent className="px-4 pb-4 pt-0">
-        <div className="flex items-center space-x-3">
-          <PlayCircle className="h-8 w-8 text-primary shrink-0" />
-          <div>
-            <p className="text-md font-medium leading-tight line-clamp-1">
-              {data?.data.title}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {data?.data.learningRate}%
-            </p>
+        {isLoading && <LoadingPanel title="최근 학습 강의" className="" />}
+        {isError && <ErrorPanel title="최근 학습 강의" className="" />}
+        {!isLoading && !isError && data?.data === null && (
+          <EmptyPanel title="최근 학습 강의" message="학습 기록이 없습니다." />
+        )}
+        {!isLoading && !isError && (
+          <div className="flex items-center space-x-3">
+            <PlayCircle className="h-8 w-8 text-primary shrink-0" />
+            <div>
+              <p className="text-md font-medium leading-tight line-clamp-1">
+                {data?.data.title}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {data?.data.learningRate}%
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </CardContent>
     </Card>
   );

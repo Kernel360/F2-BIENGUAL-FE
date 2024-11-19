@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 'use client';
 
-import { PieChart, Pie } from 'recharts';
+import { PieChart, Pie, Cell, LabelList } from 'recharts';
 
 import { useMonthlyCategoryRatio } from '@/api/hooks/useDashboard';
 import {
@@ -29,43 +31,16 @@ export default function CategoryDistributionPanel() {
     formatDate(String(new Date()), 'YYYY-MM'),
   );
 
-  if (isLoading) return <LoadingPanel title="학습 카테고리 분포" />;
-  if (isError) return <ErrorPanel title="학습 카테고리 분포" />;
-  if (!data?.data.categoryLearningList)
-    return (
-      <EmptyPanel title="학습 카테고리 분포" message="데이터가 없습니다." />
-    );
+  const chartData = data
+    ? processCategoryData(data.data.categoryLearningList, data.data.totalCount)
+    : [];
 
-  const chartData = processCategoryData(
-    data.data.categoryLearningList,
-    data.data.totalCount,
-  );
-
-  const chartConfig = {
-    percent: {
-      label: 'Percent',
-    },
-    sports: {
-      label: 'Sports',
-      color: 'hsl(var(--chart-1))',
-    },
-    health: {
-      label: 'Health',
-      color: 'hsl(var(--chart-2))',
-    },
-    news: {
-      label: 'News',
-      color: 'hsl(var(--chart-3))',
-    },
-    politics: {
-      label: 'Politics',
-      color: 'hsl(var(--chart-4))',
-    },
-    science: {
-      label: 'Science',
-      color: 'hsl(var(--chart-5))',
-    },
-  } satisfies ChartConfig;
+  const chartConfig = chartData.reduce((acc, item) => {
+    acc[item.category] = {
+      label: item.category,
+    };
+    return acc;
+  }, {} as ChartConfig);
 
   return (
     <Card>
@@ -74,26 +49,46 @@ export default function CategoryDistributionPanel() {
           학습 카테고리 분포
         </CardTitle>
         <CardDescription className="text-base">
-          카테고리별 학습 비율
+          내가 많이 학습한 카테고리 TOP 5
         </CardDescription>
       </CardHeader>
       <CardContent className="px-4 pb-4 pt-0">
-        <ChartContainer config={chartConfig}>
-          <PieChart className="h-[300px] w-full">
-            <Pie
-              data={chartData}
-              dataKey="percent"
-              nameKey="category"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              label={({ category, percent }) =>
-                `${category}: ${percent.toFixed(1)}%`
-              }
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
-          </PieChart>
-        </ChartContainer>
+        {isLoading && (
+          <LoadingPanel title="학습 카테고리 TOP 5" className="h-[200px]" />
+        )}
+        {isError && (
+          <ErrorPanel title="학습 카테고리 TOP 5" className="h-[200px]" />
+        )}
+        {!isLoading && !isError && data?.data === undefined && (
+          <EmptyPanel
+            title="학습 카테고리 TOP 5"
+            message="학습한 카테고리가 없습니다."
+            className="h-[200px]"
+          />
+        )}
+        {!isLoading && !isError && (
+          <ChartContainer config={chartConfig}>
+            <PieChart className="">
+              <Pie
+                data={chartData}
+                dataKey="percent"
+                nameKey="category"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                fill="#8884d8"
+              >
+                <LabelList
+                  dataKey="category"
+                  position="inside"
+                  fill="#fff"
+                  className="text-md font-mono"
+                />
+              </Pie>
+              <ChartTooltip content={<ChartTooltipContent />} />
+            </PieChart>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );

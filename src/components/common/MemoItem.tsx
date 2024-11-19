@@ -102,7 +102,7 @@ export default function MemoItem({
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
       <div
         ref={memoRef}
-        className={`flex ml-5 pl-4 border-l-2 w-[520px] ${isEditing ? 'border-purple-700' : 'border-gray-300'}`}
+        className={`flex ml-5 pl-4 border-l-2  ${isEditing ? 'border-purple-700' : 'border-gray-300'}`}
         onClick={() => setIsEditing(true)}
       >
         <textarea
