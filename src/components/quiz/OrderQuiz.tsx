@@ -5,6 +5,10 @@
 
 import { useState } from 'react';
 
+import {
+  useFetchMissionStatus,
+  useUpdateMissionStatus,
+} from '@/api/hooks/useMission';
 import { useCheckQuestionAnswer } from '@/api/hooks/useQuiz';
 import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,6 +27,9 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
 
   const { mutate: checkAnswer } = useCheckQuestionAnswer();
   const { setQuestionIsCorrect } = useQuizStore();
+
+  const { data: missionStatus } = useFetchMissionStatus();
+  const { mutate: updateMissionStatus } = useUpdateMissionStatus();
 
   const toast = useToast();
 
@@ -58,10 +65,12 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
           setIsSubmitted(true);
           setQuestionIsCorrect(question.questionId, correct);
           if (correct) toast.toast({ description: '5 포인트 획득!' });
+          if (!missionStatus?.data.quiz) {
+            updateMissionStatus({ quiz: true });
+          }
         },
         onError: () => {
           setIsSubmitted(true);
-
           setQuestionIsCorrect(question.questionId, false);
         },
       },
