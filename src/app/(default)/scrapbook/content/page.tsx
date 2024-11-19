@@ -7,7 +7,7 @@ import EmptyAlert from '@/components/common/EmptyAlert';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import ContentCard from '@/components/items/ContentCard';
 import { Badge } from '@/components/ui/badge';
-import { formatFullDateWithPad } from '@/lib/formatDate';
+import { formatDate } from '@/lib/formatDate';
 
 export default function RecentContent() {
   const { data: allScrapData, isLoading, isError, error } = useFetchScrap();
@@ -53,7 +53,7 @@ export default function RecentContent() {
           }
           rightBadge={
             <span className="text-sm text-muted-foreground">
-              {formatFullDateWithPad(item.createdAt)} 저장
+              {formatDate(item.createdAt, 'YYYY.MM.DD')} 저장
             </span>
           }
           bottomRightButton={
