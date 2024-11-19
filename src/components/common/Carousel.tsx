@@ -29,7 +29,7 @@ export default function Carousel<T>({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showButtons, setShowButtons] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef<number | null>(null);
 
   const totalItems = previewDatas.length;
   const maxIndex = totalItems - 1;
@@ -45,15 +45,42 @@ export default function Carousel<T>({
     }
   }, [currentIndex, itemWidth]);
 
+  const handleTouchStart = (event: React.TouchEvent) => {
+    touchStartX.current = event.touches[0].clientX;
+  };
+
+  const handleTouchMove = (event: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+
+    const touchEndX = event.touches[0].clientX;
+    const diff = touchStartX.current - touchEndX;
+
+    if (Math.abs(diff) > 50) {
+      // 민감도 50px 설정, 스와이프 중 중복 처리 방지
+      if (diff > 0 && currentIndex < maxIndex) {
+        nextSlide();
+      } else if (diff < 0 && currentIndex > 0) {
+        prevSlide();
+      }
+      touchStartX.current = null; // 한 번 스와이프 후 초기화
+    }
+  };
+
+  const handleTouchEnd = () => {
+    touchStartX.current = null; // 스와이프 종료 후 초기화
+  };
+
   return (
     <div className="w-full px-6" style={{ minWidth: 0 }}>
       {header && <div className="w-full">{header}</div>}
 
       <div
-        ref={containerRef}
         className="relative w-full overflow-hidden"
         onMouseEnter={() => setShowButtons(true)}
         onMouseLeave={() => setShowButtons(false)}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
         <div
           ref={carouselRef}

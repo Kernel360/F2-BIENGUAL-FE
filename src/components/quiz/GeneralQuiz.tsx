@@ -2,9 +2,14 @@
 
 import { useState } from 'react';
 
+import {
+  useFetchMissionStatus,
+  useUpdateMissionStatus,
+} from '@/api/hooks/useMission';
 import { useCheckQuestionAnswer } from '@/api/hooks/useQuiz';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useQuizStore, ExtendedQuestion } from '@/stores/quizStore';
 
@@ -19,6 +24,11 @@ export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
   const { mutate: checkAnswer } = useCheckQuestionAnswer();
   const { setQuestionIsCorrect } = useQuizStore();
 
+  const { data: missionStatus } = useFetchMissionStatus();
+  const { mutate: updateMissionStatus } = useUpdateMissionStatus();
+
+  const toast = useToast();
+
   const handleAnswerSelect = (answer: number) => {
     setSelectedAnswer(answer);
 
@@ -27,8 +37,11 @@ export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
       {
         onSuccess: (response) => {
           const correct = response.data;
-
           setQuestionIsCorrect(question.questionId, correct);
+          if (correct) toast.toast({ description: '5 포인트 획득!' });
+          if (!missionStatus?.data.quiz) {
+            updateMissionStatus({ quiz: true });
+          }
         },
         onError: () => {
           setQuestionIsCorrect(question.questionId, false);
@@ -40,10 +53,7 @@ export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
   return (
     <div className="w-full">
       <CardHeader className="space-y-4">
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-muted-foreground">Question</span>
-        </div>
-        <CardTitle className="text-xl font-medium">
+        <CardTitle className="text-lg font-medium">
           {question.question}
         </CardTitle>
       </CardHeader>
@@ -61,10 +71,11 @@ export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
               onClick={() => handleAnswerSelect(index)}
               // disabled={question.isCorrect !== null}
               className={cn(
-                'w-full justify-start text-left h-auto p-4 text-base font-normal',
+                'w-full justify-start text-left h-auto p-4 break-words whitespace-normal',
                 isCorrectAnswer &&
-                  'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700',
-                isWrongAnswer && 'bg-red-500 text-white hover:bg-red-600',
+                  'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 hover:text-white',
+                isWrongAnswer &&
+                  'bg-red-500 text-white hover:bg-red-600 hover:text-white',
                 !isSelected && 'hover:bg-accent',
               )}
               variant="outline"

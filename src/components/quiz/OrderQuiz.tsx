@@ -5,9 +5,14 @@
 
 import { useState } from 'react';
 
+import {
+  useFetchMissionStatus,
+  useUpdateMissionStatus,
+} from '@/api/hooks/useMission';
 import { useCheckQuestionAnswer } from '@/api/hooks/useQuiz';
 import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { ExtendedQuestion, useQuizStore } from '@/stores/quizStore';
 
@@ -22,6 +27,11 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
 
   const { mutate: checkAnswer } = useCheckQuestionAnswer();
   const { setQuestionIsCorrect } = useQuizStore();
+
+  const { data: missionStatus } = useFetchMissionStatus();
+  const { mutate: updateMissionStatus } = useUpdateMissionStatus();
+
+  const toast = useToast();
 
   // 사용자가 선택한 순서를 저장하는 함수
   const handleSelect = (index: number) => {
@@ -45,7 +55,7 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
   const handleSubmit = async () => {
     if (selectedOrder.length !== 4) return;
 
-    const userAnswer = selectedOrder.map((index) => index + 1).join(' ');
+    const userAnswer = selectedOrder.join(' ');
 
     checkAnswer(
       { questionId: question.questionId, answer: userAnswer },
@@ -53,12 +63,14 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
         onSuccess: (response) => {
           const correct = response.data;
           setIsSubmitted(true);
-
           setQuestionIsCorrect(question.questionId, correct);
+          if (correct) toast.toast({ description: '5 포인트 획득!' });
+          if (!missionStatus?.data.quiz) {
+            updateMissionStatus({ quiz: true });
+          }
         },
         onError: () => {
           setIsSubmitted(true);
-
           setQuestionIsCorrect(question.questionId, false);
         },
       },
@@ -68,10 +80,7 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
   return (
     <div className="w-full">
       <CardHeader className="space-y-4">
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-muted-foreground">2/5 Questions</span>
-        </div>
-        <CardTitle className="text-xl font-medium">
+        <CardTitle className="text-lg font-medium">
           {question.question}
         </CardTitle>
       </CardHeader>
@@ -82,7 +91,7 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
           <div
             key={index}
             className={cn(
-              'w-12 h-12 rounded-full flex items-center justify-center text-2xl font-bold',
+              'w-10 h-10 rounded-full flex items-center justify-center text-xl',
               selectedOrder[index] !== undefined
                 ? 'bg-primary text-primary-foreground'
                 : 'bg-secondary text-secondary-foreground',
@@ -103,7 +112,7 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
             key={index}
             onClick={() => handleSelect(index)}
             className={cn(
-              'w-full justify-start text-left h-auto p-4 text-base font-normal rounded-sm cursor-pointer',
+              'w-full justify-start text-left h-auto p-4 rounded-sm cursor-pointer break-words whitespace-normal',
               !isSubmitted && 'hover:bg-gray-100',
               selectedOrder.includes(index) &&
                 'bg-primary/10 border-primary text-black',
@@ -138,7 +147,7 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
         {isSubmitted && (
           <div
             className={cn(
-              'text-center font-bold mt-4',
+              'text-center font-bold mt-2',
               question.isCorrect ? 'text-green-600' : 'text-red-600',
             )}
           >
