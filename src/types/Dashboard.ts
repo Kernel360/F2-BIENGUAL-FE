@@ -14,10 +14,13 @@ export interface RecentLearningPreview {
   completedLearningRate: number;
 }
 
-export interface MonthlyCategoryRatio {
+export interface MonthlyCategoryRatio<
+  T = { categoryId: number; categoryName: string; count: number },
+> {
   categoryId: number;
   categoryName: string;
   count: number;
+  extraData?: T;
 }
 
 export interface FetchMonthlyCategoryRatioResponse {

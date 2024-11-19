@@ -1,6 +1,6 @@
 'use client';
 
-import { PieChart, Pie } from 'recharts';
+import { PieChart, Pie, LabelList } from 'recharts';
 
 import { useMonthlyCategoryRatio } from '@/api/hooks/useDashboard';
 import {
@@ -86,11 +86,16 @@ export default function CategoryDistributionPanel() {
               nameKey="category"
               cx="50%"
               cy="50%"
-              outerRadius={100}
-              label={({ category, percent }) =>
-                `${category}: ${percent.toFixed(1)}%`
-              }
-            />
+              outerRadius={150}
+              fill="#8884d8"
+            >
+              <LabelList
+                dataKey="category"
+                position="inside"
+                fill="#fff"
+                className="text-md font-mono"
+              />
+            </Pie>
             <ChartTooltip content={<ChartTooltipContent />} />
           </PieChart>
         </ChartContainer>
