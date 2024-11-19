@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { useCheckQuestionAnswer } from '@/api/hooks/useQuiz';
 import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { ExtendedQuestion, useQuizStore } from '@/stores/quizStore';
 
@@ -22,6 +23,8 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
 
   const { mutate: checkAnswer } = useCheckQuestionAnswer();
   const { setQuestionIsCorrect } = useQuizStore();
+
+  const toast = useToast();
 
   // 사용자가 선택한 순서를 저장하는 함수
   const handleSelect = (index: number) => {
@@ -53,8 +56,8 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
         onSuccess: (response) => {
           const correct = response.data;
           setIsSubmitted(true);
-
           setQuestionIsCorrect(question.questionId, correct);
+          if (correct) toast.toast({ description: '5 포인트 획득!' });
         },
         onError: () => {
           setIsSubmitted(true);

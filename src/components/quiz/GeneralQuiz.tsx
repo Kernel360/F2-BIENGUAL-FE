@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { useCheckQuestionAnswer } from '@/api/hooks/useQuiz';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useQuizStore, ExtendedQuestion } from '@/stores/quizStore';
 
@@ -19,6 +20,8 @@ export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
   const { mutate: checkAnswer } = useCheckQuestionAnswer();
   const { setQuestionIsCorrect } = useQuizStore();
 
+  const toast = useToast();
+
   const handleAnswerSelect = (answer: number) => {
     setSelectedAnswer(answer);
 
@@ -27,8 +30,8 @@ export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
       {
         onSuccess: (response) => {
           const correct = response.data;
-
           setQuestionIsCorrect(question.questionId, correct);
+          if (correct) toast.toast({ description: '5 포인트 획득!' });
         },
         onError: () => {
           setQuestionIsCorrect(question.questionId, false);
