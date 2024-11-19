@@ -27,7 +27,7 @@ export default function QuizCover({
         className={`absolute inset-0 bg-gradient-to-br ${startColor} ${endColor} flex flex-col items-center justify-center p-8 transition-opacity duration-500 opacity-100`}
       >
         <h3
-          className={`text-2xl font-bold text-center mb-8 whitespace-pre-line leading-relaxed  ${textColor}`}
+          className={`text-lg font-bold text-center mb-8 whitespace-pre-line leading-relaxed  ${textColor}`}
         >
           {text}
         </h3>
