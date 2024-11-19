@@ -1,8 +1,8 @@
 'use client';
 
-import MissionCalendar from '@/components/common/MissionCalendar';
 import CategoryDistributionPanel from '@/components/dashboard/CategoryDistributionPanel';
 import CurrentPointsPanel from '@/components/dashboard/CurrentPointsPanel';
+import MissionCalendar from '@/components/dashboard/MissionCalendar';
 import QuizAccuracyPanel from '@/components/dashboard/QuizAccuracyPanel';
 import RecentLearningPanel from '@/components/dashboard/RecentLearningPanel';
 

@@ -6,18 +6,18 @@ import { ko } from 'date-fns/locale';
 
 import { useFetchMissionCalendar } from '@/api/hooks/useDashboard';
 import { Calendar as CustomCalendar } from '@/components/common/CustomShadcnCalendar';
+import {
+  LoadingPanel,
+  ErrorPanel,
+  EmptyPanel,
+} from '@/components/common/Panels';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatDate, isToday } from '@/lib/formatDate';
 
 const correctDate = (date: Date) => {
   const formattedDate = new Date(date);
   formattedDate.setDate(formattedDate.getDate() + 1);
-  const formattedDatetwo = formattedDate.toISOString().split('T')[0];
-  return formattedDatetwo;
-};
-
-const getMonthString = (date: Date) => {
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+  return formattedDate.toISOString().split('T')[0];
 };
 
 export default function MissionCalendar() {
@@ -28,8 +28,12 @@ export default function MissionCalendar() {
     formatDate(new Date(), 'YYYY-MM'),
   );
 
-  const { data: missionCalendarData, refetch } =
-    useFetchMissionCalendar(currentMonth);
+  const {
+    data: missionCalendarData,
+    isLoading,
+    isError,
+    refetch,
+  } = useFetchMissionCalendar(currentMonth);
 
   // 월 변경 시 데이터 다시 가져오기
   useEffect(() => {
@@ -39,7 +43,7 @@ export default function MissionCalendar() {
   }, [currentMonth, refetch]);
 
   const handleMonthChange = (newMonth: Date) => {
-    const monthString = getMonthString(newMonth);
+    const monthString = formatDate(newMonth, 'YYYY-MM');
     if (monthString !== currentMonth) {
       setCurrentMonth(monthString);
     }
@@ -89,6 +93,17 @@ export default function MissionCalendar() {
     },
   );
 
+  // API 상태 처리
+  if (isLoading) return <LoadingPanel title="학습 미션 캘린더" />;
+  if (isError) return <ErrorPanel title="학습 미션 캘린더" />;
+  if (!missionCalendarData?.data.monthlyHistoryList?.length)
+    return (
+      <EmptyPanel
+        title="학습 미션 캘린더"
+        message="캘린더에 미션 기록이 없습니다."
+      />
+    );
+
   return (
     <Card>
       <CardHeader className="p-4">
@@ -107,7 +122,6 @@ export default function MissionCalendar() {
           onMonthChange={handleMonthChange}
           className="rounded-md"
           modifiers={{
-            // n일의 미션 기록은 n+1일 새벽4시에 기록되므로 날짜 조정 필요
             zero: (date: Date) => {
               const correctedDate = correctDate(
                 new Date(
@@ -116,7 +130,6 @@ export default function MissionCalendar() {
                   date.getDate() + 1,
                 ),
               );
-
               return getMissionStatusCount(correctedDate) === 0;
             },
             one: (date: Date) => {
@@ -137,7 +150,6 @@ export default function MissionCalendar() {
                   date.getDate() + 1,
                 ),
               );
-
               return getMissionStatusCount(correctedDate) === 2;
             },
             three: (date: Date) => {
