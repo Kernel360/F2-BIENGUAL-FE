@@ -42,7 +42,7 @@ export default function ContentCard({
             </div>
           </div>
           <div className="p-4 space-y-2 flex-1">
-            <div className="flex justify-between">
+            <div className="flex justify-between text-sm">
               {leftBadge}
               {rightBadge}
             </div>

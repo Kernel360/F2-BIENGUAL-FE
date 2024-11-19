@@ -7,6 +7,8 @@ export interface ScrapListItem {
   createdAt: string;
   preScripts: string;
   thumbnailUrl: string;
+  category: string;
+  duration: string;
   isActive: boolean;
 }
 

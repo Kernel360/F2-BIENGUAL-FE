@@ -1,6 +1,6 @@
 'use client';
 
-import { Clock } from 'lucide-react';
+import { Clock, Headphones, BookOpen } from 'lucide-react';
 
 import { useFetchScrap } from '@/api/hooks/useScrap';
 import EmptyAlert from '@/components/common/EmptyAlert';
@@ -25,50 +25,44 @@ export default function RecentContent() {
   }
   return (
     <div className="container mx-auto px-4">
-      <h1 className="text-2xl font-bold mb-6">최근 스크랩한 콘텐츠</h1>
-      {allScrapData.data.scrapList.map((item) => (
-        // TODO@godhyzzang : 스크랩에도 카테고리 배지 넣는게 좋을 듯
-        <ContentCard
-          key={item.scrapId}
-          href={
-            item.contentType === 'READING'
-              ? `/learn/reading/detail/${item.contentId}`
-              : `/learn/listening/detail/${item.contentId}`
-          }
-          leftBadge={
-            // TODO@godhyzzang : 리딩, 리스닝 다르면 글자 대신 그림 아이콘을 바꿔주는게 좋을듯
-            <div>
-              <Badge
-                variant="secondary"
-                className={`${
-                  item.contentType === 'READING'
-                    ? 'bg-green-300'
-                    : 'bg-blue-200'
-                } text-gray-800`}
-              >
-                {item.contentType}
-                {/* TODO@godhyzzang : 일반 previewcomponent처럼 카테고리, 리스닝리딩 디자인 통일 필요  */}
-              </Badge>
-            </div>
-          }
-          rightBadge={
-            <span className="text-sm text-muted-foreground">
-              {formatDate(item.createdAt, 'YYYY.MM.DD')} 저장
-            </span>
-          }
-          bottomRightButton={
-            item.contentType !== 'READING' && (
-              <Badge className="flex items-center gap-1 bg-gray-200 bg-opacity-70">
-                <Clock className="w-3 h-3" color="purple" />
-                {/* <span className="text-violet-800">{item.duration}</span> // TODO(@godhyzzang) :  scrap도 duration추가 필요 */}
-              </Badge>
-            )
-          }
-          coverImageUrl={item.thumbnailUrl}
-          title={item.title}
-          description={item.preScripts}
-        />
-      ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+        {allScrapData.data.scrapList.map((item) => (
+          <ContentCard
+            key={item.contentId}
+            href={`/learn/${item.contentType.toLowerCase()}/detail/${item.contentId}`}
+            bottomRightButton={
+              item.contentType !== 'READING' && (
+                <Badge className="flex items-center gap-1 bg-gray-200 bg-opacity-70">
+                  <Clock className="w-3 h-3" color="purple" />
+                  <span className="text-violet-800">{item.duration}</span>
+                </Badge>
+              )
+            }
+            coverImageUrl={item.thumbnailUrl}
+            leftBadge={
+              <div className="flex gap-1">
+                <Badge className="">{item.category}</Badge>
+                {item.contentType !== 'READING' ? (
+                  <div className="flex justify-center items-center bg-gradient-to-l from-red-500 to-orange-500 rounded-sm shadow-sm">
+                    <Headphones className="p-1 h-6 w-6 text-white" />
+                  </div>
+                ) : (
+                  <div className="flex justify-center items-center bg-gradient-to-l from-blue-500 to-sky-500 rounded-sm shadow-sm  ">
+                    <BookOpen className="p-1 h-6 w-6  text-white" />
+                  </div>
+                )}
+              </div>
+            }
+            rightBadge={
+              <span className="text-sm text-muted-foreground">
+                {formatDate(item.createdAt, 'YYYY.MM.DD')} 저장
+              </span>
+            }
+            title={item.title}
+            description={item.preScripts}
+          />
+        ))}
+      </div>
     </div>
   );
 }
