@@ -275,7 +275,7 @@ export default function ListeningDetailClient({
                   startColor="white"
                   endColor="to-purple-200"
                   text={`이런! 퀴즈 데이터가 없어요...\n 관리자에게 문의해주세요`}
-                  textColor="text-gray-700 shadow-lg"
+                  textColor="text-gray-700"
                 />
               )}
             </div>

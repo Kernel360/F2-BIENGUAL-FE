@@ -98,7 +98,7 @@ export default function ReadingDetailClient({
 
   const contentData = data?.data;
 
-  if (!contentData) return <div>No Content Data Available</div>;
+  if (!contentData) return <div>콘텐츠가 존재하지 않아요!</div>;
 
   return (
     <>
@@ -169,7 +169,7 @@ export default function ReadingDetailClient({
                       startColor="white"
                       endColor="to-purple-200"
                       text={`이런! 퀴즈 데이터가 없어요..\n관리자에게 문의해주세요`}
-                      textColor="text-gray-700 shadow-lg"
+                      textColor="text-gray-700"
                     />
                   )}
                 </div>
