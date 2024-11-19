@@ -25,10 +25,8 @@ export const processCategoryData = <T>(
 
   // 동률 포함 TOP5 선정
   const top5 = sortedData.slice(0, 5);
-  const thirdPlaceCount = top5[4]?.count;
-  const top5WithTies = sortedData.filter(
-    (item) => item.count >= thirdPlaceCount,
-  );
+  const countOfFifth = top5[top5.length - 1]?.count;
+  const top5WithTies = sortedData.filter((item) => item.count >= countOfFifth);
 
   // 이 외 나머지를 extra로 합산
   const extra = sortedData.slice(top5WithTies.length).reduce(
