@@ -34,3 +34,9 @@ export type ContentsResponse = {
     contents: Preview[];
   };
 };
+
+export interface RecommendedContentsResponse {
+  code: string;
+  message: string;
+  data: { recommendedContents: Preview[] };
+}
