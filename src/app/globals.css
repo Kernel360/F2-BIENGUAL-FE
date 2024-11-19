@@ -63,11 +63,13 @@
     --border: var(--gray-7);
     --input: var(--gray-6);
     --ring: var(--violet-8);
-    --chart-1: var(--violet-4);
-    --chart-2: var(--violet-5);
-    --chart-3: var(--gray-3);
-    --chart-4: var(--gray-4);
-    --chart-5: var(--gray-5);
+    --chart-1: var(--violet-7);
+    --chart-2: var(--violet-6);
+    --chart-3: var(--violet-5);
+    --chart-4: var(--violet-4);
+    --chart-5: var(--violet-3);
+    --chart-6: var(--gray-7);
+
     --radius: 0.5rem;
 
     --base-card-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05),

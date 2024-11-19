@@ -1,14 +1,12 @@
 import { MonthlyCategoryRatio, WeeklyQuizAccuracy } from '@/types/Dashboard';
 
 const colorPalette = [
-  'hsl(var(--chart-1))',
-  'hsl(var(--chart-2))',
-  'hsl(var(--chart-3))',
-  'hsl(var(--chart-4))',
-  'hsl(var(--chart-5))',
-  'hsl(var(--chart-6))',
-  'hsl(var(--chart-7))',
-  'hsl(var(--chart-8))',
+  'hsl(var(--chart-1))', // 보라색 계열
+  'hsl(var(--chart-2))', // 보라색 계열
+  'hsl(var(--chart-3))', // 보라색 계열
+  'hsl(var(--chart-4))', // 보라색 계열
+  'hsl(var(--chart-5))', // 보라색 계열
+  'hsl(var(--chart-6))', // 회색 계열
 ];
 
 interface ProcessedCategoryData {
@@ -22,14 +20,18 @@ export const processCategoryData = <T>(
   categoryData: MonthlyCategoryRatio<T>[],
   totalCount: number,
 ): ProcessedCategoryData[] => {
-  // Sort categories by count
+  //  count로 내림차순 정렬
   const sortedData = categoryData.sort((a, b) => b.count - a.count);
 
-  // Get top 3 categories
-  const top3 = sortedData.slice(0, 3);
+  // 동률 포함 TOP5 선정
+  const top5 = sortedData.slice(0, 5);
+  const thirdPlaceCount = top5[4]?.count;
+  const top5WithTies = sortedData.filter(
+    (item) => item.count >= thirdPlaceCount,
+  );
 
-  // Group the rest into "extra"
-  const extra = sortedData.slice(3).reduce(
+  // 이 외 나머지를 extra로 합산
+  const extra = sortedData.slice(top5WithTies.length).reduce(
     (acc, item) => {
       acc.count += item.count;
       return acc;
@@ -41,12 +43,13 @@ export const processCategoryData = <T>(
     } as MonthlyCategoryRatio<T>,
   );
 
-  // Calculate percentages and assign colors
-  const chartData = [...top3, extra].map((item, index) => ({
+  // 비율 계산 및 색깔 부여
+  const chartData = [...top5WithTies, extra].map((item, index) => ({
     category: item.categoryName,
     count: item.count,
-    percent: (item.count / totalCount) * 100, // 숫자 형식으로 변환
-    fill: colorPalette[index % colorPalette.length],
+    percent: Number(((item.count / totalCount) * 100).toFixed(1)), // 숫자 형식으로 변환
+    fill:
+      index < top5WithTies.length ? colorPalette[index % 5] : colorPalette[5], // top5는 보라색 계열, 나머지는 회색 계열
   }));
 
   return chartData;

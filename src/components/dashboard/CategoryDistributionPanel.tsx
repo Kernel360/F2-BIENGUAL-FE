@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 'use client';
 
-import { PieChart, Pie, LabelList } from 'recharts';
+import { PieChart, Pie, Cell, LabelList } from 'recharts';
 
 import { useMonthlyCategoryRatio } from '@/api/hooks/useDashboard';
 import {
@@ -33,31 +35,12 @@ export default function CategoryDistributionPanel() {
     ? processCategoryData(data.data.categoryLearningList, data.data.totalCount)
     : [];
 
-  const chartConfig = {
-    percent: {
-      label: 'Percent',
-    },
-    sports: {
-      label: 'Sports',
-      color: 'hsl(var(--chart-1))',
-    },
-    health: {
-      label: 'Health',
-      color: 'hsl(var(--chart-2))',
-    },
-    news: {
-      label: 'News',
-      color: 'hsl(var(--chart-3))',
-    },
-    politics: {
-      label: 'Politics',
-      color: 'hsl(var(--chart-4))',
-    },
-    science: {
-      label: 'Science',
-      color: 'hsl(var(--chart-5))',
-    },
-  } satisfies ChartConfig;
+  const chartConfig = chartData.reduce((acc, item) => {
+    acc[item.category] = {
+      label: item.category,
+    };
+    return acc;
+  }, {} as ChartConfig);
 
   return (
     <Card>
@@ -66,33 +49,33 @@ export default function CategoryDistributionPanel() {
           학습 카테고리 분포
         </CardTitle>
         <CardDescription className="text-base">
-          카테고리별 학습 비율
+          내가 많이 학습한 카테고리 TOP 5
         </CardDescription>
       </CardHeader>
       <CardContent className="px-4 pb-4 pt-0">
         {isLoading && (
-          <LoadingPanel title="카테고리별 학습 비율" className="h-[200px]" />
+          <LoadingPanel title="학습 카테고리 TOP 5" className="h-[200px]" />
         )}
         {isError && (
-          <ErrorPanel title="카테고리별 학습 비율" className="h-[200px]" />
+          <ErrorPanel title="학습 카테고리 TOP 5" className="h-[200px]" />
         )}
         {!isLoading && !isError && data?.data === undefined && (
           <EmptyPanel
-            title="카테고리별 학습 비율"
+            title="학습 카테고리 TOP 5"
             message="학습한 카테고리가 없습니다."
             className="h-[200px]"
           />
         )}
         {!isLoading && !isError && (
           <ChartContainer config={chartConfig}>
-            <PieChart className="h-[300px] w-full">
+            <PieChart className="">
               <Pie
                 data={chartData}
                 dataKey="percent"
                 nameKey="category"
                 cx="50%"
                 cy="50%"
-                outerRadius={150}
+                outerRadius={100}
                 fill="#8884d8"
               >
                 <LabelList
