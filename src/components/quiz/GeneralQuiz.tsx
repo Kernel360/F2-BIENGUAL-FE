@@ -43,10 +43,7 @@ export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
   return (
     <div className="w-full">
       <CardHeader className="space-y-4">
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-muted-foreground">Question</span>
-        </div>
-        <CardTitle className="text-xl font-medium">
+        <CardTitle className="text-lg font-medium">
           {question.question}
         </CardTitle>
       </CardHeader>
@@ -64,10 +61,11 @@ export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
               onClick={() => handleAnswerSelect(index)}
               // disabled={question.isCorrect !== null}
               className={cn(
-                'w-full justify-start text-left h-auto p-4 text-base font-normal',
+                'w-full justify-start text-left h-auto p-4 break-words whitespace-normal',
                 isCorrectAnswer &&
-                  'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700',
-                isWrongAnswer && 'bg-red-500 text-white hover:bg-red-600',
+                  'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 hover:text-white',
+                isWrongAnswer &&
+                  'bg-red-500 text-white hover:bg-red-600 hover:text-white',
                 !isSelected && 'hover:bg-accent',
               )}
               variant="outline"
