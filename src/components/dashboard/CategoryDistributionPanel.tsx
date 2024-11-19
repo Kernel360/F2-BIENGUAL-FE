@@ -21,12 +21,12 @@ import {
   ChartTooltipContent,
   ChartConfig,
 } from '@/components/ui/chart';
-import { getFormattedDate } from '@/lib/formatDate';
+import { formatDate } from '@/lib/formatDate';
 import { processCategoryData } from '@/lib/processChartData';
 
 export default function CategoryDistributionPanel() {
   const { data, isLoading, isError } = useMonthlyCategoryRatio(
-    getFormattedDate('month'),
+    formatDate(String(new Date()), 'YYYY-MM'),
   );
 
   if (isLoading) return <LoadingPanel title="학습 카테고리 분포" />;

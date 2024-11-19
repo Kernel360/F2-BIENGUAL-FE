@@ -35,7 +35,7 @@ export default function RecentLearningPanel() {
       </CardHeader>
       <CardContent className="px-4 pb-4 pt-0">
         <div className="flex items-center space-x-3">
-          <PlayCircle className="h-8 w-8 text-primary" />
+          <PlayCircle className="h-8 w-8 text-primary shrink-0" />
           <div>
             <p className="text-md font-medium leading-tight line-clamp-1">
               {data?.data.title}

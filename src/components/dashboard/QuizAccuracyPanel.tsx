@@ -32,12 +32,12 @@ import {
   ChartLegendContent,
   ChartConfig,
 } from '@/components/ui/chart';
-import { getFormattedDate } from '@/lib/formatDate';
+import { formatDate } from '@/lib/formatDate';
 import { processQuizAccuracyData } from '@/lib/processChartData';
 
 export default function QuizAccuracyPanel() {
   const { data, isLoading, isError } = useWeeklyQuizAccuracy(
-    getFormattedDate('date'),
+    formatDate(String(new Date()), 'YYYY-MM-DD'),
   );
 
   if (isLoading) return <LoadingPanel title="최근 5주 퀴즈 정답율" />;
