@@ -9,7 +9,7 @@ import { Calendar as CustomCalendar } from '@/components/common/CustomShadcnCale
 import {
   LoadingPanel,
   ErrorPanel,
-  EmptyPanel,
+  // EmptyPanel,
 } from '@/components/common/Panels';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatDate, isToday } from '@/lib/formatDate';
@@ -94,15 +94,18 @@ export default function MissionCalendar() {
   );
 
   // API 상태 처리
-  if (isLoading) return <LoadingPanel title="학습 미션 캘린더" />;
-  if (isError) return <ErrorPanel title="학습 미션 캘린더" />;
-  if (!missionCalendarData?.data.monthlyHistoryList?.length)
-    return (
-      <EmptyPanel
-        title="학습 미션 캘린더"
-        message="캘린더에 미션 기록이 없습니다."
-      />
-    );
+  // if (isLoading)
+  //   return <LoadingPanel title="학습 미션 캘린더" className="h-[450px]" />;
+  // if (isError)
+  //   return <ErrorPanel title="학습 미션 캘린더" className="h-[450px]" />;
+  // if (!missionCalendarData?.data.monthlyHistoryList?.length)
+  //   return (
+  //     <EmptyPanel
+  //       title="학습 미션 캘린더"
+  //       message="캘린더에 미션 기록이 없습니다."
+  //       className="h-[450px]"
+  //     />
+  //   );
 
   return (
     <Card>
@@ -110,91 +113,111 @@ export default function MissionCalendar() {
         <CardTitle className="text-lg font-medium">학습 미션 캘린더</CardTitle>
       </CardHeader>
       <CardContent className="px-4 pb-4 pt-0 flex flex-col items-center">
-        <CustomCalendar
-          classNames={{
-            day_selected:
-              'bg-white-200 ring-2 ring-purple-500 ring-offset-2 ring-offset-white', // 날짜 눌렀을 때
-          }}
-          locale={ko}
-          mode="single"
-          selected={selectedDate}
-          onSelect={setSelectedDate}
-          onMonthChange={handleMonthChange}
-          className="rounded-md"
-          modifiers={{
-            zero: (date: Date) => {
-              const correctedDate = correctDate(
-                new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate() + 1,
-                ),
-              );
-              return getMissionStatusCount(correctedDate) === 0;
-            },
-            one: (date: Date) => {
-              const correctedDate = correctDate(
-                new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate() + 1,
-                ),
-              );
-              return getMissionStatusCount(correctedDate) === 1;
-            },
-            two: (date: Date) => {
-              const correctedDate = correctDate(
-                new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate() + 1,
-                ),
-              );
-              return getMissionStatusCount(correctedDate) === 2;
-            },
-            three: (date: Date) => {
-              const correctedDate = correctDate(
-                new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate() + 1,
-                ),
-              );
-              return getMissionStatusCount(correctedDate) === 3;
-            },
-          }}
-          modifiersStyles={{
-            zero: completedStyle.zero,
-            one: completedStyle.one,
-            two: completedStyle.two,
-            three: completedStyle.three,
-          }}
-        />
+        {isLoading && (
+          <LoadingPanel title="학습 미션 캘린더" className="h-[370px]" />
+        )}
+        {isError && (
+          <ErrorPanel title="학습 미션 캘린더" className="h-[370px]" />
+        )}
+        {/* {!isLoading && !isError && data?.data === null && (
+          <EmptyPanel
+            title="학습 미션 캘린더"
+            message="포인트가 없습니다."
+            className="h-[110px]"
+          />
+        )} */}
+        {!isLoading && !isError && (
+          <>
+            <CustomCalendar
+              classNames={{
+                day_selected:
+                  'bg-white-200 ring-2 ring-purple-500 ring-offset-2 ring-offset-white', // 날짜 눌렀을 때
+              }}
+              locale={ko}
+              mode="single"
+              selected={selectedDate}
+              onSelect={setSelectedDate}
+              onMonthChange={handleMonthChange}
+              className="rounded-md"
+              modifiers={{
+                zero: (date: Date) => {
+                  const correctedDate = correctDate(
+                    new Date(
+                      date.getFullYear(),
+                      date.getMonth(),
+                      date.getDate() + 1,
+                    ),
+                  );
+                  return getMissionStatusCount(correctedDate) === 0;
+                },
+                one: (date: Date) => {
+                  const correctedDate = correctDate(
+                    new Date(
+                      date.getFullYear(),
+                      date.getMonth(),
+                      date.getDate() + 1,
+                    ),
+                  );
+                  return getMissionStatusCount(correctedDate) === 1;
+                },
+                two: (date: Date) => {
+                  const correctedDate = correctDate(
+                    new Date(
+                      date.getFullYear(),
+                      date.getMonth(),
+                      date.getDate() + 1,
+                    ),
+                  );
+                  return getMissionStatusCount(correctedDate) === 2;
+                },
+                three: (date: Date) => {
+                  const correctedDate = correctDate(
+                    new Date(
+                      date.getFullYear(),
+                      date.getMonth(),
+                      date.getDate() + 1,
+                    ),
+                  );
+                  return getMissionStatusCount(correctedDate) === 3;
+                },
+              }}
+              modifiersStyles={{
+                zero: completedStyle.zero,
+                one: completedStyle.one,
+                two: completedStyle.two,
+                three: completedStyle.three,
+              }}
+            />
 
-        <div className="flex flex-col rounded-sm p-3 border w-full h-full">
-          <p className="font-bold">어떤 미션을 성공했을까?</p>
-          <div>
-            {isToday(String(selectedDate)) ? (
-              <p className="text-sm mt-2">
-                캘린더에는 오늘 데이터는 반영되지 않아요
-              </p>
-            ) : mission ? (
-              <div className="flex flex-col my-2 text-sm">
-                <span className="font-bold">{selectedDateString}</span>
-                <span>
-                  One Content: {mission.missionStatus.oneContent ? 'Yes' : 'No'}
-                </span>
-                <span>
-                  Bookmark: {mission.missionStatus.bookmark ? 'Yes' : 'No'}
-                </span>
-                <span>Quiz: {mission.missionStatus.quiz ? 'Yes' : 'No'}</span>
-                <span>Count: {mission.missionStatus.count}</span>
+            <div className="flex flex-col rounded-sm p-3 border w-full h-full">
+              <p className="font-bold">어떤 미션을 성공했을까?</p>
+              <div>
+                {isToday(String(selectedDate)) ? (
+                  <p className="text-sm mt-2">
+                    캘린더에는 오늘 데이터는 반영되지 않아요
+                  </p>
+                ) : mission ? (
+                  <div className="flex flex-col my-2 text-sm">
+                    <span className="font-bold">{selectedDateString}</span>
+                    <span>
+                      One Content:{' '}
+                      {mission.missionStatus.oneContent ? 'Yes' : 'No'}
+                    </span>
+                    <span>
+                      Bookmark: {mission.missionStatus.bookmark ? 'Yes' : 'No'}
+                    </span>
+                    <span>
+                      Quiz: {mission.missionStatus.quiz ? 'Yes' : 'No'}
+                    </span>
+                    <span>Count: {mission.missionStatus.count}</span>
+                  </div>
+                ) : (
+                  <div>미션 데이터가 없습니다.</div>
+                )}
               </div>
-            ) : (
-              <div>미션 데이터가 없습니다.</div>
-            )}
-          </div>
-        </div>
+            </div>
+          </>
+        )}
       </CardContent>
     </Card>
   );

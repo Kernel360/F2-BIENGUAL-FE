@@ -29,17 +29,9 @@ export default function CategoryDistributionPanel() {
     formatDate(String(new Date()), 'YYYY-MM'),
   );
 
-  if (isLoading) return <LoadingPanel title="학습 카테고리 분포" />;
-  if (isError) return <ErrorPanel title="학습 카테고리 분포" />;
-  if (!data?.data.categoryLearningList)
-    return (
-      <EmptyPanel title="학습 카테고리 분포" message="데이터가 없습니다." />
-    );
-
-  const chartData = processCategoryData(
-    data.data.categoryLearningList,
-    data.data.totalCount,
-  );
+  const chartData = data
+    ? processCategoryData(data.data.categoryLearningList, data.data.totalCount)
+    : [];
 
   const chartConfig = {
     percent: {
@@ -78,27 +70,42 @@ export default function CategoryDistributionPanel() {
         </CardDescription>
       </CardHeader>
       <CardContent className="px-4 pb-4 pt-0">
-        <ChartContainer config={chartConfig}>
-          <PieChart className="h-[300px] w-full">
-            <Pie
-              data={chartData}
-              dataKey="percent"
-              nameKey="category"
-              cx="50%"
-              cy="50%"
-              outerRadius={150}
-              fill="#8884d8"
-            >
-              <LabelList
-                dataKey="category"
-                position="inside"
-                fill="#fff"
-                className="text-md font-mono"
-              />
-            </Pie>
-            <ChartTooltip content={<ChartTooltipContent />} />
-          </PieChart>
-        </ChartContainer>
+        {isLoading && (
+          <LoadingPanel title="카테고리별 학습 비율" className="h-[200px]" />
+        )}
+        {isError && (
+          <ErrorPanel title="카테고리별 학습 비율" className="h-[200px]" />
+        )}
+        {!isLoading && !isError && data?.data === undefined && (
+          <EmptyPanel
+            title="카테고리별 학습 비율"
+            message="학습한 카테고리가 없습니다."
+            className="h-[200px]"
+          />
+        )}
+        {!isLoading && !isError && (
+          <ChartContainer config={chartConfig}>
+            <PieChart className="h-[300px] w-full">
+              <Pie
+                data={chartData}
+                dataKey="percent"
+                nameKey="category"
+                cx="50%"
+                cy="50%"
+                outerRadius={150}
+                fill="#8884d8"
+              >
+                <LabelList
+                  dataKey="category"
+                  position="inside"
+                  fill="#fff"
+                  className="text-md font-mono"
+                />
+              </Pie>
+              <ChartTooltip content={<ChartTooltipContent />} />
+            </PieChart>
+          </ChartContainer>
+        )}
       </CardContent>
     </Card>
   );
