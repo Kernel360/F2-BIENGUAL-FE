@@ -93,20 +93,6 @@ export default function MissionCalendar() {
     },
   );
 
-  // API 상태 처리
-  // if (isLoading)
-  //   return <LoadingPanel title="학습 미션 캘린더" className="h-[450px]" />;
-  // if (isError)
-  //   return <ErrorPanel title="학습 미션 캘린더" className="h-[450px]" />;
-  // if (!missionCalendarData?.data.monthlyHistoryList?.length)
-  //   return (
-  //     <EmptyPanel
-  //       title="학습 미션 캘린더"
-  //       message="캘린더에 미션 기록이 없습니다."
-  //       className="h-[450px]"
-  //     />
-  //   );
-
   return (
     <Card>
       <CardHeader className="p-4">

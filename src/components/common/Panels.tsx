@@ -35,7 +35,7 @@ export function ErrorPanel({
         className,
       )}
     >
-      오류 발생: {title}
+      불러오는 도중 에러가 발생했습니다 {title}
     </div>
   );
 }
