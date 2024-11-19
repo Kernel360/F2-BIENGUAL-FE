@@ -7,6 +7,7 @@ import EmptyAlert from '@/components/common/EmptyAlert';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import ContentCard from '@/components/items/ContentCard';
 import { Badge } from '@/components/ui/badge';
+import { formatDate } from '@/lib/formatDate';
 
 export default function RecentContent() {
   const { data: allScrapData, isLoading, isError, error } = useFetchScrap();
@@ -24,7 +25,7 @@ export default function RecentContent() {
   }
   return (
     <div className="container mx-auto px-4">
-      <div className="grid grid-cols-2 gap-4 ">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
         {allScrapData.data.scrapList.map((item) => (
           <ContentCard
             key={item.contentId}
@@ -52,13 +53,11 @@ export default function RecentContent() {
                 )}
               </div>
             }
-            // TODO(@godhyzzang): Add view count badge
-            // rightBadge={
-            //   <div className="flex items-center gap-1 text-gray-400">
-            //     <Eye className="w-4 h-4" />
-            //     {formatViewCount(item.hits)}
-            //   </div>
-            // }
+            rightBadge={
+              <span className="text-sm text-muted-foreground">
+                {formatDate(item.createdAt, 'YYYY.MM.DD')} 저장
+              </span>
+            }
             title={item.title}
             description={item.preScripts}
           />

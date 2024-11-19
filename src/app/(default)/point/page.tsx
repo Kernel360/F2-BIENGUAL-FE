@@ -17,7 +17,7 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 import { getReasonInKorean } from '@/lib/constants/point';
-import { formatDateToMonthDay } from '@/lib/formatDate';
+import { formatDate } from '@/lib/formatDate';
 import {
   MonthlyHistory,
   FetchMonthlyPointsHistoryResponse,
@@ -35,7 +35,7 @@ function PointHistoryItem({ date, pointsHistory }: MonthlyHistory) {
           <div className="flex gap-4 items-start">
             {/* 첫 번째 활동일 경우에만 날짜를 표시 */}
             <span className="text-sm text-gray-500 w-20">
-              {index === 0 ? formatDateToMonthDay(date) : ''}
+              {index === 0 ? formatDate(date, 'YYYY.MM.DD') : ''}
             </span>
             <span className="text-sm text-gray-800">
               {getReasonInKorean(activity.reason)}

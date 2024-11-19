@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { formatDateToMonthDayWithAdjustNumber } from '@/lib/formatDate';
+import { formatDate } from '@/lib/formatDate';
 
 export default function LearningTracker() {
   const { data: userMembershipDurationData } = useUserTime();
@@ -69,8 +69,7 @@ export default function LearningTracker() {
       <CardContent>
         <Progress value={progress} className="w-full mb-4" />
         <div className="font-bold text-center pb-1">
-          오늘 {formatDateToMonthDayWithAdjustNumber(new Date().toISOString())}
-          의 미션
+          오늘 {formatDate(String(new Date()), 'YYYY.MM.DD')}의 미션
         </div>
         <div className="space-y-2">
           {missionItems.map((item, index) => (
@@ -126,17 +125,14 @@ export default function LearningTracker() {
                         )}
                         {history.count === 0}
                         <span className="text-xs text-gray-500">
-                          {formatDateToMonthDayWithAdjustNumber(
-                            history.date,
-                            -1,
-                          )}
+                          {formatDate(history.date, 'MM.DD', -1)}
                         </span>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent>
                       <p>
-                        {formatDateToMonthDayWithAdjustNumber(history.date, -1)}
-                        : {history.count}개 달성
+                        {formatDate(history.date, 'YYYY.MM.DD', -1)}:
+                        {history.count}개 달성
                       </p>
                     </TooltipContent>
                   </Tooltip>

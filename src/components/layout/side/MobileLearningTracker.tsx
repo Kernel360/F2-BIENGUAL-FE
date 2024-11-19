@@ -7,7 +7,7 @@ import {
   useFetchRecentMissionHistory,
 } from '@/api/hooks/useMission';
 import { useUserTime } from '@/api/hooks/useUserInfo';
-import { formatDateToMonthDayWithAdjustNumber } from '@/lib/formatDate';
+import { formatDate } from '@/lib/formatDate';
 
 function MobileLearningTracker() {
   const { data: userMembershipDurationData } = useUserTime();
@@ -85,7 +85,7 @@ function MobileLearningTracker() {
                 )}
               </div>
               <div className="text-center text-sm text-gray-700 mt-1">
-                {formatDateToMonthDayWithAdjustNumber(history.date)}
+                {formatDate(history.date, 'YYYY.MM.DD')}
               </div>
             </div>
           ))}
