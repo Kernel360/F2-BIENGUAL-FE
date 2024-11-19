@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Clock, BookOpen, Headphones } from 'lucide-react';
+import { Clock, BookOpen, Headphones, Eye } from 'lucide-react';
 
 import { useRecentLearningPreview } from '@/api/hooks/useDashboard';
 import ContentCard from '@/components/items/ContentCard';
@@ -68,7 +68,12 @@ function RecentLearning() {
                 )}
               </div>
             }
-            rightBadge={`조회수 ${formatViewCount(item.hits)}`}
+            rightBadge={
+              <div className="flex items-center gap-1 text-gray-400">
+                <Eye className="w-4 h-4" />
+                {formatViewCount(item.hits)}
+              </div>
+            }
             title={item.title}
             description={item.preScripts}
           />
