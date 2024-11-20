@@ -43,7 +43,7 @@ export default function ReadingPage() {
 
       {!readingContents || readingContents.data.contents.length === 0 ? (
         <div className="flex justify-center items-center mt-8">
-          컨텐츠가 없습니다
+          콘텐츠가 없습니다
         </div>
       ) : (
         <div>

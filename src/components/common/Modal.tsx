@@ -26,7 +26,7 @@ export default function Modal({
   const handleOverlayClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
-    // 클릭한 위치가 모달 컨텐츠 내부가 아닐 때만 닫기
+    // 클릭한 위치가 모달 콘텐츠 내부가 아닐 때만 닫기
     if (e.target === e.currentTarget) {
       e.stopPropagation();
       onClose();

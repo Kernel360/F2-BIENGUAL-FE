@@ -24,7 +24,9 @@ export default function LogInOutButton({
     <Button onClick={() => fetchUserLogout()}>로그아웃</Button>
   ) : (
     <Link href={`/login?returnUrl=${currentPathname}`}>
-      <Button className={`${bgColor || ''} ${textColor || ''}`}>로그인</Button>
+      <Button className={`${bgColor || ''} ${textColor || ''} w-full`}>
+        로그인하기
+      </Button>
     </Link>
   );
 }
