@@ -26,7 +26,7 @@ import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
 import { formatViewCount } from '@/lib/formatViewCount';
 import { useQuizStore } from '@/stores/quizStore';
-
+import RateComponent from '@/components/common/RateComponent';
 export default function ReadingDetailClient({
   contentId,
 }: {
@@ -203,7 +203,7 @@ export default function ReadingDetailClient({
           <ArrowUp className="w-5 h-5" />
         </Button>
       </div>
-
+      <RateComponent contentId={contentId} />
       {/* 로그인 모달 */}
       {showLoginModal && (
         <Modal
