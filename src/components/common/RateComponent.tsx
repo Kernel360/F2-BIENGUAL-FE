@@ -1,12 +1,11 @@
 import { useState } from 'react';
 
-import { Button } from '@/components/ui/button';
 import { useCreateContentsFeedback } from '@/api/hooks/useContent';
+import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 
-{
-  /* TODO(@godhyzzang)내가 이전에 등록했던 myRate가 있으면 선택한 값과 함께 등록 완료 컴포넌트 보여줘야함 */
-}
+/* TODO(@godhyzzang)내가 이전에 등록했던 myRate가 있으면 선택한 값과 함께 등록 완료 컴포넌트 보여줘야함 */
+export type RateType = 'LOW' | 'MEDIUM' | 'HIGH';
 
 export default function RateComponent({ contentId }: { contentId: number }) {
   const createContentsFeedbackMutation = useCreateContentsFeedback(contentId);
@@ -18,8 +17,8 @@ export default function RateComponent({ contentId }: { contentId: number }) {
   >(null);
   const [success, setSuccess] = useState(false);
 
-  const handleSubmitRate = (contentLevel: 'LOW' | 'MEDIUM' | 'HIGH') => {
-    createContentsFeedbackMutation.mutate(contentLevel, {
+  const handleSubmitRate = (level: RateType) => {
+    createContentsFeedbackMutation.mutate(level, {
       onSuccess: () => {
         setSuccess(true);
         toast({ description: '평가가 성공적으로 제출되었습니다.' });
@@ -29,7 +28,12 @@ export default function RateComponent({ contentId }: { contentId: number }) {
       },
     });
   };
-
+  const getLevel = (level: RateType) => {
+    if (level === 'LOW') return '하';
+    if (level === 'MEDIUM') return '중';
+    if (level === 'HIGH') return '상';
+    return '';
+  };
   return (
     <div className="flex flex-col justify-start gap-3 p-4 border rounded">
       <h2 className="text-lg font-bold">컨텐츠 난이도 평가</h2>
@@ -52,7 +56,7 @@ export default function RateComponent({ contentId }: { contentId: number }) {
               }}
               disabled={createContentsFeedbackMutation.status === 'pending'}
             >
-              {level === 'HIGH' ? '상' : level === 'MEDIUM' ? '중' : '하'}
+              {getLevel(level as RateType)}
             </Button>
           ))}
         </div>
