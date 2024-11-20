@@ -1,5 +1,5 @@
 /* eslint-disable react/no-array-index-key */
-// import { cookies } from 'next/headers';
+import { cookies } from 'next/headers';
 
 import {
   QueryClient,
@@ -48,7 +48,7 @@ export default async function DetailListeningPage({
     queryKey: ['contentDetail', contentId],
     queryFn: () =>
       fetchContentDetail(contentId, {
-        // Cookie: cookies().toString(),
+        Cookie: cookies().toString(),
       }),
   });
 
