@@ -19,6 +19,7 @@ import {
 } from '@/types/Preview';
 
 import ItemComponentCard from './ItemComponentCard';
+import RecommendedList from './RecommendedList';
 
 interface HomePageClientProps {
   initialReadingContents: ReadingPreviewResponse;
@@ -46,12 +47,12 @@ export default function HomePageClient({
   }
   return (
     <div className="w-full flex flex-col gap-6">
-      {/* 인기 리스닝 컨텐츠 캐러셀 */}
+      {/* 인기 리스닝 콘텐츠 캐러셀 */}
       <Carousel
         previewDatas={listeningList?.data.listeningPreview || []}
         header={
           <div className="flex items-center justify-between mb-5">
-            <h3 className="text-2xl font-bold">인기 리스닝 컨텐츠</h3>
+            <h3 className="text-2xl font-bold">인기 리스닝 콘텐츠</h3>
             <Link href="/learn/listening?page=1">
               <Button variant="ghost" className="shrink-0">
                 더보기
@@ -69,12 +70,12 @@ export default function HomePageClient({
         itemComponent={SentenceComponent}
         itemWidth={830}
       />
-      {/* 인기 리딩 컨텐츠 캐러셀 */}
+      {/* 인기 리딩 콘텐츠 캐러셀 */}
       <Carousel
         previewDatas={readingList?.data.readingPreview || []}
         header={
           <div className="flex justify-between items-center mb-5">
-            <h3 className="text-2xl font-bold">인기 리딩 컨텐츠</h3>
+            <h3 className="text-2xl font-bold">인기 리딩 콘텐츠</h3>
             <Link href="/learn/reading?page=1">
               <Button variant="ghost">
                 더보기
@@ -86,6 +87,7 @@ export default function HomePageClient({
         itemComponent={ItemComponentCard}
         itemWidth={261}
       />
+      <RecommendedList />
     </div>
   );
 }

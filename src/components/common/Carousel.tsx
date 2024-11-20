@@ -71,7 +71,7 @@ export default function Carousel<T>({
   };
 
   return (
-    <div className="w-full px-6" style={{ minWidth: 0 }}>
+    <div className="w-full px-4" style={{ minWidth: 0 }}>
       {header && <div className="w-full">{header}</div>}
 
       <div

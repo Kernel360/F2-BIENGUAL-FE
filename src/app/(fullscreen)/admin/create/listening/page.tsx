@@ -39,10 +39,10 @@ export default function AdminCreate() {
     try {
       const apiResponse = await createContents('LISTENING', url);
       setResponse(apiResponse); // 응답 데이터 저장
-      alert('컨텐츠가 추가되었습니다');
+      alert('콘텐츠가 추가되었습니다');
     } catch (error) {
       console.error('Error creating content:', error);
-      alert('컨텐츠 추가에 실패했습니다.');
+      alert('콘텐츠 추가에 실패했습니다.');
     } finally {
       setLoading(false); // 로딩 상태 종료
     }
@@ -50,7 +50,7 @@ export default function AdminCreate() {
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-5">영상 컨텐츠 추가</h1>
+      <h1 className="text-2xl font-bold mb-5">영상 콘텐츠 추가</h1>
       <form
         onSubmit={handleCreateContents}
         className="flex justify-between items-center mb-5"
@@ -62,7 +62,7 @@ export default function AdminCreate() {
           onChange={(e) => setUrl(e.target.value)}
         />
         <Button type="submit" disabled={loading}>
-          {loading ? '로딩 중...' : '영상컨텐츠추가'}
+          {loading ? '로딩 중...' : '영상콘텐츠추가'}
         </Button>
       </form>
       <br />
