@@ -65,6 +65,7 @@ export default function QuizCarousel({
         {currentIndex !== totalQuestions && (
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
+              {/* TODO(@smosco): 다시 풀기 중인지 표시 */}
               <span className="text-sm font-medium">진행 상황</span>
               <span className="text-sm font-medium">
                 {currentIndex + 1} / {totalQuestions}

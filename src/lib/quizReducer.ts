@@ -74,13 +74,18 @@ export const quizReducer: Reducer<State, DomainEvent> = (prevState, event) => {
       };
     }
 
+    // TODO(@smosco): 현재 end_quiz가 retry_quiz의 역할을 하고 있음
     case 'end_quiz': {
       if (prevState.questions.filter((q) => q.status === 'ready').length > 0) {
         return prevState;
       }
 
+      const filteredQuestions = prevState.questions.filter(
+        (q) => q.status === 'wrong',
+      );
+
       return {
-        questions: prevState.questions.filter((q) => q.status === 'wrong'),
+        questions: filteredQuestions.map((q) => ({ ...q, status: 'ready' })),
       };
     }
 

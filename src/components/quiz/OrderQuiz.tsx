@@ -99,6 +99,12 @@ export default function OrderQuiz({
     );
   };
 
+  const handleNext = () => {
+    if (onNext) onNext();
+    // 다음 문제 버튼 클릭하면 순서 초기화
+    setSelectedOrder([]);
+  };
+
   return (
     <div className="w-full">
       <CardHeader className="space-y-4">
@@ -162,7 +168,7 @@ export default function OrderQuiz({
             제출
           </Button>
         ) : (
-          <Button className="w-full mt-6" onClick={onNext}>
+          <Button className="w-full mt-6" onClick={handleNext}>
             다음 문제
           </Button>
         )}
@@ -175,7 +181,7 @@ export default function OrderQuiz({
               question.status === 'correct' ? 'text-green-600' : 'text-red-600',
             )}
           >
-            {question.status === 'wrong' ? '정답입니다!' : '오답입니다!'}
+            {question.status === 'correct' ? '정답입니다!' : '오답입니다!'}
           </div>
         )}
       </div>
