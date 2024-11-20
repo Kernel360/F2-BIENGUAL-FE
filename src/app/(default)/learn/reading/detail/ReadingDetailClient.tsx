@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 
+// TODO(@godhyzzang) : 현재 레이팅 평가 현황 나타내는 컴포넌트 만들어야함
 'use client';
 
 import { useState, useEffect } from 'react';
