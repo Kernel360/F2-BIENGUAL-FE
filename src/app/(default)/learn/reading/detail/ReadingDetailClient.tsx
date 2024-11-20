@@ -1,12 +1,14 @@
 /* eslint-disable react/no-array-index-key */
 
+// TODO(@godhyzzang) : 현재 레이팅 평가 현황 나타내는 컴포넌트 만들어야함
+
 'use client';
 
 import { useState, useEffect } from 'react';
 
 import { ArrowUp, Eye } from 'lucide-react';
 
-import { useContentDetail } from '@/api/hooks/useContentDetail';
+import { useContentDetail } from '@/api/hooks/useContent';
 import { useFetchMissionStatus } from '@/api/hooks/useMission';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
@@ -14,6 +16,7 @@ import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
+import RateComponent from '@/components/common/RateComponent';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import QuizCover from '@/components/quiz/QuizCover';
 import MissionScrollProgressbar from '@/components/reading/MissionScrollProgressbar';
@@ -203,7 +206,7 @@ export default function ReadingDetailClient({
           <ArrowUp className="w-5 h-5" />
         </Button>
       </div>
-
+      <RateComponent contentId={contentId} />
       {/* 로그인 모달 */}
       {showLoginModal && (
         <Modal

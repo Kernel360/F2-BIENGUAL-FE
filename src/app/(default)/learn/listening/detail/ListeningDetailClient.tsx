@@ -1,5 +1,7 @@
 'use client';
 
+// TODO(@godhyzzang) : 현재 레이팅 평가 현황 나타내는 컴포넌트 만들어야함
+
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 
 import { Eye } from 'lucide-react';
@@ -7,7 +9,7 @@ import ReactPlayer from 'react-player';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactScriptPlayer } from 'react-player-plugin-prompter';
 
-import { useContentDetail } from '@/api/hooks/useContentDetail';
+import { useContentDetail } from '@/api/hooks/useContent';
 import {
   useUpdateMissionStatus,
   useFetchMissionStatus,
@@ -18,6 +20,7 @@ import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
+import RateComponent from '@/components/common/RateComponent';
 import BookmarkMemoPanel from '@/components/listening/BookmarkMemoPanel';
 import SubtitleOption from '@/components/listening/SubtitleOption';
 import VideoPlayer from '@/components/listening/VideoPlayer';
@@ -293,6 +296,7 @@ export default function ListeningDetailClient({
           }
         />
       )}
+      <RateComponent contentId={contentId} />
 
       {/* 로그인 모달 */}
       {showLoginModal && (
