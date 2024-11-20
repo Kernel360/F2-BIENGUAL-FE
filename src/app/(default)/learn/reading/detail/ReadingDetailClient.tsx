@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 
 import { ArrowUp, Eye } from 'lucide-react';
 
-import { useContentDetail } from '@/api/hooks/useContentDetail';
+import { useContentDetail } from '@/api/hooks/useContent';
 import { useFetchMissionStatus } from '@/api/hooks/useMission';
 import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';

@@ -1,3 +1,4 @@
+import { CreateContentsFeedbackResponse } from '@/types/CreateContents';
 import { apiClient } from '@/lib/apiClient';
 import { ContentDetailResponse } from '@/types/ContentDetail';
 import {
@@ -83,4 +84,15 @@ export const fetchPaginatedListeningPreview = async (
       method: 'GET',
     },
   );
+};
+
+// 콘텐츠 난이도 평가 생성 (POST)
+export const createContentsFeedback = async (
+  contentId: number,
+  contentLevel: 'LOW' | 'MEDIUM' | 'HIGH',
+): Promise<CreateContentsFeedbackResponse> => {
+  return apiClient('/contents/feedback/level', {
+    method: 'POST',
+    body: JSON.stringify({ contentId, contentLevel }),
+  });
 };

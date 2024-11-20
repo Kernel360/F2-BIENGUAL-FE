@@ -1,8 +1,3 @@
-export interface CreateContentsRequest {
-  contentType: 'LISTENING';
-  url: string;
-}
-
 export interface CreateContentsResponse {
   code: 'string';
   message: 'string';
@@ -10,4 +5,9 @@ export interface CreateContentsResponse {
     scriptId: 'string';
     contentId: number;
   };
+}
+
+export interface CreateContentsFeedbackResponse {
+  code: string;
+  message: string;
 }
