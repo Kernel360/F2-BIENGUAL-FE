@@ -63,7 +63,7 @@ export default function LearningTracker() {
     <Card className="fixed w-[260px] bg-white my-[60px]">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-bold">
-          누적 학습일: {totalLearningDays}일
+          Biengual과 함께: {totalLearningDays}일
         </CardTitle>
       </CardHeader>
       <CardContent>
