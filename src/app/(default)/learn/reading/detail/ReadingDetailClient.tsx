@@ -8,7 +8,6 @@ import { ArrowUp, Eye } from 'lucide-react';
 
 import { useContentDetail } from '@/api/hooks/useContentDetail';
 import { useFetchMissionStatus } from '@/api/hooks/useMission';
-import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -25,7 +24,6 @@ import { useScrapToggle } from '@/hooks/useScrapToggle';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
 import { formatViewCount } from '@/lib/formatViewCount';
-import { useQuizStore } from '@/stores/quizStore';
 
 export default function ReadingDetailClient({
   contentId,
@@ -45,8 +43,6 @@ export default function ReadingDetailClient({
   const isLogin = isLoginData?.data;
 
   const [showLoginModal, setShowLoginModal] = useState(false);
-
-  const { data: quizData } = useFetchQuiz(contentId);
 
   const [showTranslate, setShowTranslate] = useState(true);
 
@@ -70,14 +66,6 @@ export default function ReadingDetailClient({
 
     toggleScrap(data?.data.isScrapped);
   };
-
-  const { setContentQuestions } = useQuizStore();
-
-  useEffect(() => {
-    if (quizData) {
-      setContentQuestions(contentId, quizData.data.questionAnswer);
-    }
-  }, [contentId, quizData, setContentQuestions]);
 
   useEffect(() => {
     if (!data?.data.currentLearningRate) return; // 학습률이 없으면 실행하지 않음
@@ -161,17 +149,7 @@ export default function ReadingDetailClient({
 
               {showQuiz && (
                 <div className="inset-0 bg-white flex">
-                  {/* 퀴즈 */}
-                  {quizData && quizData.data.questionAnswer.length > 0 ? (
-                    <QuizCarousel />
-                  ) : (
-                    <QuizCover
-                      startColor="white"
-                      endColor="to-purple-200"
-                      text={`이런! 퀴즈 데이터가 없어요..\n관리자에게 문의해주세요`}
-                      textColor="text-gray-700"
-                    />
-                  )}
+                  <QuizCarousel contentId={contentId} />
                 </div>
               )}
             </div>
