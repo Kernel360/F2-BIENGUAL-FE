@@ -9,23 +9,24 @@ import { CheckCircle, XCircle, RotateCcw, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { useQuizStore } from '@/stores/quizStore';
+import { DomainEvent, State } from '@/lib/quizReducer';
 
 import Quiz from './Quiz';
 
-export default function QuizCarousel() {
-  const { questions } = useQuizStore();
-  const [retryMode, setRetryMode] = useState(false);
-  const currentQuestions = retryMode
-    ? questions.filter((question) => !question.isCorrect)
-    : questions;
-
-  const totalQuestions = currentQuestions.length;
+export default function QuizCarousel({
+  state,
+  dispatch,
+}: {
+  state: State;
+  dispatch: React.Dispatch<DomainEvent>;
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const totalQuestions = state.questions.length;
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  const correctQuestionCount = questions.filter(
-    (question) => question.isCorrect,
+  const correctQuestionCount = state.questions.filter(
+    (question) => question.status === 'correct',
   ).length;
 
   useEffect(() => {
@@ -42,13 +43,19 @@ export default function QuizCarousel() {
 
   const handleRetry = () => {
     setCurrentIndex(0);
-    setRetryMode(true);
+
+    const event: DomainEvent = {
+      type: 'end_quiz',
+    };
+    dispatch(event);
   };
 
-  const score = Math.round((correctQuestionCount / questions.length) * 100);
+  const score = Math.round(
+    (correctQuestionCount / state.questions.length) * 100,
+  );
 
   return (
-    <Card className="w-full mx-auto">
+    <Card className="w-full mx-auto ">
       <CardHeader className="border-b">
         <CardTitle className="text-lg font-bold">
           {currentIndex === totalQuestions ? '퀴즈 결과' : '퀴즈'}
@@ -58,6 +65,7 @@ export default function QuizCarousel() {
         {currentIndex !== totalQuestions && (
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
+              {/* TODO(@smosco): 다시 풀기 중인지 표시 */}
               <span className="text-sm font-medium">진행 상황</span>
               <span className="text-sm font-medium">
                 {currentIndex + 1} / {totalQuestions}
@@ -76,15 +84,15 @@ export default function QuizCarousel() {
               transform: `translateX(-${currentIndex * (100 / (totalQuestions + 1))}%)`, // 이동
             }}
           >
-            {currentQuestions.map((data) => (
-              <div
-                key={data.questionId}
-                className="flex-shrink-0 w-full"
-                style={{ width: `${100 / (totalQuestions + 1)}%` }} // 각 슬라이드 너비
-              >
-                <Quiz data={data} onNext={handleNext} />
-              </div>
-            ))}
+            {state.questions.length > 0 &&
+              state.questions.map((question) => (
+                <Quiz
+                  key={question.questionId}
+                  question={question}
+                  dispatch={dispatch} // dispatch를 전달
+                  onNext={handleNext}
+                />
+              ))}
             <div
               className="flex-shrink-0 w-full"
               style={{ width: `${100 / (totalQuestions + 1)}%` }} // 결과 페이지 너비
@@ -107,8 +115,8 @@ export default function QuizCarousel() {
                       : '아쉽네요. 다시 도전해보세요!'}
                 </h2>
                 <p className="text-lg mb-6">
-                  총 {questions.length}문제 중 {correctQuestionCount}문제를
-                  맞추셨습니다.
+                  총 {state.questions.length}문제 중 {correctQuestionCount}
+                  문제를 맞추셨습니다.
                 </p>
                 <div className="flex justify-center items-center space-x-4 mb-8">
                   <div className="font-bold">{score}%</div>

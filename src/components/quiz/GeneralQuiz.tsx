@@ -10,41 +10,64 @@ import { useCheckQuestionAnswer } from '@/api/hooks/useQuiz';
 import { Button } from '@/components/ui/button';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { QuestionState, DomainEvent } from '@/lib/quizReducer';
 import { cn } from '@/lib/utils';
-import { useQuizStore, ExtendedQuestion } from '@/stores/quizStore';
 
 interface GeneralQuizProps {
-  question: ExtendedQuestion;
+  question: QuestionState;
+  dispatch: React.Dispatch<DomainEvent>;
   onNext?: () => void;
 }
 
-export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
+export default function GeneralQuiz({
+  question,
+  dispatch,
+  onNext,
+}: GeneralQuizProps) {
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
 
   const { mutate: checkAnswer } = useCheckQuestionAnswer();
-  const { setQuestionIsCorrect } = useQuizStore();
 
   const { data: missionStatus } = useFetchMissionStatus();
   const { mutate: updateMissionStatus } = useUpdateMissionStatus();
 
   const toast = useToast();
 
+  const handleSubmitAnswer = (questionId: string, answer: number) => {
+    const event: DomainEvent = {
+      type: 'submit_answer',
+      questionId,
+      answer,
+    };
+    dispatch(event);
+  };
+
+  const handleAnswerResponse = (questionId: string, ok: boolean) => {
+    const event: DomainEvent = {
+      type: 'response_question_result',
+      questionId,
+      ok,
+    };
+    dispatch(event);
+  };
+
   const handleAnswerSelect = (answer: number) => {
     setSelectedAnswer(answer);
+    handleSubmitAnswer(question.questionId, answer);
 
     checkAnswer(
       { questionId: question.questionId, answer: `${answer}` },
       {
         onSuccess: (response) => {
-          const correct = response.data;
-          setQuestionIsCorrect(question.questionId, correct);
-          if (correct) toast.toast({ description: '5 포인트 획득!' });
+          const ok = response.data;
+          handleAnswerResponse(question.questionId, ok);
+          if (ok) toast.toast({ description: '5 포인트 획득!' });
           if (!missionStatus?.data.quiz) {
             updateMissionStatus({ quiz: true });
           }
         },
         onError: () => {
-          setQuestionIsCorrect(question.questionId, false);
+          handleAnswerResponse(question.questionId, false);
         },
       },
     );
@@ -61,15 +84,14 @@ export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
       <CardContent className="space-y-4">
         {question.examples.map((option, index) => {
           const isSelected = selectedAnswer === index;
-          const isCorrectAnswer = isSelected && question.isCorrect;
-          const isWrongAnswer = isSelected && !question.isCorrect;
+          const isCorrectAnswer = isSelected && question.status === 'correct';
+          const isWrongAnswer = isSelected && question.status === 'wrong';
 
           return (
             <Button
               // eslint-disable-next-line react/no-array-index-key
               key={index}
               onClick={() => handleAnswerSelect(index)}
-              // disabled={question.isCorrect !== null}
               className={cn(
                 'w-full justify-start text-left h-auto p-4 break-words whitespace-normal',
                 isCorrectAnswer &&
@@ -85,7 +107,7 @@ export default function GeneralQuiz({ question, onNext }: GeneralQuizProps) {
           );
         })}
 
-        {question.isCorrect !== null && (
+        {question.status !== 'ready' && (
           <Button className="w-full mt-6" onClick={onNext} variant="default">
             다음 문제 풀기
           </Button>

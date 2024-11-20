@@ -13,29 +13,50 @@ import { useCheckQuestionAnswer } from '@/api/hooks/useQuiz';
 import { Button } from '@/components/ui/button';
 import { CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
+import { QuestionState, DomainEvent } from '@/lib/quizReducer';
 import { cn } from '@/lib/utils';
-import { ExtendedQuestion, useQuizStore } from '@/stores/quizStore';
 
 interface OrderQuizProps {
-  question: ExtendedQuestion;
+  question: QuestionState;
+  dispatch: React.Dispatch<DomainEvent>;
   onNext?: () => void;
 }
 
-export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
+export default function OrderQuiz({
+  question,
+  dispatch,
+  onNext,
+}: OrderQuizProps) {
   const [selectedOrder, setSelectedOrder] = useState<number[]>([]);
-  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const { mutate: checkAnswer } = useCheckQuestionAnswer();
-  const { setQuestionIsCorrect } = useQuizStore();
 
   const { data: missionStatus } = useFetchMissionStatus();
   const { mutate: updateMissionStatus } = useUpdateMissionStatus();
 
   const toast = useToast();
 
+  const handleSubmitAnswer = (questionId: string, answer: string) => {
+    const event: DomainEvent = {
+      type: 'submit_answer',
+      questionId,
+      answer,
+    };
+    dispatch(event);
+  };
+
+  const handleAnswerResponse = (questionId: string, ok: boolean) => {
+    const event: DomainEvent = {
+      type: 'response_question_result',
+      questionId,
+      ok,
+    };
+    dispatch(event);
+  };
+
   // 사용자가 선택한 순서를 저장하는 함수
   const handleSelect = (index: number) => {
-    if (isSubmitted) return;
+    if (question.status !== 'ready') return;
 
     setSelectedOrder((prev) => {
       const newOrder = [...prev];
@@ -57,24 +78,31 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
 
     const userAnswer = selectedOrder.join(' ');
 
+    handleSubmitAnswer(question.questionId, userAnswer);
+
     checkAnswer(
       { questionId: question.questionId, answer: userAnswer },
       {
         onSuccess: (response) => {
-          const correct = response.data;
-          setIsSubmitted(true);
-          setQuestionIsCorrect(question.questionId, correct);
-          if (correct) toast.toast({ description: '5 포인트 획득!' });
+          const ok = response.data;
+          handleAnswerResponse(question.questionId, ok);
+
+          if (ok) toast.toast({ description: '5 포인트 획득!' });
           if (!missionStatus?.data.quiz) {
             updateMissionStatus({ quiz: true });
           }
         },
         onError: () => {
-          setIsSubmitted(true);
-          setQuestionIsCorrect(question.questionId, false);
+          handleAnswerResponse(question.questionId, false);
         },
       },
     );
+  };
+
+  const handleNext = () => {
+    if (onNext) onNext();
+    // 다음 문제 버튼 클릭하면 순서 초기화
+    setSelectedOrder([]);
   };
 
   return (
@@ -113,14 +141,16 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
             onClick={() => handleSelect(index)}
             className={cn(
               'w-full justify-start text-left h-auto p-4 rounded-sm cursor-pointer break-words whitespace-normal',
-              !isSubmitted && 'hover:bg-gray-100',
+              question.status === 'ready' && 'hover:bg-gray-100',
               selectedOrder.includes(index) &&
                 'bg-primary/10 border-primary text-black',
-              isSubmitted &&
-                question.isCorrect &&
+              question.status !== 'ready' &&
+                question.status === 'correct' &&
                 selectedOrder[index] === index &&
                 'bg-green-500 text-white',
-              isSubmitted && !question.isCorrect && 'bg-red-100 border-red-300',
+              question.status !== 'ready' &&
+                question.status === 'wrong' &&
+                'bg-red-100 border-red-300',
               'relative overflow-hidden',
             )}
           >
@@ -129,7 +159,7 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
         ))}
 
         {/* 제출 버튼 또는 다음 문제 버튼 */}
-        {!isSubmitted ? (
+        {question.status === 'ready' ? (
           <Button
             className="w-full mt-6"
             onClick={handleSubmit}
@@ -138,20 +168,20 @@ export default function OrderQuiz({ question, onNext }: OrderQuizProps) {
             제출
           </Button>
         ) : (
-          <Button className="w-full mt-6" onClick={onNext}>
+          <Button className="w-full mt-6" onClick={handleNext}>
             다음 문제
           </Button>
         )}
 
         {/* 정답 여부 표시 */}
-        {isSubmitted && (
+        {question.status !== 'ready' && (
           <div
             className={cn(
               'text-center font-bold mt-2',
-              question.isCorrect ? 'text-green-600' : 'text-red-600',
+              question.status === 'correct' ? 'text-green-600' : 'text-red-600',
             )}
           >
-            {question.isCorrect ? '정답입니다!' : '오답입니다!'}
+            {question.status === 'correct' ? '정답입니다!' : '오답입니다!'}
           </div>
         )}
       </div>

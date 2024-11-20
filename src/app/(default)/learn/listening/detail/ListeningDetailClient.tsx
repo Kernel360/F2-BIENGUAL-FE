@@ -14,7 +14,6 @@ import {
   useUpdateMissionStatus,
   useFetchMissionStatus,
 } from '@/api/hooks/useMission';
-import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -24,15 +23,12 @@ import RateComponent from '@/components/common/RateComponent';
 import BookmarkMemoPanel from '@/components/listening/BookmarkMemoPanel';
 import SubtitleOption from '@/components/listening/SubtitleOption';
 import VideoPlayer from '@/components/listening/VideoPlayer';
-import QuizCarousel from '@/components/quiz/QuizCarousel';
-import QuizCover from '@/components/quiz/QuizCover';
+import QuizWrapper from '@/components/quiz/QuizWrapper';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
 import { formatViewCount } from '@/lib/formatViewCount';
-import { useQuizStore } from '@/stores/quizStore';
 import { CustomScriptLanguageCode } from '@/types/Scripts';
 
 type Mode = 'line' | 'block';
@@ -58,9 +54,6 @@ export default function ListeningDetailClient({
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   const [showLoginModal, setShowLoginModal] = useState(false); // 권한 없을때 로그인 모달
 
-  const [showQuiz, setShowQuiz] = useState(false); // 퀴즈 풀기 버튼 누를 때 보여줌
-  const { data: quizData } = useFetchQuiz(contentId);
-
   const playerRef = useRef<ReactPlayer | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
 
@@ -83,14 +76,6 @@ export default function ListeningDetailClient({
       playerRef.current.seekTo(timeInSeconds, 'seconds');
     }
   };
-
-  const { setContentQuestions } = useQuizStore();
-
-  useEffect(() => {
-    if (quizData) {
-      setContentQuestions(contentId, quizData.data.questionAnswer);
-    }
-  }, [contentId, quizData, setContentQuestions]);
 
   // TODO(@godhyzzang): 이전 학습률로 시간 이동 동작하지 않음
   useEffect(() => {
@@ -247,55 +232,8 @@ export default function ListeningDetailClient({
         setShowLoginModal={setShowLoginModal}
         missionStatus={missionStatus?.data}
       />
-      {/* 퀴즈 */}
-      {isLogin ? (
-        // 로그인 했을 때 퀴즈커버
-        <div className="w-full h-fit overflow-hidden rounded-lg shadow-lg ">
-          {!showQuiz && (
-            <QuizCover
-              startColor="from-blue-400"
-              endColor="to-purple-600"
-              text={`방금 학습한 내용, 확실히 기억하고 있나요? \n 퀴즈로 점검해보세요!`}
-              textColor="text-white"
-              button={
-                <Button
-                  onClick={() => setShowQuiz(true)}
-                  className="bg-white text-blue-600 hover:bg-blue-100 transition-colors duration-200"
-                >
-                  퀴즈 풀기
-                </Button>
-              }
-            />
-          )}
 
-          {showQuiz && (
-            <div className="inset-0 bg-white flex">
-              {/* 퀴즈 */}
-              {quizData && quizData.data.questionAnswer.length > 0 ? (
-                <QuizCarousel />
-              ) : (
-                <QuizCover
-                  startColor="white"
-                  endColor="to-purple-200"
-                  text={`이런! 퀴즈 데이터가 없어요...\n 관리자에게 문의해주세요`}
-                  textColor="text-gray-700"
-                />
-              )}
-            </div>
-          )}
-        </div>
-      ) : (
-        // 로그인안했을때 퀴즈 커버
-        <QuizCover
-          startColor="from-gray-300"
-          endColor="to-purple-500"
-          text="퀴즈를 풀려면 로그인이 필요해요!"
-          textColor="text-white"
-          button={
-            <LogInOutButton bgColor="bg-white" textColor="text-violet-700" />
-          }
-        />
-      )}
+      <QuizWrapper contentId={contentId} />
       <RateComponent contentId={contentId} />
 
       {/* 로그인 모달 */}

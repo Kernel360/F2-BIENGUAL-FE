@@ -18,7 +18,9 @@ export async function generateMetadata({
   params: { id: string };
 }): Promise<Metadata> {
   const contentId = Number(params.id);
-  const res = await fetchContentDetail(contentId);
+  const res = await fetchContentDetail(contentId, {
+    Cookie: cookies().toString(),
+  });
   const contentDataForMeta = res.data;
 
   return {

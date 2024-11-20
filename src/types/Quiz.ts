@@ -1,6 +1,6 @@
 export interface QuestionAnswer {
-  question: string;
   questionId: string;
+  question: string;
   examples: string[];
   type: 'MATCH' | 'WORD' | 'BLANK' | 'ORDER';
 }

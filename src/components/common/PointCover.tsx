@@ -6,6 +6,9 @@ import { useRouter } from 'next/navigation';
 
 import { CircleParking } from 'lucide-react';
 
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+
+import LogInOutButton from './LogInOutButton';
 import Modal from './Modal';
 import { Button } from '../ui/button';
 
@@ -18,6 +21,9 @@ interface PointCoverProps {
 export default function PointCover({ data, children }: PointCoverProps) {
   const [showPointModal, setShowPointModal] = useState(false);
   const [isConfirmed, setIsConfirmed] = useState(false);
+
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = !!isLoginData?.data;
 
   const router = useRouter();
 
@@ -62,7 +68,11 @@ export default function PointCover({ data, children }: PointCoverProps) {
           title="포인트 차감 확인"
           description="최신 콘텐츠를 학습하려면 포인트가 필요해요."
         >
-          <Button onClick={handleConfirm}>학습하기</Button>
+          {isLogin ? (
+            <Button onClick={handleConfirm}>학습하기</Button>
+          ) : (
+            <LogInOutButton />
+          )}
         </Modal>
       )}
     </>
