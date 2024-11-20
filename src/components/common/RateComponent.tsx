@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 
 /* TODO(@godhyzzang)내가 이전에 등록했던 customLevel이 있으면 선택한 값과 함께 등록 완료 컴포넌트 보여줘야함 */
-export type RateType = 'LOW' | 'MEDIUM' | 'HIGH';
+export type LevelType = 'LOW' | 'MEDIUM' | 'HIGH';
 
 export default function RateComponent({ contentId }: { contentId: number }) {
   const createContentsFeedbackMutation = useCreateContentsFeedback(contentId);
@@ -17,7 +17,7 @@ export default function RateComponent({ contentId }: { contentId: number }) {
   >(null);
   const [success, setSuccess] = useState(false);
 
-  const handleSubmitRate = (level: RateType) => {
+  const handleSubmitRate = (level: LevelType) => {
     createContentsFeedbackMutation.mutate(level, {
       onSuccess: () => {
         setSuccess(true);
@@ -28,7 +28,7 @@ export default function RateComponent({ contentId }: { contentId: number }) {
       },
     });
   };
-  const getLevel = (level: RateType) => {
+  const getLevel = (level: LevelType) => {
     if (level === 'LOW') return '하';
     if (level === 'MEDIUM') return '중';
     if (level === 'HIGH') return '상';
@@ -56,7 +56,7 @@ export default function RateComponent({ contentId }: { contentId: number }) {
               }}
               disabled={createContentsFeedbackMutation.status === 'pending'}
             >
-              {getLevel(level as RateType)}
+              {getLevel(level as LevelType)}
             </Button>
           ))}
         </div>

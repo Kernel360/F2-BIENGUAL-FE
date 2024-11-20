@@ -5,6 +5,8 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
+import { LevelType } from '@/components/common/RateComponent';
+
 import { ContentDetailResponse } from '../../types/ContentDetail';
 import { CreateContentsFeedbackResponse } from '../../types/CreateContents';
 import {
@@ -23,11 +25,7 @@ export const useContentDetail = (
 
 export const useCreateContentsFeedback = (contentId: number) => {
   const queryClient = useQueryClient();
-  return useMutation<
-    CreateContentsFeedbackResponse,
-    Error,
-    'LOW' | 'MEDIUM' | 'HIGH'
-  >({
+  return useMutation<CreateContentsFeedbackResponse, Error, LevelType>({
     mutationFn: (contentLevel) =>
       createContentsFeedback(contentId, contentLevel),
     onSuccess: () => {
