@@ -4,6 +4,10 @@ import { Button } from '@/components/ui/button';
 import { useCreateContentsFeedback } from '@/api/hooks/useContent';
 import { toast } from '@/hooks/use-toast';
 
+{
+  /* TODO(@godhyzzang)내가 이전에 등록했던 myRate가 있으면 선택한 값과 함께 등록 완료 컴포넌트 보여줘야함 */
+}
+
 export default function RateComponent({ contentId }: { contentId: number }) {
   const createContentsFeedbackMutation = useCreateContentsFeedback(contentId);
   const [clickedButton, setClickedButton] = useState<
