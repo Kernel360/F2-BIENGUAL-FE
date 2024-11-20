@@ -5,7 +5,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 
-import { LevelType } from '@/components/common/RateComponent';
+import { LevelType } from '@/types/Level';
 
 import { ContentDetailResponse } from '../../types/ContentDetail';
 import { CreateContentsFeedbackResponse } from '../../types/CreateContents';

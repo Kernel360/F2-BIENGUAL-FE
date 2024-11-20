@@ -3,18 +3,15 @@ import { useState } from 'react';
 import { useCreateContentsFeedback } from '@/api/hooks/useContent';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
-
+import { LevelType } from '@/types/Level';
 /* TODO(@godhyzzang)내가 이전에 등록했던 customLevel이 있으면 선택한 값과 함께 등록 완료 컴포넌트 보여줘야함 */
-export type LevelType = 'LOW' | 'MEDIUM' | 'HIGH';
 
 export default function RateComponent({ contentId }: { contentId: number }) {
   const createContentsFeedbackMutation = useCreateContentsFeedback(contentId);
-  const [clickedButton, setClickedButton] = useState<
+  const [selectedLevel, setSelectedLevel] = useState<
     'LOW' | 'MEDIUM' | 'HIGH' | null
   >(null);
-  const [contentLevel, setContentLevel] = useState<
-    'LOW' | 'MEDIUM' | 'HIGH' | null
-  >(null);
+
   const [success, setSuccess] = useState(false);
 
   const handleSubmitRate = (level: LevelType) => {
@@ -48,11 +45,10 @@ export default function RateComponent({ contentId }: { contentId: number }) {
               type="button"
               variant="outline"
               className={`hover:bg-violet-200 ${
-                clickedButton === level && 'bg-violet-300 text-white'
+                selectedLevel === level && 'bg-violet-300 text-white'
               }`}
               onClick={() => {
-                setClickedButton(level as 'LOW' | 'MEDIUM' | 'HIGH');
-                setContentLevel(level as 'LOW' | 'MEDIUM' | 'HIGH');
+                setSelectedLevel(level as 'LOW' | 'MEDIUM' | 'HIGH');
               }}
               disabled={createContentsFeedbackMutation.status === 'pending'}
             >
@@ -60,15 +56,13 @@ export default function RateComponent({ contentId }: { contentId: number }) {
             </Button>
           ))}
         </div>
-        {clickedButton && !success && (
+        {selectedLevel && !success && (
           <Button
             type="button"
             variant="default"
             className="flex justify-center items-center"
             onClick={() => {
-              if (contentLevel) {
-                handleSubmitRate(contentLevel);
-              }
+              handleSubmitRate(selectedLevel);
             }}
             disabled={createContentsFeedbackMutation.status === 'pending'}
           >
