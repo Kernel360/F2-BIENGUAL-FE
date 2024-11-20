@@ -125,8 +125,6 @@ export default function ReadingDetailClient({
               })}
             </ul>
           </div>
-
-          <QuizWrapper contentId={contentId} />
         </div>
       </div>
 
@@ -140,6 +138,8 @@ export default function ReadingDetailClient({
           <ArrowUp className="w-5 h-5" />
         </Button>
       </div>
+
+      <QuizWrapper contentId={contentId} />
       <RateComponent contentId={contentId} />
       {/* 로그인 모달 */}
       {showLoginModal && (
