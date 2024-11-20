@@ -1,13 +1,14 @@
 import {
-  QueryClient,
   useQuery,
   UseQueryResult,
   useMutation,
+  useQueryClient,
 } from '@tanstack/react-query';
 import { createContentsFeedback } from '../queries/contentsQueries';
 import { ContentDetailResponse } from '../../types/ContentDetail';
 import { fetchContentDetail } from '../queries/contentsQueries';
 import { CreateContentsFeedbackResponse } from '../../types/CreateContents';
+
 export const useContentDetail = (
   contentId: number,
 ): UseQueryResult<ContentDetailResponse> => {
@@ -18,7 +19,7 @@ export const useContentDetail = (
 };
 
 export const useCreateContentsFeedback = (contentId: number) => {
-  const queryClient = new QueryClient();
+  const queryClient = useQueryClient();
   return useMutation<
     CreateContentsFeedbackResponse,
     Error,
