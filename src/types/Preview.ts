@@ -11,6 +11,15 @@ export interface Preview {
   isPointRequired: boolean;
 }
 
+export interface RecommendedPreview {
+  contentId: number;
+  title: string;
+  category: string;
+  thumbnailUrl: string;
+  contentType: 'READING' | 'LISTENING';
+  isPointRequired: boolean;
+}
+
 export interface ReadingPreviewResponse {
   code: string;
   message: string;
@@ -38,5 +47,5 @@ export type ContentsResponse = {
 export interface RecommendedContentsResponse {
   code: string;
   message: string;
-  data: { recommendedContents: Preview[] };
+  data: { recommendedContents: RecommendedPreview[] };
 }
