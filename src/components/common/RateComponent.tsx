@@ -4,7 +4,7 @@ import { useCreateContentsFeedback } from '@/api/hooks/useContent';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
 
-/* TODO(@godhyzzang)내가 이전에 등록했던 myRate가 있으면 선택한 값과 함께 등록 완료 컴포넌트 보여줘야함 */
+/* TODO(@godhyzzang)내가 이전에 등록했던 customLevel이 있으면 선택한 값과 함께 등록 완료 컴포넌트 보여줘야함 */
 export type RateType = 'LOW' | 'MEDIUM' | 'HIGH';
 
 export default function RateComponent({ contentId }: { contentId: number }) {
