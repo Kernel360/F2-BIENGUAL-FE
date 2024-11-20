@@ -43,7 +43,7 @@ function ListeningPage() {
       <ContentTypeFilter />
       {!listeningContents || listeningContents.data.contents.length === 0 ? (
         <div className="flex justify-center items-center mt-8">
-          컨텐츠가 없습니다
+          콘텐츠가 없습니다
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-7 mt-8">

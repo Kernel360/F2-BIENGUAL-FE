@@ -9,12 +9,12 @@ type Tab = 'create' | 'ReadingList';
 const tabs: { key: Tab; label: string; href: string }[] = [
   {
     key: 'create',
-    label: '영상 컨텐츠 추가',
+    label: '영상 콘텐츠 추가',
     href: '/admin/create/listening',
   },
   {
     key: 'ReadingList',
-    label: '리딩 컨텐츠 목록',
+    label: '리딩 콘텐츠 목록',
     href: '/admin/list/reading',
   },
 ];
