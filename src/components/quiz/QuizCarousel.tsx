@@ -2,43 +2,32 @@
 
 'use client';
 
-import React, { useState, useRef, useEffect, useReducer } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { CheckCircle, XCircle, RotateCcw, Trophy } from 'lucide-react';
 
-import { useFetchQuiz } from '@/api/hooks/useQuiz';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { quizReducer, DomainEvent, State } from '@/lib/quizReducer';
+import { DomainEvent, State } from '@/lib/quizReducer';
 
 import Quiz from './Quiz';
 
-const initialState: State = {
-  questions: [],
-};
-
-export default function QuizCarousel({ contentId }: { contentId: number }) {
-  const { data: quizData } = useFetchQuiz(contentId);
-  const [state, dispatch] = useReducer(quizReducer, initialState);
+export default function QuizCarousel({
+  state,
+  dispatch,
+}: {
+  state: State;
+  dispatch: React.Dispatch<DomainEvent>;
+}) {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const totalQuestions = state.questions.length;
-  const [currentIndex, setCurrentIndex] = useState(0);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const correctQuestionCount = state.questions.filter(
     (question) => question.status === 'correct',
   ).length;
-
-  useEffect(() => {
-    if (quizData) {
-      const event: DomainEvent = {
-        type: 'download_quiz',
-        questions: quizData.data.questionAnswer,
-      };
-      dispatch(event);
-    }
-  }, [quizData]);
 
   useEffect(() => {
     if (carouselRef.current) {
@@ -66,7 +55,7 @@ export default function QuizCarousel({ contentId }: { contentId: number }) {
   );
 
   return (
-    <Card className="w-full mx-auto">
+    <Card className="w-full mx-auto ">
       <CardHeader className="border-b">
         <CardTitle className="text-lg font-bold">
           {currentIndex === totalQuestions ? '퀴즈 결과' : '퀴즈'}
@@ -94,17 +83,6 @@ export default function QuizCarousel({ contentId }: { contentId: number }) {
               transform: `translateX(-${currentIndex * (100 / (totalQuestions + 1))}%)`, // 이동
             }}
           >
-            {/* 퀴즈 */}
-            {/* {quizData && quizData.data.questionAnswer.length > 0 ? (
-                    <QuizCarousel contentId={contentId} />
-                  ) : (
-                    <QuizCover
-                      startColor="white"
-                      endColor="to-purple-200"
-                      text={`이런! 퀴즈 데이터가 없어요..\n관리자에게 문의해주세요`}
-                      textColor="text-gray-700"
-                    />
-                  )} */}
             {state.questions.length > 0 &&
               state.questions.map((question) => (
                 <Quiz

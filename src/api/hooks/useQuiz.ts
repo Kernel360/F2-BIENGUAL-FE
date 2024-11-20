@@ -9,13 +9,14 @@ import {
 
 import { checkQuizAnswer, fetchQuiz } from '../queries/quizQueries';
 
-export const useFetchQuiz = (contentId: number) => {
+export const useFetchQuiz = (contentId: number, showQuiz: boolean) => {
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data;
   return useQuery<FetchQuizResponse>({
     queryKey: ['quiz', contentId],
     queryFn: () => fetchQuiz(contentId),
-    enabled: !!isLogin,
+    // TODO(@smosco): 로그인 안하고 showQuiz 아니면 enabled 처리(근데 이상함)
+    enabled: !!isLogin && showQuiz,
   });
 };
 

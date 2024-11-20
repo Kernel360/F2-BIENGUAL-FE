@@ -1,6 +1,5 @@
 import React from 'react';
 
-// import { ExtendedQuestion } from '@/stores/quizStore';
 import { QuestionState, DomainEvent } from '@/lib/quizReducer';
 
 import GeneralQuiz from './GeneralQuiz';
@@ -14,7 +13,7 @@ interface QuizProps {
 
 export default function Quiz({ question, dispatch, onNext }: QuizProps) {
   return (
-    <div>
+    <div className="w-full">
       {question.type === 'ORDER' ? (
         <OrderQuiz question={question} dispatch={dispatch} onNext={onNext} />
       ) : (

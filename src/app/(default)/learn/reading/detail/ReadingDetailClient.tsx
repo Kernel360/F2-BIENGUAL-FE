@@ -13,8 +13,7 @@ import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
-import QuizCarousel from '@/components/quiz/QuizCarousel';
-import QuizCover from '@/components/quiz/QuizCover';
+import QuizWrapper from '@/components/quiz/QuizWrapper';
 import MissionScrollProgressbar from '@/components/reading/MissionScrollProgressbar';
 import ReadingScriptItem from '@/components/reading/ReadingScriptItem';
 import { Badge } from '@/components/ui/badge';
@@ -45,8 +44,6 @@ export default function ReadingDetailClient({
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const [showTranslate, setShowTranslate] = useState(true);
-
-  const [showQuiz, setShowQuiz] = useState(false);
 
   const { data: missionStatus } = useFetchMissionStatus();
 
@@ -126,48 +123,7 @@ export default function ReadingDetailClient({
             </ul>
           </div>
 
-          {/* 퀴즈 */}
-          {isLogin ? (
-            // 로그인 했을 때 퀴즈커버
-            <div className="w-full h-fit overflow-hidden rounded-lg shadow-lg ">
-              {!showQuiz && (
-                <QuizCover
-                  startColor="from-blue-400"
-                  endColor="to-purple-600"
-                  text={`방금 학습한 내용, 확실히 기억하고 있나요?\n퀴즈로 점검해보세요!`}
-                  textColor="text-white"
-                  button={
-                    <Button
-                      onClick={() => setShowQuiz(true)}
-                      className="bg-white text-blue-600 hover:bg-blue-100 transition-colors duration-200"
-                    >
-                      퀴즈 풀기
-                    </Button>
-                  }
-                />
-              )}
-
-              {showQuiz && (
-                <div className="inset-0 bg-white flex">
-                  <QuizCarousel contentId={contentId} />
-                </div>
-              )}
-            </div>
-          ) : (
-            // 로그인안했을때 퀴즈 커버
-            <QuizCover
-              startColor="from-gray-300"
-              endColor="to-purple-500"
-              text="퀴즈를 풀려면 로그인이 필요해요!"
-              textColor="text-white"
-              button={
-                <LogInOutButton
-                  bgColor="bg-white"
-                  textColor="text-violet-700"
-                />
-              }
-            />
-          )}
+          <QuizWrapper contentId={contentId} />
         </div>
       </div>
 
