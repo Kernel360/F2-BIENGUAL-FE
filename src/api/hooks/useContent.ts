@@ -4,10 +4,13 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { createContentsFeedback } from '../queries/contentsQueries';
+
 import { ContentDetailResponse } from '../../types/ContentDetail';
-import { fetchContentDetail } from '../queries/contentsQueries';
 import { CreateContentsFeedbackResponse } from '../../types/CreateContents';
+import {
+  createContentsFeedback,
+  fetchContentDetail,
+} from '../queries/contentsQueries';
 
 export const useContentDetail = (
   contentId: number,

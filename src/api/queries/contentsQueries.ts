@@ -1,6 +1,6 @@
-import { CreateContentsFeedbackResponse } from '@/types/CreateContents';
 import { apiClient } from '@/lib/apiClient';
 import { ContentDetailResponse } from '@/types/ContentDetail';
+import { CreateContentsFeedbackResponse } from '@/types/CreateContents';
 import {
   ReadingPreviewResponse,
   ListeningPreviewResponse,

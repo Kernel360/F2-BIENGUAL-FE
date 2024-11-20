@@ -1,6 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 
 // TODO(@godhyzzang) : 현재 레이팅 평가 현황 나타내는 컴포넌트 만들어야함
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -15,6 +16,7 @@ import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
+import RateComponent from '@/components/common/RateComponent';
 import QuizCarousel from '@/components/quiz/QuizCarousel';
 import QuizCover from '@/components/quiz/QuizCover';
 import MissionScrollProgressbar from '@/components/reading/MissionScrollProgressbar';
@@ -27,7 +29,7 @@ import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
 import { formatViewCount } from '@/lib/formatViewCount';
 import { useQuizStore } from '@/stores/quizStore';
-import RateComponent from '@/components/common/RateComponent';
+
 export default function ReadingDetailClient({
   contentId,
 }: {
