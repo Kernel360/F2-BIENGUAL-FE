@@ -47,7 +47,7 @@ function PointHistoryItem({ date, pointsHistory }: MonthlyHistory) {
             }`}
           >
             {activity.point >= 0 ? '+' : '-'}
-            {Math.abs(activity.point)}원
+            {Math.abs(activity.point)}P
           </span>
         </div>
       ))}
