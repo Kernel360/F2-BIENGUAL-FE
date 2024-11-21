@@ -48,7 +48,7 @@ export default function PointCover({ data, children }: PointCoverProps) {
     <>
       <div
         onClick={handleOpen}
-        className="relative w-full h-fit mr-3 cursor-pointer"
+        className="relative w-full h-fit cursor-pointer mr-3"
       >
         {children}
         {/* 포인트가 필요한 경우 오버레이 표시 */}

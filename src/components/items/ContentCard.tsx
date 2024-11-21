@@ -28,7 +28,7 @@ export default function ContentCard({
 }: ContentCardProps) {
   return (
     <Link href={href} className="block w-full h-full">
-      <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border h-full">
+      <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border h-full mr-3">
         <CardContent className="p-0 h-full">
           <div className="relative w-full h-40 overflow-hidden">
             <div className="absolute top-3 right-3 z-20">{topRightButton}</div>
