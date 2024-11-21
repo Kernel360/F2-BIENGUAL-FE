@@ -68,7 +68,7 @@ export default function QuizAccuracyPanel() {
       {isError && (
         <ErrorPanel title="최근 5주 퀴즈 정답률" className="h-[250px]" />
       )}
-      {!isLoading && !isError && data?.data === undefined && (
+      {!isLoading && !isError && !data?.data && (
         <EmptyPanel
           title="최근 5주 퀴즈 정답률"
           message="최근 5주 학습한 퀴즈가 없습니다."

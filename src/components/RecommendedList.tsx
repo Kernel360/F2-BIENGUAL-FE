@@ -135,9 +135,7 @@ export default function RecommendedList() {
 
           {isLogin && isError && (
             <div className="flex h-64">
-              <p className="text-red-500">
-                데이터를 불러오는 중 문제가 발생했습니다.
-              </p>
+              <p>추천 콘텐츠를 불러오지 못했습니다.</p>
             </div>
           )}
 
@@ -163,20 +161,19 @@ export default function RecommendedList() {
                 <h3 className="font-bold text-base mb-2 line-clamp-2">
                   {content.title}
                 </h3>
-                <div className="flex gap-2">
+                <div className="flex gap-1">
                   <Badge variant="outline" className="text-xs px-2 py-0.5">
                     {content.category}
                   </Badge>
-                  {content.contentType === 'LISTENING' ? (
-                    <Badge className="text-xs px-2 py-0.5 bg-gradient-to-l from-red-500 to-orange-500 border-none">
-                      <Headphones className="w-3 h-3 mr-1 text-white" />
-                      Listening
-                    </Badge>
+
+                  {content.contentType !== 'READING' ? (
+                    <div className="flex justify-center items-center bg-gradient-to-l from-red-500 to-orange-500 rounded-sm shadow-sm">
+                      <Headphones className="p-1 h-6 w-6 text-white" />
+                    </div>
                   ) : (
-                    <Badge className="text-xs px-2 py-0.5 bg-gradient-to-l from-blue-500 to-sky-500">
-                      <BookOpen className="w-3 h-3 mr-1 text-white" />
-                      Reading
-                    </Badge>
+                    <div className="flex justify-center items-center bg-gradient-to-l from-blue-500 to-sky-500 rounded-sm shadow-sm  ">
+                      <BookOpen className="p-1 h-6 w-6  text-white" />
+                    </div>
                   )}
                 </div>
               </div>

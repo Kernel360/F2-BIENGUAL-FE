@@ -2,24 +2,19 @@ import React from 'react';
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import '@/app/globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import QueryClientProvider from '@/providers/QueryClientProvider';
 
-export default function RootLayout({
+export default function FullscreenLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
-        <QueryClientProvider>
-          {children}
-          <Toaster />
-          <ReactQueryDevtools initialIsOpen={false} />
-        </QueryClientProvider>
-      </body>
-    </html>
+    <QueryClientProvider>
+      {children}
+      <Toaster />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }

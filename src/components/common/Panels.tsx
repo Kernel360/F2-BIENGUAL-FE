@@ -31,11 +31,11 @@ export function ErrorPanel({
   return (
     <div
       className={cn(
-        'panel text-red-500  flex justify-center items-center text-sm',
+        'panel flex justify-center items-center text-sm',
         className,
       )}
     >
-      불러오는 도중 에러가 발생했습니다 {title}
+      {title}을 불러오지 못했습니다.
     </div>
   );
 }
@@ -45,14 +45,14 @@ export function EmptyPanel({
   message,
   className,
 }: {
-  title: string;
+  title?: string;
   message: string;
   className?: string;
 }) {
   return (
     <div
       className={cn(
-        'panel text-gray-500  flex justify-center items-center text-sm',
+        'panel text-gray-500  flex flex-col justify-center items-center text-sm',
         className,
       )}
     >

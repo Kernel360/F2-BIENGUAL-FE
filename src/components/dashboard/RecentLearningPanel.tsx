@@ -13,7 +13,11 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function RecentLearningPanel() {
-  const { data, isLoading, isError } = useOneRecentLearningPreview();
+  const {
+    data: recentLearningData,
+    isLoading,
+    isError,
+  } = useOneRecentLearningPreview();
 
   return (
     <Card>
@@ -29,18 +33,18 @@ export default function RecentLearningPanel() {
       <CardContent className="px-4 pb-4 pt-0">
         {isLoading && <LoadingPanel title="최근 학습 강의" className="" />}
         {isError && <ErrorPanel title="최근 학습 강의" className="" />}
-        {!isLoading && !isError && data?.data === null && (
-          <EmptyPanel title="최근 학습 강의" message="학습 기록이 없습니다." />
+        {!isLoading && !isError && !recentLearningData?.data && (
+          <EmptyPanel message="최근 학습 기록이 없습니다." />
         )}
-        {!isLoading && !isError && (
+        {!isLoading && !isError && recentLearningData?.data && (
           <div className="flex items-center space-x-3">
             <PlayCircle className="h-8 w-8 text-primary shrink-0" />
             <div>
               <p className="text-md font-medium leading-tight line-clamp-1">
-                {data?.data.title}
+                {recentLearningData?.data.title}
               </p>
               <p className="text-sm text-muted-foreground">
-                {data?.data.learningRate}%
+                {recentLearningData?.data.learningRate}%
               </p>
             </div>
           </div>

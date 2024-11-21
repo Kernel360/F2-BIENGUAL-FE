@@ -18,6 +18,7 @@ export default function DashboardPage() {
   return (
     <div className="p-6 space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
+        {/* TODO(@smosco): api 요청 하나 잘못 처리한다고 다 뻗어버리는 문제 해결할 것 */}
         <RecentLearningPanel />
         <CurrentPointsPanel />
         {/* TODO(@smosco): 로그아웃 했을 때 미션 캘린더 api 요청 못하도록 막아야함 */}
