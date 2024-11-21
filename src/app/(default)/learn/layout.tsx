@@ -1,28 +1,28 @@
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query';
+// import {
+//   dehydrate,
+//   HydrationBoundary,
+//   QueryClient,
+// } from '@tanstack/react-query';
 
-import { fetchAllCategories } from '@/api/queries/categoryQueries';
+// import { fetchAllCategories } from '@/api/queries/categoryQueries';
 
 export default async function LearnPageLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = new QueryClient();
+  // const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery({
-    queryKey: ['categories'],
-    queryFn: () => fetchAllCategories(),
-  });
+  // await queryClient.prefetchQuery({
+  //   queryKey: ['categories'],
+  //   queryFn: () => fetchAllCategories(),
+  // });
 
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="w-full mx-auto px-6">
-        <main className="flex-1">{children}</main>
-      </div>
-    </HydrationBoundary>
+    // <HydrationBoundary state={dehydrate(queryClient)}>
+    <div className="w-full mx-auto px-6">
+      <main className="flex-1">{children}</main>
+    </div>
+    // </HydrationBoundary>
   );
 }
