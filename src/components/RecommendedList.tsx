@@ -109,7 +109,7 @@ export default function RecommendedList() {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-6">
-      <h3 className="text-2xl font-bold mb-5">관심사 기반 추천 콘텐츠</h3>
+      <h3 className="text-2xl font-bold mb-5">추천 콘텐츠</h3>
       <div className="relative">
         {!isLogin && (
           <div className="absolute inset-0 bg-background/10 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center rounded-lg">

@@ -61,7 +61,7 @@ export default function SwipeablePanel({
   return (
     <div
       ref={panelRef}
-      className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t rounded-t-2xl shadow-lg"
+      className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t rounded-t-2xl shadow-lg z-30"
       style={{
         height: 'calc(100% - 4rem)',
         touchAction: 'none',
@@ -92,7 +92,7 @@ export function MobileNav() {
 
   return (
     <>
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t z-10">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t z-40">
         <div className="flex justify-around items-center h-16">
           {navItems.map((item) => (
             <Link
