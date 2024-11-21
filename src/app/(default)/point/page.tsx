@@ -99,10 +99,13 @@ export default function PointHistory() {
   ];
 
   const [currentMonth, setCurrentMonth] = useState<(typeof months)[number]>(
-    months[0],
+    () => {
+      const currentMonthString = (new Date().getMonth() + 1).toString();
+      return months.find((month) => month === currentMonthString) || '1';
+    },
   );
   const { data: currentPointsData } = useFetchMonthlyPointsHistory(
-    `2024-${currentMonth.length < 2 ? `0${currentMonth}` : currentMonth}`, // 이게 현재 날짜?
+    `2024-${currentMonth.length < 2 ? `0${currentMonth}` : currentMonth}`,
   );
   const currentPoints = currentPointsData?.data.currentPoint;
 
