@@ -59,13 +59,11 @@ export default function CategoryDistributionPanel() {
         {isError && (
           <ErrorPanel title="학습 카테고리 TOP 5" className="h-[200px]" />
         )}
-        {!isLoading && !isError && data?.data === undefined && (
-          <EmptyPanel
-            title="학습 카테고리 TOP 5"
-            message="학습한 카테고리가 없습니다."
-            className="h-[200px]"
-          />
-        )}
+        {!isLoading &&
+          !isError &&
+          data?.data.categoryLearningList.length === 0 && (
+            <EmptyPanel message="학습한 카테고리가 없습니다." />
+          )}
         {!isLoading && !isError && (
           <ChartContainer config={chartConfig}>
             <PieChart className="">
