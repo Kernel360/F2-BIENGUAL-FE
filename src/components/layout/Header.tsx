@@ -34,7 +34,7 @@ export function Header() {
   return (
     <>
       <div className="sticky top-0 z-50 bg-[rgba(255,255,255,0.95)] border-b">
-        <header className="flex items-center max-w-[1440px] h-16 mx-auto px-6">
+        <header className="flex items-center max-w-[1440px] h-16 mx-auto px-6 z-100">
           <Link href="/" className="text-lg font-semibold mr-6">
             Biengual
           </Link>
