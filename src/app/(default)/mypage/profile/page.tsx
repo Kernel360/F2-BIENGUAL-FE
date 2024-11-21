@@ -2,8 +2,8 @@
 
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect, useMemo } from 'react';
-
-import { Camera, X } from 'lucide-react';
+// TODO(@godhyzzang) : 나중에 프로필 업로드 기능 추가
+// import { Camera, X } from 'lucide-react';
 
 import { useFetchAllCategories } from '@/api/hooks/useCategories';
 import { useUserInfo, useUpdateUserInfo } from '@/api/hooks/useUserInfo';
@@ -132,10 +132,10 @@ export default function UserProfile() {
   return (
     <div className="bg-white min-h-screen">
       <header className="flex items-center p-3 border-b">
-        <h1 className="flex-1 text-center font-semibold">개인정보수정</h1>
+        <h1 className="flex-1 text-center  font-semibold">개인정보수정</h1>
       </header>
       <div className="p-4 max-w-xl flex flex-col justify-center items-center mx-auto">
-        <div className="flex justify-center mb-6">
+        {/* <div className="flex justify-center mb-6">
           <div className="relative">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
@@ -155,9 +155,9 @@ export default function UserProfile() {
               <X className="w-4 h-4" />
             </button>
           </div>
-        </div>
+        </div> */}
 
-        <form className="space-y-4 w-full">
+        <form className="space-y-4 w-full m-8">
           <div>
             <label
               htmlFor="nickname"
