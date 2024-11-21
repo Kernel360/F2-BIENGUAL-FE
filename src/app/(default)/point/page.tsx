@@ -102,7 +102,7 @@ export default function PointHistory() {
     months[0],
   );
   const { data: currentPointsData } = useFetchMonthlyPointsHistory(
-    `2024-${currentMonth}`, // 이게 현재 날짜?
+    `2024-${currentMonth.length < 2 ? `0${currentMonth}` : currentMonth}`, // 이게 현재 날짜?
   );
   const currentPoints = currentPointsData?.data.currentPoint;
 
