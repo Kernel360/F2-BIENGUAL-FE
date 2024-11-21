@@ -45,14 +45,14 @@ export function EmptyPanel({
   message,
   className,
 }: {
-  title: string;
+  title?: string;
   message: string;
   className?: string;
 }) {
   return (
     <div
       className={cn(
-        'panel text-gray-500  flex justify-center items-center text-sm',
+        'panel text-gray-500  flex flex-col justify-center items-center text-sm',
         className,
       )}
     >
