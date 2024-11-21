@@ -99,8 +99,11 @@ export default function GeneralQuiz({
                 isWrongAnswer &&
                   'bg-red-500 text-white hover:bg-red-600 hover:text-white',
                 !isSelected && 'hover:bg-accent',
+                // TODO(@smosco): cursor-not-allowed 안 먹음
+                question.status !== 'ready' && 'cursor-not-allowed',
               )}
               variant="outline"
+              disabled={question.status !== 'ready'}
             >
               {option}
             </Button>

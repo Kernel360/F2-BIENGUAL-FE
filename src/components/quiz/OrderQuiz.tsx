@@ -135,7 +135,8 @@ export default function OrderQuiz({
       {/* 문제 선택 옵션 */}
       <div className="flex flex-col gap-2 px-4">
         {question.examples.map((option, index) => (
-          <div
+          <button
+            type="button"
             // eslint-disable-next-line react/no-array-index-key
             key={index}
             onClick={() => handleSelect(index)}
@@ -152,10 +153,12 @@ export default function OrderQuiz({
                 question.status === 'wrong' &&
                 'bg-red-100 border-red-300',
               'relative overflow-hidden',
+              question.status !== 'ready' && 'cursor-not-allowed',
             )}
+            disabled={question.status !== 'ready'}
           >
             {option}
-          </div>
+          </button>
         ))}
 
         {/* 제출 버튼 또는 다음 문제 버튼 */}
