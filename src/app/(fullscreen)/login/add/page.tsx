@@ -70,14 +70,14 @@ export default function LoginAddPage() {
       <LoadingSpinner />
     </div>
   ) : (
-    <div className=" flex items-center justify-center  min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50">
+    <div className=" flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50">
       <Card className="h-84 mx-8 my-8 py-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-        <p className="text-3xl font-bold py-6 mb-6 text-center text-violet-600  dark:text-gray-100">
+        <p className="text-2xl font-bold py-6 mb-6 text-center text-violet-600  dark:text-gray-100">
           <br />
-          첫 방문이시군요! 환영합니다!👋
+          Biengual에 오신 것을 환영합니다!👋
           <br />
           <br />
-          <span className="text-2xl text-gray-400 font-medium">
+          <span className="text-lg text-gray-400 font-medium">
             {' '}
             읽고싶은 아티클🖋️이나 영상 🖥️의 카테고리를 골라주세요!
             <br />
