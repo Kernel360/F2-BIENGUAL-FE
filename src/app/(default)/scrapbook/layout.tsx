@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { Bookmark, HighlighterIcon } from 'lucide-react';
 
@@ -88,6 +88,9 @@ export default function ScrapbookLayout({
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   // 로그읜 모달
   const [showLoginModal, setShowLoginModal] = useState(!isLogin);
+
+  const router = useRouter();
+
   return (
     <>
       <div className="flex flex-col w-full h-screen">
@@ -99,7 +102,10 @@ export default function ScrapbookLayout({
       {showLoginModal && (
         <Modal
           isOpen={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
+          onClose={() => {
+            setShowLoginModal(false);
+            router.replace('/');
+          }}
           title="로그인이 필요합니다."
           description="이 기능을 이용하려면 로그인이 필요해요! "
         >
