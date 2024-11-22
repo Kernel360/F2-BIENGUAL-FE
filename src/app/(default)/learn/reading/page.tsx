@@ -54,7 +54,7 @@ export default function ReadingPage() {
           </ul>
           {/* TODO(@godhyzzang): 페이지네이션도 url state적용되게 해야함 */}
           <Pagination
-            totalPages={readingContents?.data.totalPages || 0}
+            totalPages={readingContents?.data.totalPages ?? 0}
             onPageChange={handlePageChange}
           />
         </div>
