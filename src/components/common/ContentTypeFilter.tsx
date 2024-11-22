@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { useFetchAllCategories } from '@/api/hooks/useCategories';
+import { useFetchCategoriesByContentType } from '@/api/hooks/useCategories';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -25,8 +25,14 @@ export default function ContentTypeFilter() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(
     currentCategoryId || '',
   );
-  const { data: categoriesData } = useFetchAllCategories();
-  const categories = categoriesData?.data.categoryList || [];
+
+  const listeningCategories =
+    useFetchCategoriesByContentType('LISTENING').data?.data.categoryList || [];
+  const readingCategories =
+    useFetchCategoriesByContentType('READING').data?.data.categoryList || [];
+  const categories = path.includes('/learn/listening')
+    ? listeningCategories
+    : readingCategories;
 
   const handleSelectCategories = (categoryId: number) => {
     setSelectedCategoryId((prevCategoryId) =>
