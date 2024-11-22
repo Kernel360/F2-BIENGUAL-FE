@@ -2,7 +2,10 @@ import { useQuery, UseQueryResult } from '@tanstack/react-query';
 
 import { FetchCategoryResponse } from '@/types/Category';
 
-import { fetchAllCategories } from '../queries/categoryQueries';
+import {
+  fetchAllCategories,
+  fetchCategoriesByContentType,
+} from '../queries/categoryQueries';
 
 export const useFetchAllCategories =
   (): UseQueryResult<FetchCategoryResponse> => {
@@ -11,3 +14,12 @@ export const useFetchAllCategories =
       queryFn: () => fetchAllCategories(),
     });
   };
+
+export const useFetchCategoriesByContentType = (
+  contentType: 'LISTENING' | 'READING',
+): UseQueryResult<FetchCategoryResponse> => {
+  return useQuery({
+    queryKey: ['categories', contentType],
+    queryFn: () => fetchCategoriesByContentType(contentType),
+  });
+};

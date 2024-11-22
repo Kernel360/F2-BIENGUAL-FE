@@ -7,3 +7,11 @@ export const fetchAllCategories = async (): Promise<FetchCategoryResponse> => {
     method: 'GET',
   });
 };
+
+export const fetchCategoriesByContentType = async (
+  contentType: 'LISTENING' | 'READING',
+): Promise<FetchCategoryResponse> => {
+  return apiClient<FetchCategoryResponse>(`/categories/type/${contentType}`, {
+    method: 'GET',
+  });
+};
