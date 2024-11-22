@@ -1,6 +1,8 @@
 /* eslint-disable no-nested-ternary */
 import React from 'react';
 
+import Link from 'next/link';
+
 import { Book, HelpCircle, Highlighter } from 'lucide-react';
 
 import {
@@ -8,6 +10,7 @@ import {
   useFetchRecentMissionHistory,
 } from '@/api/hooks/useMission';
 import { useUserTime } from '@/api/hooks/useUserInfo';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import {
@@ -61,6 +64,11 @@ export default function LearningTracker() {
 
   return (
     <Card className="fixed w-[260px] bg-white my-[60px]">
+      <Button className="w-full text-md h-fit absolute -bottom-16">
+        <Link href="https://docs.google.com/forms/d/e/1FAIpQLSc6mzAWT6iExOPyZOYCSdKOYW1C1JBpEOMybuTDIiPdgUxjUQ/viewform?pli=1">
+          버그를 찾으면 알려주세요 👻
+        </Link>
+      </Button>
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-bold">
           Biengual과 함께: {totalLearningDays}일

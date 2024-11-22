@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
@@ -15,6 +17,9 @@ export default function DashboardPage() {
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data; // 로그인 상태 확인
   const [showLoginModal, setShowLoginModal] = useState(!isLogin);
+
+  const router = useRouter();
+
   return (
     <div className="p-6 space-y-6">
       <div className="grid gap-6 md:grid-cols-2">
@@ -30,7 +35,10 @@ export default function DashboardPage() {
       {showLoginModal && (
         <Modal
           isOpen={showLoginModal}
-          onClose={() => setShowLoginModal(false)}
+          onClose={() => {
+            setShowLoginModal(false);
+            router.replace('/');
+          }}
           title="로그인이 필요합니다."
           description="이 기능을 이용하려면 로그인이 필요해요! "
         >

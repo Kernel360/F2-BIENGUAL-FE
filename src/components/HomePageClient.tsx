@@ -47,12 +47,6 @@ export default function HomePageClient({
   }
   return (
     <div className="w-full flex flex-col gap-6">
-      <Link
-        className="text-lg font-bold px-4 text-violet-700 bg-yellow-300"
-        href="https://docs.google.com/forms/d/e/1FAIpQLSc6mzAWT6iExOPyZOYCSdKOYW1C1JBpEOMybuTDIiPdgUxjUQ/viewform?pli=1"
-      >
-        버그 리포트 폼 링크
-      </Link>
       {/* 인기 리스닝 콘텐츠 캐러셀 */}
       <Carousel
         previewDatas={listeningList?.data.listeningPreview || []}
