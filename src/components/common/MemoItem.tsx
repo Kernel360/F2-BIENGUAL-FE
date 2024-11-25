@@ -123,9 +123,10 @@ export default function MemoItem({
       </div>
       {/* 북마크 문장 삭제 공유 버튼 */}
       <div className="flex justify-end space-x-2 mt-2">
-        <Button variant="ghost" size="icon" aria-label="Share">
+        {/* TODO(@godhyzzang) : 공유 버튼 구현 필요 */}
+        {/* <Button variant="ghost" size="icon" aria-label="Share">
           <Share2 className="h-4 w-4" />
-        </Button>
+        </Button> */}
         <Button
           variant="ghost"
           size="icon"
