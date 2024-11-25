@@ -49,10 +49,10 @@ export default function ListItem({
             className="rounded-md object-cover aspect-square"
           />
           <div className="absolute top-3 right-3 z-10">{topRightButton}</div>
-          <div className="absolute bottom-1 right-3 z-10">{bottomRightButton}</div>
-
-     </div>
-
+          <div className="absolute bottom-1 right-3 z-10">
+            {bottomRightButton}
+          </div>
+        </div>
       </div>
     </Link>
   );

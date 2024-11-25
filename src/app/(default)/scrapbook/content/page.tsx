@@ -5,10 +5,10 @@ import { Clock, Headphones, BookOpen } from 'lucide-react';
 import { useFetchScrap } from '@/api/hooks/useScrap';
 import EmptyAlert from '@/components/common/EmptyAlert';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+// import DifficultyDisplay from '@/components/DifficultyDisplay';
 import ContentCard from '@/components/items/ContentCard';
 import { Badge } from '@/components/ui/badge';
 import { formatDate } from '@/lib/formatDate';
-import DifficultyDisplay from '@/components/DifficultyDisplay';
 
 export default function RecentContent() {
   const { data: allScrapData, isLoading, isError, error } = useFetchScrap();
@@ -31,7 +31,7 @@ export default function RecentContent() {
           <ContentCard
             key={item.contentId}
             href={`/learn/${item.contentType.toLowerCase()}/detail/${item.contentId}`}
-                          // TODO(@godhyzzang) : calculatedLevel 추가 필요
+            // TODO(@godhyzzang) : calculatedLevel 추가 필요
 
             // bottomLeftButton={
             //   <DifficultyDisplay calculatedLevel={item.calculatedLevel} />

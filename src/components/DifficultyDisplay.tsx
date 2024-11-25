@@ -33,8 +33,7 @@ export default function DifficultyDisplay({
         <div className="relative flex items-center justify-center w-auto h-full">
           <div className="flex items-center justify-center p-1 px-2 gap-1 text-sm text-white bg-violet-500/30 rounded">
             LEVEL
-            <QuestionMarkCircledIcon/>
-
+            <QuestionMarkCircledIcon />
           </div>
           {/* <QuestionMarkCircledIcon
             className="h-4 w-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
