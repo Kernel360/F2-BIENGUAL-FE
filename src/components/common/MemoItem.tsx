@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 
 import Link from 'next/link';
 
-import { Circle, Share2, Trash2 } from 'lucide-react';
+import { Circle, Trash2 } from 'lucide-react';
 
 import {
   useDeleteBookmark,
