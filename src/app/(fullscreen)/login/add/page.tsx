@@ -18,6 +18,9 @@ export default function LoginAddPage() {
   const [categories, setCategories] = useState<CategoryList[]>([]);
 
   const [selectedCategories, setSelectedCategories] = useState<number[]>([]);
+
+  const [isSettled, setIsSettled] = useState(false); // 버튼 누르고 성공 응답 오기 전에 로딩 스피너 띄우기
+
   const updateUserInfoMutation = useUpdateUserInfo();
   const router = useRouter();
 
@@ -34,6 +37,9 @@ export default function LoginAddPage() {
       updateUserInfoMutation.mutate(
         { categories: selectedCategories },
         {
+          onSettled: () => {
+            setIsSettled(true); // 버튼 누르고 성공 응답 오기 전에 로딩 스피너 띄우기
+          },
           onSuccess: () => {
             router.push('/');
           },
@@ -44,8 +50,22 @@ export default function LoginAddPage() {
       );
     }
   };
-  const notChoosingCategories = async () => {
-    router.push('/');
+
+  const notChoosingCategories = () => {
+    updateUserInfoMutation.mutate(
+      { categories: [] },
+      {
+        onSettled: () => {
+          setIsSettled(true); // 버튼 누르고 성공 응답 오기 전에 로딩 스피너 띄우기
+        },
+        onSuccess: async () => {
+          await router.push('/');
+        },
+        onError: async (error) => {
+          await console.log(error);
+        },
+      },
+    );
   };
 
   const toggleCategory = (categoryId: number) => {
@@ -65,7 +85,7 @@ export default function LoginAddPage() {
     });
   };
 
-  return isLoading ? (
+  return isLoading || isSettled ? (
     <div className="flex justify-center items-center h-screen w-full">
       <LoadingSpinner />
     </div>
