@@ -8,6 +8,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import ContentCard from '@/components/items/ContentCard';
 import { Badge } from '@/components/ui/badge';
 import { formatDate } from '@/lib/formatDate';
+import DifficultyDisplay from '@/components/DifficultyDisplay';
 
 export default function RecentContent() {
   const { data: allScrapData, isLoading, isError, error } = useFetchScrap();
@@ -30,6 +31,11 @@ export default function RecentContent() {
           <ContentCard
             key={item.contentId}
             href={`/learn/${item.contentType.toLowerCase()}/detail/${item.contentId}`}
+                          // TODO(@godhyzzang) : calculatedLevel 추가 필요
+
+            // bottomLeftButton={
+            //   <DifficultyDisplay calculatedLevel={item.calculatedLevel} />
+            // }
             bottomRightButton={
               item.contentType !== 'READING' && (
                 <Badge className="flex items-center gap-1 bg-gray-200 bg-opacity-70">
