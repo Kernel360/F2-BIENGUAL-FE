@@ -6,11 +6,13 @@ import { toast } from '@/hooks/use-toast';
 import { LevelType } from '@/types/Level';
 /* TODO(@godhyzzang)내가 이전에 등록했던 customLevel이 있으면 선택한 값과 함께 등록 완료 컴포넌트 보여줘야함 */
 
-export default function RateComponent({ contentId }: { contentId: number }) {
+export default function DifficultyEvaluator({
+  contentId,
+}: {
+  contentId: number;
+}) {
   const createContentsFeedbackMutation = useCreateContentsFeedback(contentId);
-  const [selectedLevel, setSelectedLevel] = useState<
-    'LOW' | 'MEDIUM' | 'HIGH' | null
-  >(null);
+  const [selectedLevel, setSelectedLevel] = useState<LevelType | null>(null);
 
   const [success, setSuccess] = useState(false);
 
