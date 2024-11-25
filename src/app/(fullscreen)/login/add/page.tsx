@@ -38,7 +38,7 @@ export default function LoginAddPage() {
             setIsSettled(true); // 버튼 누르고 성공 응답 오기 전에 로딩 스피너 띄우기
           },
           onSuccess: () => {
-            router.push('/');
+            router.replace('/');
           },
           onError: (error) => {
             console.log(error);
@@ -56,7 +56,7 @@ export default function LoginAddPage() {
           setIsSettled(true); // 버튼 누르고 성공 응답 오기 전에 로딩 스피너 띄우기
         },
         onSuccess: async () => {
-          await router.push('/');
+          await router.replace('/');
         },
         onError: async (error) => {
           await console.log(error);
