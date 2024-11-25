@@ -4,6 +4,8 @@
 
 import { BookOpen } from 'lucide-react';
 
+import DifficultyDisplay from '@/components/DifficultyDisplay';
+
 import PointCover from './common/PointCover';
 import ListItem from './items/ListItem';
 import PreviewScrapButton from './PreviewScrapButton';
@@ -21,11 +23,14 @@ export default function ItemComponentList({ data }: { data: any }) {
             isScrappedData={data.isScrapped}
           />
         }
+        bottomRightButton={
+          <DifficultyDisplay calculatedLevel={data.calculatedLevel} />
+        }
         leftBadge={
           <div className="flex gap-1">
             <Badge>{data.category}</Badge>
             {data.contentType === 'READING' && (
-              <div className="bg-gradientpl from-blue-500 to-sky-500 p-auto rounded-sm shadow-sm flex justify-center items-center  ">
+              <div className="flex justify-center items-center bg-gradient-to-l from-blue-500 to-sky-500 rounded-sm shadow-sm  ">
                 <BookOpen className="p-1 h-6 w-6  text-white" />
               </div>
             )}

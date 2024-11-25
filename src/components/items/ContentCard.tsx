@@ -5,7 +5,9 @@ import Link, { LinkProps } from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface ContentCardProps extends Pick<LinkProps, 'href'> {
+  bottomLeftButton?: React.ReactNode;
   bottomRightButton?: React.ReactNode;
+  topLeftButton?: React.ReactNode;
   topRightButton?: React.ReactNode;
   leftBadge?: React.ReactNode;
   rightBadge?: React.ReactNode;
@@ -17,7 +19,9 @@ interface ContentCardProps extends Pick<LinkProps, 'href'> {
 
 export default function ContentCard({
   href,
+  bottomLeftButton,
   bottomRightButton,
+  topLeftButton,
   topRightButton,
   leftBadge,
   rightBadge,
