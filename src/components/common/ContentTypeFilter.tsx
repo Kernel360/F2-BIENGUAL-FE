@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useFetchCategoriesByContentType } from '@/api/hooks/useCategories';
 import { Button } from '@/components/ui/button';
@@ -39,6 +39,17 @@ export default function ContentTypeFilter() {
       prevCategoryId === String(categoryId) ? '' : String(categoryId),
     );
   };
+  useEffect(() => {
+    if (categories) {
+      const validCategory = categories.some(
+        (category) => category.id === Number(currentCategoryId),
+      )
+        ? currentCategoryId
+        : '';
+      setSelectedCategoryId(validCategory);
+      setSearchParams({ path: '', params: { categoryId: validCategory } });
+    }
+  }, [categories]);
 
   return (
     <div className="flex flex-col gap-3">
@@ -52,9 +63,19 @@ export default function ContentTypeFilter() {
               key={key}
               variant={isActive ? 'default' : 'outline'}
               className="rounded-full px-4 py-2 text-sm font-medium"
-              onClick={() =>
-                setSearchParams({ path: href, params: { page: '1' } })
-              }
+              onClick={() => {
+                setSearchParams({
+                  path: href,
+                  params: {
+                    page: '1',
+                    categoryId: categories.some(
+                      (category) => category.id === Number(currentCategoryId),
+                    )
+                      ? currentCategoryId
+                      : '',
+                  },
+                });
+              }}
             >
               {label}
             </Button>
