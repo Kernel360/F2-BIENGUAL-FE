@@ -21,11 +21,6 @@ export default function ItemComponentList({ data }: { data: any }) {
           <PreviewScrapButton
             contentId={data.contentId}
             isScrappedData={data.isScrapped}
-            target={
-              data.contentType === 'READING'
-                ? 'readingPreview'
-                : 'listeningPreview'
-            }
           />
         }
         bottomRightButton={
@@ -34,7 +29,6 @@ export default function ItemComponentList({ data }: { data: any }) {
         leftBadge={
           <div className="flex gap-1">
             <Badge>{data.category}</Badge>
-
             {data.contentType === 'READING' && (
               <div className="flex justify-center items-center bg-gradient-to-l from-blue-500 to-sky-500 rounded-sm shadow-sm  ">
                 <BookOpen className="p-1 h-6 w-6  text-white" />

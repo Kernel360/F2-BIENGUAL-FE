@@ -35,17 +35,17 @@ export default function ContentCard({
       <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border h-full mr-3">
         <CardContent className="p-0 h-full">
           <div className="relative w-full h-40 overflow-hidden">
-            <div className="absolute top-3 left-3 z-20">{topLeftButton}</div>
-            <div className="absolute top-3 right-3 z-20">{topRightButton}</div>
+            <div className="absolute top-3 left-3 z-10">{topLeftButton}</div>
+            <div className="absolute top-3 right-3 z-10">{topRightButton}</div>
             <img
               src={coverImageUrl}
               alt={title}
               className="object-cover w-full h-full"
             />
-            <div className="absolute bottom-3 left-3 z-20">
+            <div className="absolute bottom-3 left-3 z-10">
               {bottomLeftButton}
-            </div>{' '}
-            <div className="absolute bottom-3 right-3 z-20">
+            </div>
+            <div className="absolute bottom-3 right-3 z-10">
               {bottomRightButton}
             </div>
           </div>

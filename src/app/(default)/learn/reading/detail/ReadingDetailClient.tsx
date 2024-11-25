@@ -39,7 +39,7 @@ export default function ReadingDetailClient({
   useUpdateLearningProgressOnUnmount(contentId, scrollProgress);
   const { toggleScrap } = useScrapToggle({
     contentId,
-    target: 'contentDetail',
+    queryKey: ['contentDetail', contentId],
   });
 
   const { data: isLoginData } = useUserLoginStatus();

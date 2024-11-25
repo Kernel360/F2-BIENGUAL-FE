@@ -48,7 +48,7 @@ export default function ListeningDetailClient({
 
   const { toggleScrap } = useScrapToggle({
     contentId,
-    target: 'contentDetail',
+    queryKey: ['contentDetail', contentId],
   });
 
   const { data: isLoginData } = useUserLoginStatus();

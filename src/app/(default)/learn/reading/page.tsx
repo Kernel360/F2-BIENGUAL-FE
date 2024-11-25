@@ -2,10 +2,10 @@
 
 import { usePaginatedReadingPreview } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Pagination from '@/components/common/Pagination';
 import ItemComponentList from '@/components/ItemComponentList';
 import { useSetSearchParams } from '@/hooks/useSetSearchParams';
-// import { formatDate } from '@/lib/formatDate';
 
 export default function ReadingPage() {
   const { path, searchParams, setSearchParams } = useSetSearchParams();
@@ -18,6 +18,7 @@ export default function ReadingPage() {
 
   const {
     data: readingContents,
+    isLoading,
     isError,
     error,
   } = usePaginatedReadingPreview(
@@ -29,7 +30,11 @@ export default function ReadingPage() {
   );
 
   if (isError) {
-    return <p className="text-red-500">에러가 발생했습니다: {error.message}</p>;
+    return (
+      <p className="text-red-500">
+        리딩 콘텐츠 목록을 불러오지 못했어요: {error.message}
+      </p>
+    );
   }
 
   const handlePageChange = (page: number) => {
@@ -39,9 +44,11 @@ export default function ReadingPage() {
   return (
     <main>
       <ContentTypeFilter />
-      {/* TODO(@godhyzzang) : loading중인데도 컨텐트가 없습니다 잠깐 뜨는 경우 있음 */}
 
-      {!readingContents || readingContents.data.contents.length === 0 ? (
+      {isLoading && <LoadingSpinner />}
+
+      {!isLoading &&
+      (!readingContents || readingContents.data.contents.length === 0) ? (
         <div className="flex justify-center items-center mt-8">
           콘텐츠가 없습니다
         </div>
@@ -52,7 +59,6 @@ export default function ReadingPage() {
               <ItemComponentList data={content} key={content.contentId} />
             ))}
           </ul>
-          {/* TODO(@godhyzzang): 페이지네이션도 url state적용되게 해야함 */}
           <Pagination
             totalPages={readingContents?.data.totalPages ?? 0}
             onPageChange={handlePageChange}
