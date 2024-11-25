@@ -9,8 +9,7 @@ import { useSetSearchParams } from '@/hooks/useSetSearchParams';
 function ListeningPage() {
   const { path, searchParams, setSearchParams } = useSetSearchParams();
 
-  const currentPage = Number(searchParams.get('page'));
-  // 기본값 지정해줘야만 null, undefined가 queryparams로 들어가지 않음
+  const currentPage = Number(searchParams.get('page')) || 1;
   const size = Number(searchParams.get('size')) || 10;
   const sort = searchParams.get('sort') || 'createdAt';
   const direction = searchParams.get('direction') || 'DESC';
@@ -31,8 +30,6 @@ function ListeningPage() {
   if (isError) {
     return <p className="text-red-500">에러가 발생했습니다: {error.message}</p>;
   }
-
-  // 페이지네이션 버튼 누를때마다 페이지 이동
 
   const handlePageChange = (page: number) => {
     setSearchParams({ path, params: { page: String(page) } });

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 'use client';
@@ -20,11 +21,7 @@ export default function ItemComponentCard({ data }: { data: any }) {
           <PreviewScrapButton
             contentId={data.contentId}
             isScrappedData={data.isScrapped}
-            target={
-              data.contentType === 'READING'
-                ? 'readingPreview'
-                : 'listeningPreview'
-            }
+            contentType={data.contentType}
           />
         }
         bottomRightButton={

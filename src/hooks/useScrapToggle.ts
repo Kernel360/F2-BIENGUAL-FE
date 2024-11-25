@@ -6,20 +6,13 @@ import { createScrap, deleteScrap } from '@/api/queries/scrapQueries';
 
 interface UseScrapToggleProps {
   contentId: number;
-  page?: number;
-  target:
-    | 'readingPreview'
-    | 'listeningPreview'
-    | 'contentDetail'
-    | 'paginatedReadingPreview'
-    | 'paginatedListeningPreview';
+  queryKey: any[];
 }
 
 // TODO(@smosco): 추후 page 뿐만 아니라 sort, direction, search 가 추가되었을 때 props를 어떻게 받아야 할지 모르겠음
 export const useScrapToggle = ({
   contentId,
-  page,
-  target,
+  queryKey,
 }: UseScrapToggleProps) => {
   const queryClient = useQueryClient();
 
@@ -34,22 +27,16 @@ export const useScrapToggle = ({
     },
     onMutate: async (isScrapped: boolean) => {
       const previousData = {
-        readingPreview: queryClient.getQueryData(['readingPreview']),
-        listeningPreview: queryClient.getQueryData(['listeningPreview']),
-        contentDetail: queryClient.getQueryData(['contentDetail', contentId]),
-        paginatedReadingPreview: queryClient.getQueryData([
-          'paginatedReadingPreview',
-          page,
-        ]),
-        paginatedListeningPreview: queryClient.getQueryData([
-          'paginatedListeningPreview',
-          page,
-        ]),
+        readingPreview: queryClient.getQueryData(queryKey),
+        listeningPreview: queryClient.getQueryData(queryKey),
+        contentDetail: queryClient.getQueryData(queryKey),
+        paginatedReadingPreview: queryClient.getQueryData(queryKey),
+        paginatedListeningPreview: queryClient.getQueryData(queryKey),
       };
 
-      switch (target) {
+      switch (queryKey[0]) {
         case 'readingPreview':
-          queryClient.setQueryData(['readingPreview'], (old: any) => {
+          queryClient.setQueryData(queryKey, (old: any) => {
             if (
               old?.data?.readingPreview &&
               Array.isArray(old.data.readingPreview)
@@ -71,7 +58,7 @@ export const useScrapToggle = ({
           break;
 
         case 'listeningPreview':
-          queryClient.setQueryData(['listeningPreview'], (old: any) => {
+          queryClient.setQueryData(queryKey, (old: any) => {
             if (
               old?.data?.listeningPreview &&
               Array.isArray(old.data.listeningPreview)
@@ -94,7 +81,7 @@ export const useScrapToggle = ({
           break;
 
         case 'contentDetail':
-          queryClient.setQueryData(['contentDetail', contentId], (old: any) =>
+          queryClient.setQueryData(queryKey, (old: any) =>
             old
               ? { ...old, data: { ...old.data, isScrapped: !isScrapped } }
               : old,
@@ -102,47 +89,41 @@ export const useScrapToggle = ({
           break;
 
         case 'paginatedReadingPreview':
-          queryClient.setQueryData(
-            ['paginatedReadingPreview', page],
-            (old: any) => {
-              if (old?.data?.contents && Array.isArray(old.data.contents)) {
-                return {
-                  ...old,
-                  data: {
-                    ...old.data,
-                    contents: old.data.contents.map((content: any) =>
-                      content.contentId === contentId
-                        ? { ...content, isScrapped: !isScrapped }
-                        : content,
-                    ),
-                  },
-                };
-              }
-              return old;
-            },
-          );
+          queryClient.setQueryData(queryKey, (old: any) => {
+            if (old?.data?.contents && Array.isArray(old.data.contents)) {
+              return {
+                ...old,
+                data: {
+                  ...old.data,
+                  contents: old.data.contents.map((content: any) =>
+                    content.contentId === contentId
+                      ? { ...content, isScrapped: !isScrapped }
+                      : content,
+                  ),
+                },
+              };
+            }
+            return old;
+          });
           break;
 
         case 'paginatedListeningPreview':
-          queryClient.setQueryData(
-            ['paginatedListeningPreview', page],
-            (old: any) => {
-              if (old?.data?.contents && Array.isArray(old.data.contents)) {
-                return {
-                  ...old,
-                  data: {
-                    ...old.data,
-                    contents: old.data.contents.map((content: any) =>
-                      content.contentId === contentId
-                        ? { ...content, isScrapped: !isScrapped }
-                        : content,
-                    ),
-                  },
-                };
-              }
-              return old;
-            },
-          );
+          queryClient.setQueryData(queryKey, (old: any) => {
+            if (old?.data?.contents && Array.isArray(old.data.contents)) {
+              return {
+                ...old,
+                data: {
+                  ...old.data,
+                  contents: old.data.contents.map((content: any) =>
+                    content.contentId === contentId
+                      ? { ...content, isScrapped: !isScrapped }
+                      : content,
+                  ),
+                },
+              };
+            }
+            return old;
+          });
           break;
       }
 
@@ -150,34 +131,22 @@ export const useScrapToggle = ({
     },
     onError: (error, isScrapped, context) => {
       if (context) {
-        switch (target) {
+        switch (queryKey[0]) {
           case 'readingPreview':
-            queryClient.setQueryData(
-              ['readingPreview'],
-              context.readingPreview,
-            );
+            queryClient.setQueryData(queryKey, context.readingPreview);
             break;
           case 'listeningPreview':
-            queryClient.setQueryData(
-              ['listeningPreview'],
-              context.listeningPreview,
-            );
+            queryClient.setQueryData(queryKey, context.listeningPreview);
             break;
           case 'contentDetail':
-            queryClient.setQueryData(
-              ['contentDetail', contentId],
-              context.contentDetail,
-            );
+            queryClient.setQueryData(queryKey, context.contentDetail);
             break;
           case 'paginatedReadingPreview':
-            queryClient.setQueryData(
-              ['paginatedReadingPreview', page],
-              context.paginatedReadingPreview,
-            );
+            queryClient.setQueryData(queryKey, context.paginatedReadingPreview);
             break;
           case 'paginatedListeningPreview':
             queryClient.setQueryData(
-              ['paginatedListeningPreview', page],
+              queryKey,
               context.paginatedListeningPreview,
             );
             break;
@@ -185,33 +154,27 @@ export const useScrapToggle = ({
       }
     },
     onSettled: () => {
-      switch (target) {
-        case 'readingPreview':
-          queryClient.invalidateQueries({ queryKey: ['readingPreview'] });
-          break;
-        case 'listeningPreview':
-          queryClient.invalidateQueries({ queryKey: ['listeningPreview'] });
-          break;
-        case 'contentDetail':
-          queryClient.invalidateQueries({
-            queryKey: ['contentDetail', contentId],
-          });
-          break;
-        case 'paginatedReadingPreview':
-          if (page) {
-            queryClient.invalidateQueries({
-              queryKey: ['paginatedReadingPreview', page],
-            });
-          }
-          break;
-        case 'paginatedListeningPreview':
-          if (page) {
-            queryClient.invalidateQueries({
-              queryKey: ['paginatedListeningPreview', page],
-            });
-          }
-          break;
-      }
+      queryClient.invalidateQueries({ queryKey: ['readingPreview'] });
+
+      queryClient.invalidateQueries({ queryKey: ['listeningPreview'] });
+
+      queryClient.invalidateQueries({
+        queryKey: ['contentDetail', contentId],
+      });
+
+      // TODO(@smosco): paginated에 queryKey에 여러가지 담겨 있어서 어떻게 해야할지
+      // 그리고 이게 이상한데...확인할 것 (쿼리키가 완전히 똑같아야하나)
+      queryClient.invalidateQueries({
+        queryKey: ['paginatedReadingPreview'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['paginatedListeningPreview'],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: ['scrap'],
+      });
     },
   });
 
