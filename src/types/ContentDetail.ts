@@ -1,3 +1,5 @@
+import { LevelType } from '@/types/Level';
+
 // src/types/ContentDetail.ts
 export type Script = {
   startTimeInSecond: number;
@@ -16,7 +18,10 @@ export type ContentDetail = {
   title: string;
   thumbnailUrl: string;
   videoUrl?: string;
+  duration: string;
   hits: number;
+  customLevel: LevelType;
+  calculatedLevel: LevelType;
   isScrapped: boolean;
   currentLearningRate: number;
   completedLearningRate: number;
