@@ -1,6 +1,7 @@
+/* eslint-disable no-nested-ternary */
 import { useState } from 'react';
 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, usePathname } from 'next/navigation';
 
 import { Bookmark } from 'lucide-react';
 
@@ -13,30 +14,71 @@ import Modal from './common/Modal';
 interface PreviewScrapButtonProps {
   contentId: number;
   isScrappedData: boolean;
-  target:
-    | 'readingPreview'
-    | 'listeningPreview'
-    | 'contentDetail'
-    | 'paginatedReadingPreview'
-    | 'paginatedListeningPreview';
+  contentType?: 'READING' | 'LISTENING';
 }
 
 export default function PreviewScrapButton({
   contentId,
   isScrappedData,
-  target,
+  contentType,
 }: PreviewScrapButtonProps) {
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = isLoginData?.data;
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const searchParams = useSearchParams();
-  const page = Number(searchParams.get('page'));
+  const pathname = usePathname();
+
+  const generateQueryKey = () => {
+    // 기본값 설정
+    const defaultValues = {
+      page: 1,
+      size: 10,
+      sort: 'createdAt',
+      direction: 'DESC',
+      categoryId: null, // 전체인 경우 null로 처리
+    };
+
+    // URL에서 값을 가져오거나 기본값으로 대체
+    const page = Number(searchParams.get('page')) || defaultValues.page;
+    const { size } = defaultValues; // 고정값
+    const sort = searchParams.get('sort') || defaultValues.sort;
+    const direction = searchParams.get('direction') || defaultValues.direction;
+    const categoryId = searchParams.get('categoryId')
+      ? Number(searchParams.get('categoryId'))
+      : defaultValues.categoryId;
+
+    // 경로별 queryKey 구성
+    if (pathname === '/') {
+      // 메인 페이지
+      return contentType === 'READING'
+        ? ['readingPreview']
+        : ['listeningPreview'];
+    }
+
+    if (pathname.startsWith('/learn')) {
+      // 학습 페이지
+      const type = pathname.includes('/reading')
+        ? 'paginatedReadingPreview'
+        : pathname.includes('/listening')
+          ? 'paginatedListeningPreview'
+          : null;
+
+      if (!type) {
+        throw new Error('Invalid path: unable to determine query type');
+      }
+
+      return [type, page, size, sort, direction, categoryId].filter(
+        (item) => item !== null,
+      ); // 기본값(categoryId)이 null인 경우 제거
+    }
+
+    throw new Error('Invalid path: no matching query key logic');
+  };
 
   const { toggleScrap } = useScrapToggle({
     contentId,
-    target,
-    page,
+    queryKey: generateQueryKey(),
   });
 
   const handleShowLoginModal = (event: React.MouseEvent) => {

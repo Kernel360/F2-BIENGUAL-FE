@@ -11,11 +11,12 @@ import { ArrowUp, Eye } from 'lucide-react';
 import { useContentDetail } from '@/api/hooks/useContent';
 import { useFetchMissionStatus } from '@/api/hooks/useMission';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import DifficultyEvaluator from '@/components/common/DifficultyEvaluator';
 import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
-import RateComponent from '@/components/common/RateComponent';
+import DifficultyDisplay from '@/components/DifficultyDisplay';
 import QuizWrapper from '@/components/quiz/QuizWrapper';
 import MissionScrollProgressbar from '@/components/reading/MissionScrollProgressbar';
 import ReadingScriptItem from '@/components/reading/ReadingScriptItem';
@@ -38,7 +39,7 @@ export default function ReadingDetailClient({
   useUpdateLearningProgressOnUnmount(contentId, scrollProgress);
   const { toggleScrap } = useScrapToggle({
     contentId,
-    target: 'contentDetail',
+    queryKey: ['contentDetail', contentId],
   });
 
   const { data: isLoginData } = useUserLoginStatus();
@@ -93,10 +94,17 @@ export default function ReadingDetailClient({
       <div className="flex">
         <div className="flex flex-col flex-1 gap-5 mx-auto pb-16 max-w-[800px] h-auto">
           <div>
-            <Badge>{contentData.category}</Badge>
+            <div className="flex justify-start gap-1">
+              <Badge>{contentData.category}</Badge>
+              <DifficultyDisplay
+                calculatedLevel={contentData.calculatedLevel}
+              />
+            </div>
+
             <div className="font-bold text-2xl mt-2 mb-4">
               {contentData.title}
             </div>
+
             <div className="text-sm flex justify-end w-full items-center  gap-1 text-gray-400 ">
               <Eye className="w-4 h-4" />
               {formatViewCount(contentData.hits)}
@@ -140,7 +148,7 @@ export default function ReadingDetailClient({
       </div>
 
       <QuizWrapper contentId={contentId} />
-      <RateComponent contentId={contentId} />
+      <DifficultyEvaluator contentId={contentId} />
       {/* 로그인 모달 */}
       {showLoginModal && (
         <Modal

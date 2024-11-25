@@ -5,7 +5,9 @@ import Link, { LinkProps } from 'next/link';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface ContentCardProps extends Pick<LinkProps, 'href'> {
+  bottomLeftButton?: React.ReactNode;
   bottomRightButton?: React.ReactNode;
+  topLeftButton?: React.ReactNode;
   topRightButton?: React.ReactNode;
   leftBadge?: React.ReactNode;
   rightBadge?: React.ReactNode;
@@ -17,7 +19,9 @@ interface ContentCardProps extends Pick<LinkProps, 'href'> {
 
 export default function ContentCard({
   href,
+  bottomLeftButton,
   bottomRightButton,
+  topLeftButton,
   topRightButton,
   leftBadge,
   rightBadge,
@@ -31,13 +35,17 @@ export default function ContentCard({
       <Card className="overflow-hidden shadow-card hover:shadow-card-hover hover:border-border h-full mr-3">
         <CardContent className="p-0 h-full">
           <div className="relative w-full h-40 overflow-hidden">
-            <div className="absolute top-3 right-3 z-20">{topRightButton}</div>
+            <div className="absolute top-3 left-3 z-10">{topLeftButton}</div>
+            <div className="absolute top-3 right-3 z-10">{topRightButton}</div>
             <img
               src={coverImageUrl}
               alt={title}
               className="object-cover w-full h-full"
             />
-            <div className="absolute bottom-3 right-3 z-20">
+            <div className="absolute bottom-3 left-3 z-10">
+              {bottomLeftButton}
+            </div>
+            <div className="absolute bottom-3 right-3 z-10">
               {bottomRightButton}
             </div>
           </div>

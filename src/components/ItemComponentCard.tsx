@@ -1,12 +1,15 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 'use client';
 
 import { BookOpen, Clock, Headphones, Eye } from 'lucide-react';
 
+import DifficultyDisplay from '@/components/DifficultyDisplay';
 import { formatViewCount } from '@/lib/formatViewCount';
 
 import PointCover from './common/PointCover';
+// import DifficultyDisplay from './DifficultyDisplay';
 import ContentCard from './items/ContentCard';
 import PreviewScrapButton from './PreviewScrapButton';
 import { Badge } from './ui/badge';
@@ -16,16 +19,16 @@ export default function ItemComponentCard({ data }: { data: any }) {
     <PointCover data={data}>
       <ContentCard
         href={`/learn/${data.contentType.toLowerCase()}/detail/${data.contentId}`}
+        // topLeftButton={}
         topRightButton={
           <PreviewScrapButton
             contentId={data.contentId}
             isScrappedData={data.isScrapped}
-            target={
-              data.contentType === 'READING'
-                ? 'readingPreview'
-                : 'listeningPreview'
-            }
+            contentType={data.contentType}
           />
+        }
+        bottomLeftButton={
+          <DifficultyDisplay calculatedLevel={data.calculatedLevel} />
         }
         bottomRightButton={
           data.contentType !== 'READING' && (
@@ -39,6 +42,7 @@ export default function ItemComponentCard({ data }: { data: any }) {
         leftBadge={
           <div className="flex gap-1">
             <Badge className="">{data.category}</Badge>
+
             {data.contentType !== 'READING' ? (
               <div className="flex justify-center items-center bg-gradient-to-l from-red-500 to-orange-500 rounded-sm shadow-sm">
                 <Headphones className="p-1 h-6 w-6 text-white" />

@@ -15,11 +15,12 @@ import {
   useFetchMissionStatus,
 } from '@/api/hooks/useMission';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import DifficultyEvaluator from '@/components/common/DifficultyEvaluator';
 import FloatingButtons from '@/components/common/FloatingButtons';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
-import RateComponent from '@/components/common/RateComponent';
+import DifficultyDisplay from '@/components/DifficultyDisplay';
 import BookmarkMemoPanel from '@/components/listening/BookmarkMemoPanel';
 import SubtitleOption from '@/components/listening/SubtitleOption';
 import VideoPlayer from '@/components/listening/VideoPlayer';
@@ -47,7 +48,7 @@ export default function ListeningDetailClient({
 
   const { toggleScrap } = useScrapToggle({
     contentId,
-    target: 'contentDetail',
+    queryKey: ['contentDetail', contentId],
   });
 
   const { data: isLoginData } = useUserLoginStatus();
@@ -159,10 +160,15 @@ export default function ListeningDetailClient({
     <div className="w-full flex flex-col gap-2">
       <div>
         <h1 className="text-lg font-bold">{listeningDetailData?.data.title}</h1>
-        <Badge>{listeningDetailData?.data.category}</Badge>
-        <div className="text-sm flex justify-end items-center w-full gap-1 text-gray-400">
-          <Eye className="w-4 h-4" />
-          {formatViewCount(listeningDetailData?.data.hits)}
+        <div className="flex justify-between gap-3 ">
+          <Badge>{listeningDetailData?.data.category}</Badge>
+          <DifficultyDisplay
+            calculatedLevel={listeningDetailData?.data.calculatedLevel}
+          />
+          <div className="text-sm flex justify-end items-center w-full gap-1 text-gray-400">
+            <Eye className="w-4 h-4" />
+            {formatViewCount(listeningDetailData?.data.hits)}
+          </div>
         </div>
       </div>
       <Separator />
@@ -234,7 +240,10 @@ export default function ListeningDetailClient({
       />
 
       <QuizWrapper contentId={contentId} />
-      <RateComponent contentId={contentId} />
+      <DifficultyEvaluator
+        contentId={contentId}
+        customLevel={listeningDetailData?.data.customLevel}
+      />
 
       {/* 로그인 모달 */}
       {showLoginModal && (
