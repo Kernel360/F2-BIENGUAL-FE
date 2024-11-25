@@ -157,7 +157,7 @@ export default function RecommendedList() {
                   alt={content.title}
                   className="object-cover w-full h-full rounded relative"
                 />
-                {/* TODO(@godhyzzang) : contentLevel 추가필요 */}
+                {/* TODO(@godhyzzang) : calculatedLevel 추가필요 */}
                 {/* <div className="absolute bottom-3 left-7 z-10"><DifficultyDisplay calculatedLevel={content.calculatedLevel}/></div> */}
               </div>
               <div className="flex-1 min-w-0">
