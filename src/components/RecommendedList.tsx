@@ -10,7 +10,7 @@ import { RecommendedPreview } from '@/types/Preview';
 
 import LogInOutButton from './common/LogInOutButton';
 import { Badge } from './ui/badge';
-
+import DifficultyDisplay from '@/components/DifficultyDisplay';
 const mockContents: RecommendedPreview[] = [
   {
     contentId: 18,
@@ -154,8 +154,10 @@ export default function RecommendedList() {
                 <img
                   src={content.thumbnailUrl}
                   alt={content.title}
-                  className="object-cover w-full h-full rounded"
+                  className="object-cover w-full h-full rounded relative"
                 />
+                          <div className="absolute bottom-3 left-7 z-10"><DifficultyDisplay calculatedLevel={content.calculatedLevel}/></div>
+
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-bold text-base mb-2 line-clamp-2">

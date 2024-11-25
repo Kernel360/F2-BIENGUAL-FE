@@ -3,6 +3,7 @@ import Link, { LinkProps } from 'next/link';
 interface ListItemProps extends Pick<LinkProps, 'href'> {
   coverImageUrl: string;
   topRightButton?: React.ReactNode;
+  bottomRightButton?: React.ReactNode;
   leftBadge?: React.ReactNode;
   rightBadge?: React.ReactNode;
   title: string;
@@ -14,6 +15,7 @@ export default function ListItem({
   href,
   coverImageUrl,
   topRightButton,
+  bottomRightButton,
   leftBadge,
   rightBadge,
   title,
@@ -47,7 +49,10 @@ export default function ListItem({
             className="rounded-md object-cover aspect-square"
           />
           <div className="absolute top-3 right-3 z-10">{topRightButton}</div>
-        </div>
+          <div className="absolute bottom-1 right-3 z-10">{bottomRightButton}</div>
+
+     </div>
+
       </div>
     </Link>
   );
