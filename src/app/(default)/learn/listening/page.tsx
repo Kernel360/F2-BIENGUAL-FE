@@ -2,6 +2,7 @@
 
 import { usePaginatedListeningPreview } from '@/api/hooks/usePreview';
 import ContentTypeFilter from '@/components/common/ContentTypeFilter';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Pagination from '@/components/common/Pagination';
 import ItemComponent from '@/components/ItemComponentCard';
 import { useSetSearchParams } from '@/hooks/useSetSearchParams';
@@ -17,6 +18,7 @@ function ListeningPage() {
 
   const {
     data: listeningContents,
+    isLoading,
     isError,
     error,
   } = usePaginatedListeningPreview(
@@ -28,7 +30,11 @@ function ListeningPage() {
   );
 
   if (isError) {
-    return <p className="text-red-500">에러가 발생했습니다: {error.message}</p>;
+    return (
+      <p className="text-red-500">
+        리스닝 콘텐츠 목록을 불러오지 못했어요: {error.message}
+      </p>
+    );
   }
 
   const handlePageChange = (page: number) => {
@@ -38,7 +44,11 @@ function ListeningPage() {
   return (
     <main>
       <ContentTypeFilter />
-      {!listeningContents || listeningContents.data.contents.length === 0 ? (
+
+      {isLoading && <LoadingSpinner />}
+
+      {!isLoading &&
+      (!listeningContents || listeningContents.data.contents.length === 0) ? (
         <div className="flex justify-center items-center mt-8">
           콘텐츠가 없습니다
         </div>
