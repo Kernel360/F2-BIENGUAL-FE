@@ -19,7 +19,7 @@ import { useFetchCurrentPoints } from '@/api/hooks/useDashboard';
 import { useRequestLogout } from '@/api/hooks/useUserInfo';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import SearchComponent from '@/components/common/SearchComponent';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -32,7 +32,7 @@ import { Separator } from '@/components/ui/separator';
 
 import MobileSearch from './MobileSearch';
 
-export const navItems = [
+const navItems = [
   { name: '학습', href: '/learn/listening', icon: BookHeadphones },
   { name: '스크랩', href: '/scrapbook/content', icon: Bookmark },
   { name: '대시보드', href: '/dashboard', icon: ChartPie },
@@ -93,7 +93,8 @@ export function Header() {
                     className="relative h-8 w-8 rounded-full"
                   >
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src="/avatars/01.png" alt="@username" />
+                      {/* TODO(@smosco): 아바타 이미지 수정 */}
+                      {/* <AvatarImage src="/avatars/01.png" alt="@username" /> */}
                       <AvatarFallback>U</AvatarFallback>
                     </Avatar>
                   </Button>
