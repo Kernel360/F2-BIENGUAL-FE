@@ -20,7 +20,7 @@ export default function CurrentPointsPanel() {
       <CardHeader className="flex flex-row items-center justify-between p-4">
         <CardTitle className="text-lg font-medium">내 포인트</CardTitle>
         <Link
-          href="/point"
+          href="/mypage/point"
           className="text-md text-muted-foreground hover:text-primary"
         >
           포인트 내역 <ChevronRight className="inline h-4 w-4" />

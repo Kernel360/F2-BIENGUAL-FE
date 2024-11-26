@@ -7,13 +7,11 @@ import { usePathname, useRouter } from 'next/navigation';
 
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 
-type Tab = 'profile' | 'learn' | 'challenges';
+type Tab = 'profile' | 'point';
 
 const tabs: { key: Tab; label: string; href: string }[] = [
   { key: 'profile', label: '프로필', href: '/mypage/profile' },
-  // Todo : 나중에 추가
-  // { key: 'learn', label: '나의 학습', href: '/mypage/learn' },
-  // { key: 'challenges', label: '나의 챌린지', href: '/mypage/challenges' },
+  { key: 'point', label: '포인트', href: '/mypage/point' },
 ];
 
 export default function MyPageLayout({
@@ -25,10 +23,8 @@ export default function MyPageLayout({
   const [activeTab, setActiveTab] = useState<Tab>('profile');
 
   useEffect(() => {
-    if (pathname.startsWith('/mypage/learn')) setActiveTab('learn');
-    else if (pathname.startsWith('/mypage/challenges'))
-      setActiveTab('challenges');
-    else setActiveTab('profile');
+    if (pathname.startsWith('/mypage/profile')) setActiveTab('profile');
+    else setActiveTab('point');
   }, [pathname]);
 
   const { data: isLoginData } = useUserLoginStatus();
