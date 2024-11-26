@@ -8,14 +8,26 @@ import { usePathname } from 'next/navigation';
 import {
   BookHeadphones,
   Bookmark,
-  CircleUserRound,
   ChartPie,
   Search,
+  Coins,
+  User,
+  LogIn,
 } from 'lucide-react';
 
-import LogInOutButton from '@/components/common/LogInOutButton';
+import { useFetchCurrentPoints } from '@/api/hooks/useDashboard';
+import { useRequestLogout } from '@/api/hooks/useUserInfo';
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import SearchComponent from '@/components/common/SearchComponent';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Separator } from '@/components/ui/separator';
 
 import MobileSearch from './MobileSearch';
@@ -23,7 +35,6 @@ import MobileSearch from './MobileSearch';
 export const navItems = [
   { name: '학습', href: '/learn/listening', icon: BookHeadphones },
   { name: '스크랩', href: '/scrapbook/content', icon: Bookmark },
-  { name: '마이페이지', href: '/mypage/profile', icon: CircleUserRound },
   { name: '대시보드', href: '/dashboard', icon: ChartPie },
 ];
 
@@ -31,10 +42,16 @@ export function Header() {
   const pathname = usePathname();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
+  const { data: isLogin } = useUserLoginStatus();
+
+  const { data: currentPoints } = useFetchCurrentPoints();
+
+  const { mutate: fetchUserLogout } = useRequestLogout();
+
   return (
     <>
-      <div className="sticky top-0 z-50 bg-[rgba(255,255,255,0.95)] border-b">
-        <header className="flex items-center max-w-[1440px] h-16 mx-auto px-6 z-100">
+      <div className="sticky top-0 z-50 bg-white bg-opacity-95 border-b">
+        <header className="flex items-center max-w-[1440px] h-16 mx-auto px-6">
           <Link href="/" className="text-lg font-bold mr-6 text-primary">
             Biengual
           </Link>
@@ -43,10 +60,10 @@ export function Header() {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`py-3 px-6 flex-shrink-0 font-semibold hover:text-primary ${
+                className={`py-3 px-6 flex-shrink-0 font-semibold hover:text-primary transition-colors ${
                   pathname === item.href || pathname.startsWith(item.href)
-                    ? 'font-bold'
-                    : ''
+                    ? 'text-primary'
+                    : 'text-gray-700'
                 }`}
               >
                 {item.name}
@@ -54,7 +71,7 @@ export function Header() {
             ))}
           </nav>
 
-          <div className="flex ml-auto h-5 items-center space-x-2 text-sm">
+          <div className="flex ml-auto h-5 items-center space-x-4 text-sm">
             <div className="hidden md:block">
               <SearchComponent />
             </div>
@@ -66,8 +83,48 @@ export function Header() {
             >
               <Search className="h-5 w-5" />
             </Button>
-            <Separator orientation="vertical" />
-            <LogInOutButton />
+            <Separator orientation="vertical" className="hidden md:block" />
+
+            {isLogin?.data ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    className="relative h-8 w-8 rounded-full"
+                  >
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src="/avatars/01.png" alt="@username" />
+                      <AvatarFallback>U</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuItem>
+                    <User className="mr-2 h-4 w-4" />
+                    <Link href="/mypage/profile">
+                      <span>마이페이지</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Coins className="mr-2 h-4 w-4" />
+                    <Link href="/point">
+                      <span>포인트: {currentPoints?.data.currentPoint}P</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => fetchUserLogout()}>
+                    로그아웃
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href={`/login?returnUrl=${pathname}`}>
+                <Button variant="outline" className="flex items-center">
+                  <LogIn className="mr-2 h-4 w-4" />
+                  로그인
+                </Button>
+              </Link>
+            )}
           </div>
         </header>
       </div>
