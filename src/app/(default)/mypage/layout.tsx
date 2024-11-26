@@ -11,7 +11,7 @@ type Tab = 'profile' | 'point';
 
 const tabs: { key: Tab; label: string; href: string }[] = [
   { key: 'profile', label: '프로필', href: '/mypage/profile' },
-  { key: 'point', label: '포인트', href: '/mypage/point' },
+  // { key: 'point', label: '포인트', href: '/mypage/point' },
 ];
 
 export default function MyPageLayout({
@@ -24,7 +24,7 @@ export default function MyPageLayout({
 
   useEffect(() => {
     if (pathname.startsWith('/mypage/profile')) setActiveTab('profile');
-    else setActiveTab('point');
+    // else setActiveTab('point');
   }, [pathname]);
 
   const { data: isLoginData } = useUserLoginStatus();
