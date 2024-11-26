@@ -40,7 +40,7 @@ export default function MissionCalendar() {
     if (currentMonth) {
       refetch(); // 현재 월이 변경되었을 때만 쿼리 다시 요청
     }
-  }, [currentMonth, refetch]);
+  }, [currentMonth]);
 
   const handleMonthChange = (newMonth: Date) => {
     const monthString = formatDate(newMonth, 'YYYY-MM');
@@ -124,6 +124,7 @@ export default function MissionCalendar() {
               selected={selectedDate}
               onSelect={setSelectedDate}
               onMonthChange={handleMonthChange}
+              month={new Date(currentMonth)}
               className="rounded-md"
               modifiers={{
                 zero: (date: Date) => {
