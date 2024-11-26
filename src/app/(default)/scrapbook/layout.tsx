@@ -10,7 +10,6 @@ import { Bookmark, HighlighterIcon } from 'lucide-react';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import Modal from '@/components/common/Modal';
-import { Button } from '@/components/ui/button';
 
 interface NavItemProps {
   title: string;
@@ -34,27 +33,19 @@ const navItems: NavItemProps[] = [
 function NavItem({ item, active }: { item: NavItemProps; active: boolean }) {
   return (
     <Link href={item.href} className="w-full">
-      <Button
-        variant="ghost"
-        className={`flex items-center w-full gap-3 py-3 px-4 text-left rounded-md transition-all 
+      <div
+        className={`h-9 text-sm flex whitespace-nowrap justify-center items-center font-medium w-full gap-2 py-3 px-4 rounded-md transition-all 
           ${
             active
               ? 'bg-purple-100 text-purple-700 shadow-md'
-              : 'bg-white text-gray-700 hover:bg-gray-100 hover:shadow'
+              : 'bg-white text-gray-700 hover:bg-gray-100 hover:shadow-md'
           }`}
       >
-        <span
-          className={`h-5 w-5 flex items-center justify-center rounded-md 
-            ${
-              active
-                ? 'bg-purple-700 text-white'
-                : 'bg-gray-200 text-purple-500 hover:bg-purple-500 hover:text-white'
-            }`}
-        >
+        <span className="h-4 w-4 flex items-center justify-center rounded-md text-purple-500">
           {item.icon}
         </span>
         <span className="font-medium">{item.title}</span>
-      </Button>
+      </div>
     </Link>
   );
 }
