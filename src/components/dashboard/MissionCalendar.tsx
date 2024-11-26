@@ -189,7 +189,7 @@ export default function MissionCalendar() {
                     캘린더에는 오늘 데이터는 반영되지 않아요
                   </p>
                 ) : mission ? (
-                  <div className="flex justify-evenly  my-2 text-sm">
+                  <div className="flex justify-evenly gap-2  my-2 text-sm ">
                     <StatusBox
                       label="컨텐츠 1개 학습"
                       completed={mission.missionStatus.oneContent}
