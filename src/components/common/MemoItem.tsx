@@ -123,8 +123,6 @@ export default function MemoItem({
       <div
         ref={memoContainerRef}
         onClick={() => setIsEditing(true)}
-        role="button"
-        tabIndex={0}
         className={`flex ml-4 pl-4 border-l-2 ${
           isEditing ? 'border-purple-700' : 'border-gray-300'
         }`}
