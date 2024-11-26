@@ -5,11 +5,17 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { ChevronUp, X } from 'lucide-react';
+import {
+  ChevronUp,
+  X,
+  HouseIcon,
+  BookHeadphones,
+  Bookmark,
+  ChartPie,
+} from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 
-import { navItems } from './Header';
 import MobileLearningTracker from './side/MobileLearningTracker';
 
 interface SwipeablePanelProps {
@@ -89,6 +95,13 @@ export default function SwipeablePanel({
 export function MobileNav() {
   const pathname = usePathname();
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
+
+  const navItems = [
+    { name: '학습', href: '/learn/listening', icon: BookHeadphones },
+    { name: '스크랩', href: '/scrapbook/content', icon: Bookmark },
+    { name: '홈', href: '/', icon: HouseIcon },
+    { name: '대시보드', href: '/dashboard', icon: ChartPie },
+  ];
 
   return (
     <>
