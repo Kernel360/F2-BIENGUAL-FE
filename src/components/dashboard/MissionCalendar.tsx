@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 import { ko } from 'date-fns/locale';
+import { CheckCircle, BookmarkCheck, HelpCircle } from 'lucide-react';
 
 import { useFetchMissionCalendar } from '@/api/hooks/useDashboard';
 import { Calendar as CustomCalendar } from '@/components/common/CustomShadcnCalendar';
@@ -11,6 +12,7 @@ import {
   ErrorPanel,
   // EmptyPanel,
 } from '@/components/common/Panels';
+import StatusBox from '@/components/StatusBox';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatDate, isToday } from '@/lib/formatDate';
 
@@ -125,7 +127,7 @@ export default function MissionCalendar() {
               onSelect={setSelectedDate}
               onMonthChange={handleMonthChange}
               month={new Date(currentMonth)}
-              className="rounded-md"
+              className="rounded-md  "
               modifiers={{
                 zero: (date: Date) => {
                   const correctedDate = correctDate(
@@ -177,31 +179,38 @@ export default function MissionCalendar() {
             />
 
             <div className="flex flex-col rounded-sm p-3 border w-full h-full">
-              <p className="font-bold">어떤 미션을 성공했을까?</p>
+              {/* <p className="font-bold">어떤 미션을 성공했을까? </p> */}
+              <p className="font-bold text-start text-lg m-1">
+                📂 어떤 미션을 성공했을까?
+              </p>
               <div>
                 {isToday(String(selectedDate)) ? (
                   <p className="text-sm mt-2">
                     캘린더에는 오늘 데이터는 반영되지 않아요
                   </p>
                 ) : mission ? (
-                  <div className="flex flex-col my-2 text-sm">
-                    <span className="font-bold">{selectedDateString}</span>
-                    <span>
-                      One Content:{' '}
-                      {mission.missionStatus.oneContent ? 'Yes' : 'No'}
-                    </span>
-                    <span>
-                      Bookmark: {mission.missionStatus.bookmark ? 'Yes' : 'No'}
-                    </span>
-                    <span>
-                      Quiz: {mission.missionStatus.quiz ? 'Yes' : 'No'}
-                    </span>
-                    <span>Count: {mission.missionStatus.count}</span>
+                  <div className="flex justify-evenly gap-2  my-2 text-sm ">
+                    <StatusBox
+                      label="컨텐츠 1개 학습"
+                      completed={mission.missionStatus.oneContent}
+                      icon={<CheckCircle className="w-6 h-6 stroke-1" />}
+                    />
+                    <StatusBox
+                      label="문장 북마크 1개"
+                      completed={mission.missionStatus.bookmark}
+                      icon={<BookmarkCheck className="w-6 h-6 stroke-1" />}
+                    />
+                    <StatusBox
+                      label="퀴즈 1문제"
+                      completed={mission.missionStatus.quiz}
+                      icon={<HelpCircle className="w-6 h-6 stroke-1" />}
+                    />
                   </div>
                 ) : (
                   <div>미션 데이터가 없습니다.</div>
                 )}
               </div>
+              {/* <span>Count: {mission.missionStatus.count}</span> */}
             </div>
           </>
         )}
