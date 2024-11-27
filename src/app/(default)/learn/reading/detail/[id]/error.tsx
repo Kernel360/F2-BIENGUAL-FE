@@ -2,17 +2,10 @@
 
 import { useEffect } from 'react';
 
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
-export default function Error({
-  error,
-}: {
-  error: Error & { digest?: string };
-}) {
-  const router = useRouter();
-
+export default function Error() {
   useEffect(() => {
-    console.error(error);
-    router.push('/');
-  }, [error]);
+    redirect('/');
+  }, []);
 }
