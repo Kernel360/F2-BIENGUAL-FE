@@ -22,7 +22,7 @@ export default function DifficultyDisplay({
             {Array.from({ length: getHeartCount(calculatedLevel) }).map(
               (_, index: number) => (
                 // eslint-disable-next-line react/no-array-index-key
-                <Heart key={index} fill="#7641ed" />
+                <Heart key={index} fill="#7641ed" stroke="none" />
               ),
             )}
           </span>
