@@ -12,7 +12,6 @@ export default function Error({
   const router = useRouter();
 
   useEffect(() => {
-    // Log the error to an error reporting service
     console.error(error);
     router.push('/');
   }, [error]);
