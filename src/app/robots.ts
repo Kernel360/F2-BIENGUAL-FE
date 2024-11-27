@@ -5,8 +5,16 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/dashboard', '/mypage', '/point', '/scrapbook', '/search'],
+      disallow: [
+        '/dashboard',
+        '/mypage',
+        '/point',
+        '/scrapbook',
+        '/search',
+        '/login',
+        '/admin',
+      ],
     },
-    sitemap: 'https://biengual.store/sitemap.xml',
+    sitemap: 'https://www.biengual.store/sitemap.xml',
   };
 }
