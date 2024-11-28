@@ -115,19 +115,19 @@ export default function ControlBar({
         ></div>
       </div>
 
-      <div className="w-full h-12 flex justify-between items-center px-5 text-white box-border">
+      <div className="w-full h-12 flex justify-between items-center px-5 sm:px-10  text-white box-border">
         <div className="flex flex-row items-center gap-2 ">
           {/* 볼륨 슬라이더 */}
-          <div className="flex items-center">
+          <div className="flex items-center sm:gap-2">
             {volume === 0 ? (
               <VolumeOff
-                className="text-white w-4 h-4"
+                className="text-white w-5 h-5"
                 onClick={() => setVolume(previousVolume)}
               />
             ) : (
               <>
                 <Volume2
-                  className="text-white w-4 h-4"
+                  className="text-white w-5 h-5"
                   onClick={() => {
                     setPreviousVolume(volume);
                     setVolume(0);
@@ -141,7 +141,7 @@ export default function ControlBar({
                   value={volume}
                   onChange={handleVolumeChange}
                   aria-label="Volume"
-                  className="w-10 h-[5px] rounded-[15px] cursor-pointer accent-white"
+                  className="w-10 h-[5px] sm:w-20 rounded-[15px] cursor-pointer accent-white"
                 />
               </>
             )}
@@ -163,10 +163,10 @@ export default function ControlBar({
         {/* 재생 조절 버튼 */}
         <div className="absolute right-[50%] transform translate-x-[50%] flex gap-4 cursor-pointer ">
           <Rewind className="text-white h-5 w-5" onClick={handleSeekBackward} />
-          {isPlaying ? (
-            <Pause className="text-white  h-5 w-5" onClick={handlePlayPause} />
-          ) : (
+          {!isPlaying ? (
             <Play className="text-white  h-5 w-5" onClick={handlePlayPause} />
+          ) : (
+            <Pause className="text-white  h-5 w-5" onClick={handlePlayPause} />
           )}
           <FastForward
             className="text-white  h-5 w-5"
