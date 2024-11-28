@@ -79,7 +79,7 @@ export default function PointCover({ data, children }: PointCoverProps) {
     <>
       <div
         onClick={handleOpen}
-        className="relative w-full h-fit cursor-pointer mr-3"
+        className="relative w-full h-fit cursor-pointer"
       >
         {children}
         {data.isPointRequired && !isConfirmed && (

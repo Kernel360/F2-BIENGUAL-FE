@@ -31,9 +31,11 @@ export default function Carousel<T>({
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
 
+  const gap = 16; // 아이템 간 간격 (px)
   const totalItems = previewDatas.length;
   const maxIndex = totalItems - 1;
 
+  // Transform 계산에 gap 포함
   const nextSlide = () =>
     setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, maxIndex));
   const prevSlide = () =>
@@ -41,9 +43,12 @@ export default function Carousel<T>({
 
   useEffect(() => {
     if (carouselRef.current) {
-      carouselRef.current.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+      const totalItemWidth = itemWidth + gap; // 각 아이템의 너비 + 간격
+      carouselRef.current.style.transform = `translateX(-${
+        currentIndex * totalItemWidth
+      }px)`;
     }
-  }, [currentIndex, itemWidth]);
+  }, [currentIndex, itemWidth, gap]);
 
   const handleTouchStart = (event: React.TouchEvent) => {
     touchStartX.current = event.touches[0].clientX;
@@ -56,18 +61,17 @@ export default function Carousel<T>({
     const diff = touchStartX.current - touchEndX;
 
     if (Math.abs(diff) > 50) {
-      // 민감도 50px 설정, 스와이프 중 중복 처리 방지
       if (diff > 0 && currentIndex < maxIndex) {
         nextSlide();
       } else if (diff < 0 && currentIndex > 0) {
         prevSlide();
       }
-      touchStartX.current = null; // 한 번 스와이프 후 초기화
+      touchStartX.current = null;
     }
   };
 
   const handleTouchEnd = () => {
-    touchStartX.current = null; // 스와이프 종료 후 초기화
+    touchStartX.current = null;
   };
 
   return (
@@ -84,15 +88,16 @@ export default function Carousel<T>({
       >
         <div
           ref={carouselRef}
-          className="flex transition-transform duration-300 ease-in-out"
-          style={{ width: 'fit-content' }}
+          className="flex transition-transform duration-300 ease-in-out gap-4"
         >
           {previewDatas.map((data, index) => (
             <div
               // eslint-disable-next-line react/no-array-index-key
               key={index}
               className="shrink-0"
-              style={{ width: `${itemWidth}px` }}
+              style={{
+                width: `${itemWidth}px`,
+              }}
             >
               <ItemComponent data={data} onNext={nextSlide} />
             </div>
