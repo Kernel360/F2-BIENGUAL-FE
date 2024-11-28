@@ -34,7 +34,7 @@ export default function DisabledModal({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       //   onClick={handleOverlayClick}
     >
-      <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6">
+      <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 mx-6">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold">{title}</h2>
         </div>

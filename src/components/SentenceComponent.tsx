@@ -55,7 +55,7 @@ export default function SentenceComponent({ data }: { data: Sentence }) {
   const [showTranslation, setShowTranslation] = useState(false);
 
   return (
-    <Card className="w-[794px] h-full bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 shadow-xl rounded-lg">
+    <Card className="w-[798px] h-full bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 shadow-xl rounded-lg">
       <CardContent className="p-8 flex flex-col justify-between h-full">
         <div className="flex justify-between items-start">
           <div>

@@ -63,12 +63,12 @@ export default function HomePageClient({
         }
         // TODO(@smosco): ItemComponent margin 안 먹음
         itemComponent={ItemComponentCard}
-        itemWidth={269}
+        itemWidth={255}
       />
       <Carousel
         previewDatas={sentences}
         itemComponent={SentenceComponent}
-        itemWidth={830}
+        itemWidth={798}
       />
       {/* 인기 리딩 콘텐츠 캐러셀 */}
       <Carousel
@@ -85,7 +85,7 @@ export default function HomePageClient({
           </div>
         }
         itemComponent={ItemComponentCard}
-        itemWidth={269}
+        itemWidth={255}
       />
       <RecommendedList />
     </div>

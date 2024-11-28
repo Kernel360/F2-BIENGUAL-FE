@@ -1,11 +1,12 @@
 'use client';
 
-// Error boundaries must be Client Components
 import { useEffect } from 'react';
 
 import { useRouter } from 'next/navigation';
 
-import Button from '@/components/common/Button/Button';
+import { AlertCircle, ArrowLeft, RefreshCw } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 
 export default function Error({
   error,
@@ -14,30 +15,45 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
+
   useEffect(() => {
-    console.error('error바운더리', error);
+    console.error('Error Boundary:', error);
   }, [error]);
 
-  const router = useRouter();
   return (
-    <div className=" w-full h-full py-16 flex items-center justify-center bg-gradient-to-r text-purple-600">
-      <div className="container p-4 md:px-6 flex flex-col items-center justify-center space-y-12 text-center">
-        <h1 className="font-medium text-2xl  drop-shadow-lg ">
-          에러가 발생했습니다 : {error.message}
-        </h1>
+    <div className="min-h-[400px] w-full flex items-center justify-center px-4">
+      <div className="max-w-md w-full space-y-6 text-center">
+        <div className="space-y-2">
+          <div className="flex justify-center">
+            <div className="h-12 w-12 rounded-full bg-purple-100 flex items-center justify-center">
+              <AlertCircle className="h-6 w-6 text-purple-600" />
+            </div>
+          </div>
+          <h2 className="text-2xl font-semibold tracking-tight text-gray-900">
+            콘텐츠를 불러올 수 없습니다
+          </h2>
+          <p className="text-sm text-gray-500">
+            {error.message ||
+              '일시적인 오류가 발생했습니다. 다시 시도해 주세요.'}
+          </p>
+        </div>
 
-        <div className="flex flex-col ">
+        <div className="flex flex-col gap-2">
           <Button
-            className="bg-white text-purple-600 hover:bg-white/90 px-8 py-3 text-lg font-semibold rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 mt-6"
-            onClick={() => router.back()}
+            onClick={() => reset()}
+            className="w-full bg-purple-600 text-white hover:bg-purple-700"
           >
-            이전 페이지로 돌아가기
+            <RefreshCw className="mr-2 h-4 w-4" />
+            다시 시도하기
           </Button>
           <Button
-            className="bg-white text-purple-600 hover:bg-white/90 px-8 py-3 text-lg font-semibold rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 mt-6"
-            onClick={() => reset()}
+            onClick={() => router.back()}
+            variant="outline"
+            className="w-full border-purple-200 text-purple-600 hover:bg-purple-50"
           >
-            다시 시도하기
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            이전 페이지로 돌아가기
           </Button>
         </div>
       </div>

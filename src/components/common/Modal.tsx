@@ -39,7 +39,7 @@ export default function Modal({
       onClick={handleOverlayClick}
     >
       <div
-        className="bg-white rounded-lg shadow-lg max-w-md w-full p-6"
+        className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 mx-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center">
