@@ -5,11 +5,11 @@ import { ReducePointResponse } from '@/types/Point';
 import { reducePoints } from '../queries/pointQueries';
 
 // 포인트 차감 훅
-export const useReducePoints = (contentId: number) => {
+export const useReducePoints = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<ReducePointResponse, Error>({
-    mutationFn: () => reducePoints(contentId),
+  return useMutation<ReducePointResponse, Error, string>({
+    mutationFn: (contentId: string) => reducePoints(contentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['currentPoints'] });
     },
