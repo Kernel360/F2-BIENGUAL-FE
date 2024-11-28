@@ -27,8 +27,7 @@ export const apiClient = async <Response>(
   if (!response.ok) {
     const errorCode = responseData?.code;
     // 커스텀 에러 코드 존재하는 에러
-    // mutation은 hook에서 try-catch로 에러처리 해주어야함.
-    // mutation이 아닌 에러는 errorBoundary로 처리됨
+    // TODO(@godhyzzang) : mutation은 hook에서 try-catch로 에러처리 해주어야 에러 바운더리로 전달되지 않음
     if (errorCode && CustomErrorMessages[errorCode]) {
       console.log('customError 발생');
       throw new CustomError(errorCode, CustomErrorMessages[errorCode]);
