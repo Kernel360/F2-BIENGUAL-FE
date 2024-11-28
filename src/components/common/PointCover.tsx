@@ -7,7 +7,9 @@ import { useRouter } from 'next/navigation';
 import { CircleParking } from 'lucide-react';
 
 import { useFetchCurrentPoints } from '@/api/hooks/useDashboard';
+import { useReducePoints } from '@/api/hooks/usePoint';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import { useToast } from '@/hooks/use-toast';
 
 import LogInOutButton from './LogInOutButton';
 import Modal from './Modal';
@@ -34,7 +36,12 @@ export default function PointCover({ data, children }: PointCoverProps) {
   const userPoints = pointsData?.data.currentPoint || 0;
   const requiredPoints = 10; // 항상 10 포인트 차감
 
+  const { contentId } = data;
+  const reducePointMutation = useReducePoints();
+
   const router = useRouter();
+
+  const { toast } = useToast();
 
   const handleOpen = (event: React.MouseEvent) => {
     if (data.isPointRequired && !isConfirmed) {
@@ -50,14 +57,22 @@ export default function PointCover({ data, children }: PointCoverProps) {
     }
   };
 
-  const handleConfirm = () => {
-    setIsConfirmed(true);
+  const handleConfirm = async () => {
     setShowPointModal(false);
-    router.push(
-      data.contentType === 'READING'
-        ? `/learn/reading/detail/${data.contentId}`
-        : `/learn/listening/detail/${data.contentId}`,
-    );
+
+    try {
+      const success = await reducePointMutation.mutateAsync(contentId);
+      if (success) {
+        setIsConfirmed(true);
+        router.push(
+          data.contentType === 'READING'
+            ? `/learn/reading/detail/${data.contentId}`
+            : `/learn/listening/detail/${data.contentId}`,
+        );
+      }
+    } catch (error) {
+      toast({ title: '포인트 차감 실패', duration: 1000 });
+    }
   };
 
   return (
