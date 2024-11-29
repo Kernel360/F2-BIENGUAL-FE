@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 
-export default function Component() {
+export default function NotFoundPage() {
   const router = useRouter();
   return (
     <div className="min-h-[100dvh] w-full flex items-center justify-center bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 text-white">
