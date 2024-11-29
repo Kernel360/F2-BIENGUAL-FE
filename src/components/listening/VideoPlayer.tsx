@@ -70,6 +70,8 @@ const VideoPlayer = forwardRef<ReactPlayer, VideoPlayerProps>(
       handleSeekBackward: () => handleSeek(-10),
       isPlaying,
       volume,
+      setVolume,
+      playbackRate,
       setPlayBackRate,
     };
 
