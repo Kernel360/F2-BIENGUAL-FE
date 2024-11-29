@@ -64,11 +64,15 @@ export default function HomePageClient({
         // TODO(@smosco): ItemComponent margin 안 먹음
         itemComponent={ItemComponentCard}
         itemWidth={255}
+        isAutoPlay
       />
+      {/* 문장 캐러셀 */}
       <Carousel
         previewDatas={sentences}
         itemComponent={SentenceComponent}
         itemWidth={798}
+        // isAutoPlay
+        // autoPlayInterval={10000}
       />
       {/* 인기 리딩 콘텐츠 캐러셀 */}
       <Carousel
@@ -86,6 +90,7 @@ export default function HomePageClient({
         }
         itemComponent={ItemComponentCard}
         itemWidth={255}
+        // isAutoPlay
       />
       <RecommendedList />
     </div>

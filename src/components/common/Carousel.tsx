@@ -17,6 +17,8 @@ interface CarouselProps<T> {
   }) => JSX.Element;
   previewDatas: T[];
   itemWidth: number;
+  isAutoPlay?: boolean;
+  autoPlayInterval?: number;
 }
 
 export default function Carousel<T>({
@@ -24,12 +26,15 @@ export default function Carousel<T>({
   itemComponent,
   previewDatas,
   itemWidth,
+  isAutoPlay = false,
+  autoPlayInterval = 3000,
 }: CarouselProps<T>) {
   const ItemComponent = itemComponent;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showButtons, setShowButtons] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const gap = 16; // 아이템 간 간격 (px)
   const totalItems = previewDatas.length;
@@ -49,6 +54,20 @@ export default function Carousel<T>({
       }px)`;
     }
   }, [currentIndex, itemWidth, gap]);
+
+  useEffect(() => {
+    if (isAutoPlay && intervalRef.current === null) {
+      const intervalId = setInterval(nextSlide, autoPlayInterval);
+      intervalRef.current = intervalId;
+    }
+    // 종속배열 바뀔 때마다 실행
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, [isAutoPlay]);
 
   const handleTouchStart = (event: React.TouchEvent) => {
     touchStartX.current = event.touches[0].clientX;
