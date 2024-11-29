@@ -67,7 +67,7 @@ export default function Carousel<T>({
         intervalRef.current = null;
       }
     };
-  }, [isAutoPlay]);
+  }, [isAutoPlay, nextSlide]);
 
   const handleTouchStart = (event: React.TouchEvent) => {
     touchStartX.current = event.touches[0].clientX;
