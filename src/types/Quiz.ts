@@ -23,3 +23,11 @@ export interface CheckAnswerRequest {
   questionId: string;
   answer: string;
 }
+
+export interface ViewHintResponse {
+  code: string;
+  message: string;
+  data: {
+    hint: string;
+  };
+}

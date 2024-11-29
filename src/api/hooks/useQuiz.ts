@@ -1,13 +1,14 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import {
   CheckQuizAnswerResponse,
   CheckAnswerRequest,
   FetchQuizResponse,
+  ViewHintResponse,
 } from '@/types/Quiz';
 
-import { checkQuizAnswer, fetchQuiz } from '../queries/quizQueries';
+import { checkQuizAnswer, fetchQuiz, viewHint } from '../queries/quizQueries';
 
 export const useFetchQuiz = (contentId: number, showQuiz: boolean) => {
   const { data: isLoginData } = useUserLoginStatus();
@@ -24,5 +25,16 @@ export const useCheckQuestionAnswer = () => {
   return useMutation<CheckQuizAnswerResponse, Error, CheckAnswerRequest>({
     mutationFn: (questionAnswer: { questionId: string; answer: string }) =>
       checkQuizAnswer(questionAnswer),
+  });
+};
+
+export const useViewHint = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<ViewHintResponse, Error, string>({
+    mutationFn: (questionId: string) => viewHint(questionId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['currentPoints'] });
+    },
   });
 };

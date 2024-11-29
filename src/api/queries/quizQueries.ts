@@ -1,5 +1,9 @@
 import { apiClient } from '@/lib/apiClient';
-import { FetchQuizResponse, CheckQuizAnswerResponse } from '@/types/Quiz';
+import {
+  FetchQuizResponse,
+  CheckQuizAnswerResponse,
+  ViewHintResponse,
+} from '@/types/Quiz';
 
 // 퀴즈 조회 (GET)
 export const fetchQuiz = async (
@@ -18,5 +22,14 @@ export const checkQuizAnswer = async (quizAnswer: {
   return apiClient<CheckQuizAnswerResponse>('/questions/verify', {
     method: 'POST',
     body: JSON.stringify(quizAnswer),
+  });
+};
+
+export const viewHint = async (
+  questionId: string,
+): Promise<ViewHintResponse> => {
+  return apiClient<ViewHintResponse>('/questions/hint/view', {
+    method: 'POST',
+    body: JSON.stringify({ questionId }),
   });
 };
