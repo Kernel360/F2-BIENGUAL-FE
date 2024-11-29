@@ -11,7 +11,9 @@
     "format": "prettier --write .",
     "storybook": "storybook dev -p 6006",
     "tsc": "tsc",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.1",
@@ -60,6 +62,10 @@
     "@storybook/nextjs": "^8.3.0",
     "@storybook/react": "^8.3.0",
     "@storybook/test": "^8.3.0",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.1",
+    "@types/jest": "^29.5.14",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -77,10 +83,13 @@
     "eslint-plugin-react": "^7.36.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-storybook": "^0.8.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
     "storybook": "^8.3.0",
     "tailwindcss": "^3.4.11",
+    "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }
 }
