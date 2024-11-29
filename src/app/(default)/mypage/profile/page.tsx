@@ -14,7 +14,7 @@ import { useToast } from '@/hooks/use-toast';
 export default function UserProfile() {
   const { data: userData, refetch: refetchUserInfo } = useUserInfo();
   const { data: categoryData } = useFetchAllCategories();
-  const toast = useToast();
+  const { toast } = useToast();
 
   // 상태 설정
   const [nickname, setNickname] = useState('');
@@ -36,15 +36,38 @@ export default function UserProfile() {
 
   // 닉네임 변경
   const handleNicknameChange = () => {
+    // 닉네임 길이 검증
+    if (nickname.length < 4 || nickname.length > 12) {
+      toast({
+        duration: 1000,
+        description: '닉네임은 4~12자 사이여야 합니다.',
+      });
+      return;
+    }
+
+    // 닉네임 패턴 검증
+    const nicknamePattern = /^[a-zA-Z가-힣0-9]+( [a-zA-Z가-힣0-9]+)*$/;
+    if (!nicknamePattern.test(nickname)) {
+      toast({
+        duration: 1000,
+        description: '닉네임은 영어, 한글, 숫자 및 단일 공백만 허용됩니다.',
+      });
+      return;
+    }
+
+    // 서버로 닉네임 변경 요청
     updateUserInfoMutation.mutate(
       { nickname },
       {
         onSuccess: () => {
-          toast.toast({ description: '닉네임이 성공적으로 변경되었습니다.' });
+          toast({
+            duration: 1000,
+            description: '닉네임이 성공적으로 변경되었습니다.',
+          });
           refetchUserInfo();
         },
         onError: () => {
-          toast.toast({ description: '닉네임을 변경하지 못했어요.' });
+          toast({ duration: 1000, description: '닉네임을 변경하지 못했어요.' });
           setNickname(userData?.data.nickname || '');
         },
       },
@@ -57,11 +80,14 @@ export default function UserProfile() {
       { username },
       {
         onSuccess: () => {
-          toast.toast({ description: '이름이 성공적으로 변경되었습니다.' });
+          toast({
+            duration: 1000,
+            description: '이름이 성공적으로 변경되었습니다.',
+          });
           refetchUserInfo();
         },
         onError: () => {
-          toast.toast({ description: '이름을 변경하지 못했어요.' });
+          toast({ duration: 1000, description: '이름을 변경하지 못했어요.' });
           setUsername(userData?.data.username || '');
         },
       },
@@ -88,7 +114,8 @@ export default function UserProfile() {
         return [...prevSelected, categoryId];
       }
 
-      toast.toast({
+      toast({
+        duration: 1000,
         description: '카테고리는 최대 5개까지 선택 가능합니다.',
       });
 
@@ -112,13 +139,15 @@ export default function UserProfile() {
       { categories: selectedCategories },
       {
         onSuccess: () => {
-          toast.toast({
+          toast({
+            duration: 1000,
             description: '카테고리가 성공적으로 변경되었습니다.',
           });
           refetchUserInfo();
         },
         onError: () => {
-          toast.toast({
+          toast({
+            duration: 1000,
             description: '카테고리를 변경하지 못했습니다.',
           });
           setSelectedCategories(
