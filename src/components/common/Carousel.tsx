@@ -35,7 +35,7 @@ export default function Carousel<T>({
   const [isTransitioning, setIsTransitioning] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
-  const intervalRef = useRef<number | null>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const gap = 16; // 아이템 간 간격 (px)
   const totalItems = previewDatas.length;
@@ -91,16 +91,17 @@ export default function Carousel<T>({
 
   useEffect(() => {
     if (isAutoPlay && intervalRef.current === null) {
-      const intervalId = window.setInterval(nextSlide, autoPlayInterval);
+      const intervalId = setInterval(nextSlide, autoPlayInterval);
       intervalRef.current = intervalId;
     }
+    // 종속배열 바뀔 때마다 실행
     return () => {
-      if (intervalRef.current !== null) {
+      if (intervalRef.current) {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
     };
-  }, [isAutoPlay, autoPlayInterval, nextSlide]);
+  }, [isAutoPlay, nextSlide]);
 
   const handleTouchStart = (event: React.TouchEvent) => {
     touchStartX.current = event.touches[0].clientX;
