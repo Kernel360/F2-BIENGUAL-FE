@@ -43,15 +43,18 @@ export default function Carousel<T>({
   ];
 
   const moveToSlide = (index: number) => {
+    if (isTransitioning) return; // 이동 중일 경우 중복 호출 방지
     setIsTransitioning(true);
     setCurrentIndex(index);
   };
 
   const nextSlide = () => {
+    if (isTransitioning) return; // transition이 끝날 때까지 무시
     moveToSlide(currentIndex + 1);
   };
 
   const prevSlide = () => {
+    if (isTransitioning) return; // transition이 끝날 때까지 무시
     moveToSlide(currentIndex - 1);
   };
 
