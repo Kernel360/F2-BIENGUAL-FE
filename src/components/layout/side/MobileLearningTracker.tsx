@@ -7,24 +7,53 @@ import {
   useFetchRecentMissionHistory,
 } from '@/api/hooks/useMission';
 import { useUserTime } from '@/api/hooks/useUserInfo';
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import LogInOutButton from '@/components/common/LogInOutButton';
 import { formatDate } from '@/lib/formatDate';
+
+const mockData = {
+  totalLearningDays: 30,
+  todayMissionStatus: { oneContent: true, bookmark: false, quiz: true },
+  recentMissionHistory: {
+    data: {
+      recentHistories: [
+        { date: '2023-11-28', count: 2 },
+        { date: '2023-11-27', count: 3 },
+        { date: '2023-11-26', count: 1 },
+        { date: '2023-11-25', count: 2 },
+        { date: '2023-11-24', count: 3 },
+      ],
+    },
+  },
+};
 
 function MobileLearningTracker() {
   const { data: userMembershipDurationData } = useUserTime();
   const { data: todayMissionData } = useFetchMissionStatus();
-  const todayMissionStatus = todayMissionData?.data;
   const { data: recentMissionHistory } = useFetchRecentMissionHistory();
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = !!isLoginData?.data;
 
-  const totalLearningDays = userMembershipDurationData?.data.createdAt
-    ? Math.max(
-        Math.floor(
-          (new Date().getTime() -
-            new Date(userMembershipDurationData.data.createdAt).getTime()) /
-            (1000 * 60 * 60 * 24),
-        ),
-        0,
-      )
-    : null;
+  const totalLearningDays = isLogin
+    ? userMembershipDurationData?.data.createdAt
+      ? Math.max(
+          Math.floor(
+            (new Date().getTime() -
+              new Date(userMembershipDurationData.data.createdAt).getTime()) /
+              (1000 * 60 * 60 * 24),
+          ),
+          0,
+        )
+      : 0
+    : mockData.totalLearningDays;
+
+  const todayMissionStatus = isLogin
+    ? todayMissionData?.data
+    : mockData.todayMissionStatus;
+
+  const recentHistories = isLogin
+    ? recentMissionHistory?.data.recentHistories
+    : mockData.recentMissionHistory.data.recentHistories;
 
   const missionItems = [
     { status: todayMissionStatus?.oneContent, label: '1개 콘텐츠 학습' },
@@ -33,10 +62,16 @@ function MobileLearningTracker() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="relative space-y-6">
+      {!isLogin && (
+        <div className="absolute inset-0 bg-background/5 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center rounded-lg">
+          <LogInOutButton />
+        </div>
+      )}
+
       <h2 className="text-2xl font-bold text-center">학습 트래커</h2>
       <div className="text-center">
-        <span className="text-4xl font-bold">{totalLearningDays}</span>
+        <span className="text-4xl font-bold">{totalLearningDays + 1}</span>
         <span className="text-sm text-gray-500 ml-2">누적 학습일</span>
       </div>
 
@@ -60,8 +95,8 @@ function MobileLearningTracker() {
       {/* 최근 5일 미션 달성 표시 */}
       <h3 className="font-semibold mb-2">최근 5일 미션 달성</h3>
       <div className="flex justify-between items-end h-25">
-        {recentMissionHistory?.data.recentHistories
-          .slice()
+        {recentHistories
+          ?.slice()
           .reverse()
           .map((history, index) => (
             // eslint-disable-next-line react/no-array-index-key
