@@ -80,7 +80,7 @@ export default function HomePageClient({
         itemComponent={ItemComponentCard}
         itemWidth={255}
         // isAutoPlay
-        extendedItemsForLoop={2} // 한 화면에 캐러셀이 3개인 캐러셀은 2개 확장해야 Loop기능 가능
+        loopExtensionCount={2} // 한 화면에 캐러셀이 3개인 캐러셀은 2개 확장해야 Loop기능 가능
       />
       {/* 문장 캐러셀 */}
       <Carousel
@@ -107,7 +107,7 @@ export default function HomePageClient({
         itemComponent={ItemComponentCard}
         itemWidth={255}
         // isAutoPlay
-        extendedItemsForLoop={2} // 한 화면에 캐러셀이 3개인 캐러셀은 2개 확장해야 Loop기능 가능
+        loopExtensionCount={2} // 한 화면에 캐러셀이 3개인 캐러셀은 2개 확장해야 Loop기능 가능
       />
       <RecommendedList />
     </div>
