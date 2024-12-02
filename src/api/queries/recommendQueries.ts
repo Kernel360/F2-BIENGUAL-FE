@@ -16,10 +16,7 @@ export const fetchRecommendedContents = async (
 
 export const fetchRecommendedBookmarks =
   async (): Promise<RecommendedBookmarksResponse> => {
-    return apiClient<RecommendedBookmarksResponse>(
-      '/api/recommender/bookmark',
-      {
-        method: 'GET',
-      },
-    );
+    return apiClient<RecommendedBookmarksResponse>('/recommender/bookmark', {
+      method: 'GET',
+    });
   };

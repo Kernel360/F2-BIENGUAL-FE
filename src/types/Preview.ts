@@ -59,5 +59,5 @@ export interface PoplularBookmarks {
 export interface RecommendedBookmarksResponse {
   code: string;
   message: string;
-  data: PoplularBookmarks[];
+  data: { popularBookmarks: PoplularBookmarks[] };
 }
