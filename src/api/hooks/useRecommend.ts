@@ -1,13 +1,27 @@
 import { UseQueryResult, useQuery } from '@tanstack/react-query';
 
-import { RecommendedContentsResponse } from '@/types/Preview';
+import {
+  RecommendedBookmarksResponse,
+  RecommendedContentsResponse,
+} from '@/types/Preview';
 
-import { fetchRecommendedContents } from '../queries/recommendQueries';
+import {
+  fetchRecommendedBookmarks,
+  fetchRecommendedContents,
+} from '../queries/recommendQueries';
 
 export const useRecommendedContents =
   (): UseQueryResult<RecommendedContentsResponse> => {
     return useQuery({
-      queryKey: ['recommendedContens'],
+      queryKey: ['recommendedContents'],
       queryFn: () => fetchRecommendedContents(),
+    });
+  };
+
+export const useRecommendedBookmarks =
+  (): UseQueryResult<RecommendedBookmarksResponse> => {
+    return useQuery({
+      queryKey: ['recommendedBookmarks'],
+      queryFn: () => fetchRecommendedBookmarks(),
     });
   };
