@@ -13,7 +13,7 @@ import {
 export const useRecommendedContents =
   (): UseQueryResult<RecommendedContentsResponse> => {
     return useQuery({
-      queryKey: ['recommendedContens'],
+      queryKey: ['recommendedContents'],
       queryFn: () => fetchRecommendedContents(),
     });
   };
