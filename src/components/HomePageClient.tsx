@@ -1,5 +1,7 @@
 'use client';
 
+import React from 'react';
+
 import Link from 'next/link';
 
 import { useQuery } from '@tanstack/react-query';
@@ -9,13 +11,16 @@ import {
   fetchReadingPreview,
   fetchListeningPreview,
 } from '@/api/queries/contentsQueries';
+import { fetchRecommendedBookmarks } from '@/api/queries/recommendQueries';
 import Carousel from '@/components/common/Carousel';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import SentenceComponent, { sentences } from '@/components/SentenceComponent';
+import SentenceComponent from '@/components/SentenceComponent';
 import { Button } from '@/components/ui/button';
 import {
   ReadingPreviewResponse,
   ListeningPreviewResponse,
+  // TODO(@godhyzzang) : 추천bookmark한 문장도  initialData연결
+  // RecommendedBookmarksResponse,
 } from '@/types/Preview';
 
 import ItemComponentCard from './ItemComponentCard';
@@ -24,11 +29,13 @@ import RecommendedList from './RecommendedList';
 interface HomePageClientProps {
   initialReadingContents: ReadingPreviewResponse;
   initialListeningContents: ListeningPreviewResponse;
+  // initialSentences: RecommendedBookmarksResponse;
 }
 
 export default function HomePageClient({
   initialReadingContents,
   initialListeningContents,
+  // initialSentences,
 }: HomePageClientProps) {
   const { data: readingList, isLoading: readingLoading } = useQuery({
     queryKey: ['readingPreview'],
@@ -42,9 +49,17 @@ export default function HomePageClient({
     initialData: initialListeningContents,
   });
 
-  if (readingLoading || listeningLoading) {
+  const { data: recommendedBookmarksData, isLoading: isSentenceLoading } =
+    useQuery({
+      queryKey: ['recommendedBookmarks'],
+      queryFn: fetchRecommendedBookmarks,
+      // initialData: initialSentences,
+    });
+
+  if (readingLoading || listeningLoading || isSentenceLoading) {
     return <LoadingSpinner />;
   }
+
   return (
     <div className="w-full flex flex-col gap-6">
       {/* 인기 리스닝 콘텐츠 캐러셀 */}
@@ -64,11 +79,12 @@ export default function HomePageClient({
         // TODO(@smosco): ItemComponent margin 안 먹음
         itemComponent={ItemComponentCard}
         itemWidth={255}
-        isAutoPlay
+        // isAutoPlay
+        extendedItemsForLoop={2} // 한 화면에 캐러셀이 3개인 캐러셀은 2개 확장해야 Loop기능 가능
       />
       {/* 문장 캐러셀 */}
       <Carousel
-        previewDatas={sentences}
+        previewDatas={recommendedBookmarksData?.data.popularBookmarks || []}
         itemComponent={SentenceComponent}
         itemWidth={798}
         // isAutoPlay
@@ -91,6 +107,7 @@ export default function HomePageClient({
         itemComponent={ItemComponentCard}
         itemWidth={255}
         // isAutoPlay
+        extendedItemsForLoop={2} // 한 화면에 캐러셀이 3개인 캐러셀은 2개 확장해야 Loop기능 가능
       />
       <RecommendedList />
     </div>

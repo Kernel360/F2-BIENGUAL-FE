@@ -19,6 +19,7 @@ interface CarouselProps<T> {
   itemWidth: number;
   isAutoPlay?: boolean;
   autoPlayInterval?: number;
+  extendedItemsForLoop?: number;
 }
 
 export default function Carousel<T>({
@@ -28,9 +29,10 @@ export default function Carousel<T>({
   itemWidth,
   isAutoPlay = false,
   autoPlayInterval = 3000,
+  extendedItemsForLoop = 1, // 한 화면에 아이템 개수 1개인 기본 캐러셀의 경우 extendedItems하지 않을 경우 기본 1으로 설정
 }: CarouselProps<T>) {
   const ItemComponent = itemComponent;
-  const [currentIndex, setCurrentIndex] = useState(2); // 시작 인덱스를 1로 설정
+  const [currentIndex, setCurrentIndex] = useState(0); // 시작 인덱스를 1로 설정
   const [showButtons, setShowButtons] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -40,11 +42,9 @@ export default function Carousel<T>({
   const gap = 16; // 아이템 간 간격 (px)
   const totalItems = previewDatas.length;
   const extendedItems = [
-    previewDatas[totalItems - 2],
-    previewDatas[totalItems - 1],
+    ...previewDatas.slice(totalItems - extendedItemsForLoop),
     ...previewDatas,
-    previewDatas[0],
-    previewDatas[1],
+    ...previewDatas.slice(0, extendedItemsForLoop),
   ];
 
   const moveToSlide = (index: number) => {
@@ -82,8 +82,8 @@ export default function Carousel<T>({
       setIsTransitioning(false);
       if (currentIndex === 0) {
         setCurrentIndex(totalItems);
-      } else if (currentIndex === extendedItems.length - 2) {
-        setCurrentIndex(2);
+      } else if (currentIndex === extendedItems.length - extendedItemsForLoop) {
+        setCurrentIndex(extendedItemsForLoop);
       }
     }, 300);
     return () => clearTimeout(timer);
