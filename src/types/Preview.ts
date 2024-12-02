@@ -49,3 +49,15 @@ export interface RecommendedContentsResponse {
   message: string;
   data: { recommendedContents: RecommendedPreview[] };
 }
+
+export interface PoplularBookmarks {
+  enDetail: string;
+  koDetail: string;
+  contentId: number;
+}
+
+export interface RecommendedBookmarksResponse {
+  code: string;
+  message: string;
+  data: PoplularBookmarks[];
+}
