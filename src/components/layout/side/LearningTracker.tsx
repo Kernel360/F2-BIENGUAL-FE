@@ -1,7 +1,6 @@
-/* eslint-disable no-nested-ternary */
-import React from 'react';
+'use client';
 
-import Link from 'next/link';
+import React from 'react';
 
 import { Book, HelpCircle, Highlighter } from 'lucide-react';
 
@@ -10,7 +9,8 @@ import {
   useFetchRecentMissionHistory,
 } from '@/api/hooks/useMission';
 import { useUserTime } from '@/api/hooks/useUserInfo';
-import { Button } from '@/components/ui/button';
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import LogInOutButton from '@/components/common/LogInOutButton';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import {
@@ -21,25 +21,47 @@ import {
 } from '@/components/ui/tooltip';
 import { formatDate } from '@/lib/formatDate';
 
+const mockData = {
+  totalLearningDays: 30,
+  todayMissionStatus: { oneContent: true, bookmark: false, quiz: true },
+  recentMissionHistory: {
+    data: {
+      recentHistories: [
+        { date: '2023-06-01', count: 2 },
+        { date: '2023-06-02', count: 3 },
+        { date: '2023-06-03', count: 1 },
+        { date: '2023-06-04', count: 3 },
+        { date: '2023-06-05', count: 2 },
+      ],
+    },
+  },
+};
+
 export default function LearningTracker() {
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = !!isLoginData?.data;
   const { data: userMembershipDurationData } = useUserTime();
   const { data: todayMissionData } = useFetchMissionStatus();
   const { data: recentMissionHistory } = useFetchRecentMissionHistory();
 
-  const totalLearningDays = userMembershipDurationData?.data.createdAt
-    ? Math.max(
-        Math.floor(
-          (new Date().getTime() -
-            new Date(userMembershipDurationData.data.createdAt).getTime()) /
-            (1000 * 60 * 60 * 24),
-        ),
-        0,
-      )
-    : null;
+  // eslint-disable-next-line no-nested-ternary
+  const totalLearningDays = isLogin
+    ? userMembershipDurationData?.data.createdAt
+      ? Math.max(
+          Math.floor(
+            (new Date().getTime() -
+              new Date(userMembershipDurationData.data.createdAt).getTime()) /
+              (1000 * 60 * 60 * 24),
+          ),
+          0,
+        )
+      : 0
+    : mockData.totalLearningDays;
 
-  const todayMissionStatus = todayMissionData?.data;
+  const todayMissionStatus = isLogin
+    ? todayMissionData?.data
+    : mockData.todayMissionStatus;
 
-  // 미션 목록 정의
   const missionItems = [
     {
       status: todayMissionStatus?.oneContent,
@@ -58,20 +80,18 @@ export default function LearningTracker() {
     },
   ];
 
-  // 진행도 계산
   const completedGoals = missionItems.filter((item) => item.status).length;
   const progress = (completedGoals / missionItems.length) * 100;
 
+  const historyData = isLogin
+    ? recentMissionHistory?.data.recentHistories
+    : mockData.recentMissionHistory.data.recentHistories;
+
   return (
-    <Card className="fixed w-[260px] bg-white my-[60px]">
-      <Button className="w-full text-md h-fit absolute -bottom-16">
-        <Link href="https://docs.google.com/forms/d/e/1FAIpQLSc6mzAWT6iExOPyZOYCSdKOYW1C1JBpEOMybuTDIiPdgUxjUQ/viewform?pli=1">
-          버그를 찾으면 알려주세요 👻
-        </Link>
-      </Button>
+    <Card className="fixed w-[260px] bg-white my-[60px] ">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-bold">
-          Biengual과 함께: {totalLearningDays}일
+          Biengual과 함께: {totalLearningDays + 1}일
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -106,8 +126,8 @@ export default function LearningTracker() {
           </div>
           <TooltipProvider>
             <div className="flex items-end justify-between h-20 px-2">
-              {recentMissionHistory?.data.recentHistories
-                .slice()
+              {historyData
+                ?.slice()
                 .reverse()
                 .map((history, index) => (
                   // eslint-disable-next-line react/no-array-index-key
@@ -116,6 +136,7 @@ export default function LearningTracker() {
                       <div className="flex flex-col relative items-center gap-1">
                         <div
                           className={`w-8 rounded-md ${
+                            // eslint-disable-next-line no-nested-ternary
                             history.count > 0 && history.count === 1
                               ? 'bg-violet-200'
                               : history.count === 2
@@ -131,7 +152,6 @@ export default function LearningTracker() {
                             {history.count}
                           </div>
                         )}
-                        {history.count === 0}
                         <span className="text-xs text-gray-500">
                           {formatDate(history.date, 'MM.DD', -1)}
                         </span>
@@ -149,6 +169,11 @@ export default function LearningTracker() {
           </TooltipProvider>
         </div>
       </CardContent>
+      {!isLogin && (
+        <div className="absolute inset-0 bg-background/5 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center rounded-lg">
+          <LogInOutButton />
+        </div>
+      )}
     </Card>
   );
 }
