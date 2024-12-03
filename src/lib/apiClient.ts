@@ -11,30 +11,50 @@ export const apiClient = async <Response>(
   endpoint: string,
   { method = 'GET', customHeaders = {}, ...options }: FetchOptions = {},
 ): Promise<Response> => {
-  const response = await fetch(`${BASE_URL}/api${endpoint}`, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      ...customHeaders,
-    },
-    credentials: 'include',
-    ...options,
-  });
+  try {
+    const response = await fetch(`${BASE_URL}/api${endpoint}`, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...customHeaders,
+      },
+      credentials: 'include',
+      ...options,
+    });
 
-  const responseData = await response.json();
+    // JSON 응답 파싱 전에 검증
+    const responseText = await response.text(); // 먼저 raw 텍스트 형태로 가져옴
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let responseData: any = null;
 
-  // 성공이 아닌 경우 (response 200~299 사이의 코드가 아닌 경우)
-  if (!response.ok) {
-    const errorCode = responseData?.code;
-    // 커스텀 에러 코드 존재하는 에러
-    // TODO(@godhyzzang) : mutation은 hook에서 try-catch로 에러처리 해주어야 에러 바운더리로 전달되지 않음
-    if (errorCode && CustomErrorMessages[errorCode]) {
-      console.log('customError 발생');
-      throw new CustomError(errorCode, CustomErrorMessages[errorCode]);
+    if (responseText) {
+      try {
+        responseData = JSON.parse(responseText);
+      } catch {
+        throw new Error(`Invalid JSON format in response from ${endpoint}`);
+      }
     }
-    // 커스텀 에러 코드 존재하지 않는 에러
-    console.log('non-custom 에러 발생');
-    throw new Error(`HTTP error! status: ${response.status}`);
+
+    // 성공이 아닌 경우 처리
+    if (!response.ok) {
+      const errorCode = responseData?.code;
+
+      // 커스텀 에러 코드 존재 시
+      if (errorCode && CustomErrorMessages[errorCode]) {
+        console.log('CustomError 발생');
+        throw new CustomError(errorCode, CustomErrorMessages[errorCode]);
+      }
+
+      // 커스텀 에러 코드가 없을 경우
+      console.log('Non-custom 에러 발생');
+      throw new Error(
+        `HTTP error! Status: ${response.status}. Message: ${responseData?.message || 'Unknown error'}`,
+      );
+    }
+
+    return responseData as Response;
+  } catch (error) {
+    console.error('API Client Error:', error);
+    throw error; // 에러를 호출한 쪽으로 전달
   }
-  return responseData;
 };
