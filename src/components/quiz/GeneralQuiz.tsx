@@ -176,7 +176,7 @@ export default function GeneralQuiz({
         </div>
 
         {/* 결과 메세지 */}
-        {question.status !== 'ready' && (
+        {question.status !== 'ready' && question.status !== 'submitting' && (
           <div
             className={cn(
               'text-center font-medium mt-4 p-3 rounded-md',
@@ -190,7 +190,7 @@ export default function GeneralQuiz({
         )}
 
         {/* 다음 문제 넘어가기 */}
-        {question.status !== 'ready' && (
+        {question.status !== 'ready' && question.status !== 'submitting' && (
           <Button
             className="w-full mt-6"
             onClick={handleNext}
