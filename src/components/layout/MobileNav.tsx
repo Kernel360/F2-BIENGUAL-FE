@@ -81,7 +81,7 @@ export default function SwipeablePanel({
         <Button
           variant="ghost"
           size="sm"
-          className="absolute top-2 right-2"
+          className="absolute top-2 right-2 z-10"
           onClick={() => setIsOpen(false)}
         >
           <X />
