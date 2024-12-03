@@ -169,9 +169,15 @@ export default function LearningTracker() {
           </TooltipProvider>
         </div>
       </CardContent>
+
       {!isLogin && (
-        <div className="absolute inset-0 bg-background/5 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center rounded-lg">
-          <LogInOutButton />
+        <div className="absolute  inset-0 bg-white/60 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center rounded-lg">
+          <div className="p-4 px-6 bg-white/50 rounded-lg shadow-lg mb-4">
+            <p className="text-center text-gray-700 font-medium text-sm mb-2">
+              미션 기록을 쌓아가세요!
+            </p>
+            <LogInOutButton className="shadow-md hover:shadow-lg transition-shadow duration-300" />
+          </div>
         </div>
       )}
     </Card>
