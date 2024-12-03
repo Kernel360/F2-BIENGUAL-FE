@@ -4,7 +4,7 @@
 
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 
-import { Eye } from 'lucide-react';
+import { Eye, Target } from 'lucide-react';
 import ReactPlayer from 'react-player';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactScriptPlayer } from 'react-player-plugin-prompter';
@@ -57,6 +57,7 @@ export default function ListeningDetailClient({
 
   const playerRef = useRef<ReactPlayer | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
+  const [isSeeking, setIsSeeking] = useState(false);
 
   const { data: missionStatus } = useFetchMissionStatus();
   const { mutate: updateMissionStatus } = useUpdateMissionStatus();
@@ -73,10 +74,28 @@ export default function ListeningDetailClient({
   const [isPlaying, setIsPlaying] = useState(true);
 
   const seekTo = (timeInSeconds: number) => {
-    if (playerRef.current) {
-      playerRef.current.seekTo(timeInSeconds, 'seconds');
-    }
+    setIsSeeking(true);
+    playerRef.current?.seekTo(timeInSeconds, 'seconds');
+
+    setTimeout(() => setIsSeeking(false), 50);
   };
+
+  const getCurrentTime = () => playerRef.current?.getCurrentTime() || 0;
+
+  useEffect(() => {
+    let animationFrameId: number;
+
+    const updateTime = () => {
+      if (playerRef.current && !isSeeking) {
+        setCurrentTime(playerRef.current.getCurrentTime() || 0);
+      }
+      animationFrameId = requestAnimationFrame(updateTime);
+    };
+
+    animationFrameId = requestAnimationFrame(updateTime);
+
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [isSeeking]);
 
   // TODO(@godhyzzang): 이전 학습률로 시간 이동 동작하지 않음
   useEffect(() => {
@@ -140,6 +159,33 @@ export default function ListeningDetailClient({
     toggleScrap(listeningDetailData?.data.isScrapped);
   };
 
+  // eslint-disable-next-line react/no-unstable-nested-components
+  function FocusButton({
+    isFocused,
+    setIsFocused,
+  }: {
+    isFocused: boolean;
+    setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  }) {
+    return (
+      <div className="flex justify-end">
+        <button
+          className="cursor-pointer"
+          type="button"
+          disabled={isFocused}
+          onClick={() => {
+            setIsFocused(!isFocused);
+          }}
+        >
+          <Target
+            className="w-6 h-6"
+            stroke={isFocused ? '#cbc2d6' : '#8e48ea'} // isFocused 상태에 따라 색상 변경
+          />
+        </button>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -197,7 +243,7 @@ export default function ListeningDetailClient({
         scripts={listeningDetailData?.data.scriptList || []}
         selectedLanguages={selectedLanguages}
         seekTo={seekTo}
-        currentTime={currentTime}
+        getCurrentTime={getCurrentTime}
         onClickScript={(script, index) => {
           console.log(script, index);
         }}
@@ -206,7 +252,7 @@ export default function ListeningDetailClient({
         }}
         containerStyle={{
           width: '',
-          height: '16rem',
+          height: '',
           padding: '',
           backgroundColor: '',
           borderColor: '#ede9fe',
@@ -225,6 +271,8 @@ export default function ListeningDetailClient({
           borderRadius: '',
           padding: '',
         }}
+        // eslint-disable-next-line react/jsx-no-bind
+        FocusButton={FocusButton}
       />
 
       {/* TODO(@godhyzzang) : logout상태일 때 블러처리한 커버사진 있으면 좋을듯 */}

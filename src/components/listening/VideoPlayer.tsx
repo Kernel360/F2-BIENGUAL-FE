@@ -41,7 +41,6 @@ const VideoPlayer = forwardRef<ReactPlayer, VideoPlayerProps>(
     }, []);
 
     const handleProgress = (state: { playedSeconds: number }) => {
-      setCurrentTime(state.playedSeconds);
       onProgress(state.playedSeconds);
     };
 
@@ -94,6 +93,7 @@ const VideoPlayer = forwardRef<ReactPlayer, VideoPlayerProps>(
                     onStart={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
                     onProgress={handleProgress}
+                    onSeek={(seconds) => setCurrentTime(seconds)}
                     volume={volume}
                     controls={false}
                     playbackRate={playbackRate}
