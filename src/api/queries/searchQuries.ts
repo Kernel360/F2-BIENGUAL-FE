@@ -6,7 +6,7 @@ export const fetchSearchResults = async (
   query: string,
 ): Promise<SearchResponse> => {
   return apiClient<SearchResponse>(
-    `/contents/search?searchWords=${encodeURIComponent(query)}`,
+    `/contents/accurate-search?searchWords=${encodeURIComponent(query)}`,
     {
       method: 'GET',
     },
