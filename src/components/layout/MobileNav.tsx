@@ -117,6 +117,10 @@ export function MobileNav() {
     { name: '홈', href: '/', icon: HouseIcon },
     { name: '대시보드', href: '/dashboard', icon: ChartPie },
   ];
+  // pathname바뀌면 트래커 닫기
+  useEffect(() => {
+    setIsTrackerOpen(false);
+  }, [pathname]);
 
   return (
     <>
