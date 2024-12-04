@@ -2,6 +2,8 @@
 
 'use client';
 
+import { CircleCheckBig, Book, Highlighter, HelpCircle } from 'lucide-react';
+
 import {
   useFetchMissionStatus,
   useFetchRecentMissionHistory,
@@ -64,8 +66,13 @@ function MobileLearningTracker() {
   return (
     <div className="relative space-y-6">
       {!isLogin && (
-        <div className="absolute inset-0 bg-background/5 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center rounded-lg">
-          <LogInOutButton />
+        <div className="absolute  inset-0 bg-white/60 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center rounded-lg">
+          <div className="p-8 bg-white/50 rounded-lg shadow-lg mb-4">
+            <p className="text-center p-2 text-gray-700 font-medium text-lg mb-2">
+              로그인하고 미션 기록을 쌓아가세요!
+            </p>
+            <LogInOutButton className="shadow-md hover:shadow-lg transition-shadow duration-300" />
+          </div>
         </div>
       )}
 
@@ -77,17 +84,45 @@ function MobileLearningTracker() {
 
       {/* 오늘의 미션 상태 표시 */}
       <div className="space-y-4">
-        <h3 className="font-semibold">오늘의 미션</h3>
+        <h3 className="font-medium text-center text-gray-500">
+          오늘 {formatDate(String(new Date()), 'YYYY.MM.DD')}의 미션
+        </h3>
+
         {missionItems.map((item, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={index} className="flex items-center justify-between">
-            <span>{item.label}</span>
-            <input
-              type="checkbox"
-              checked={!!item.status}
-              readOnly
-              className="h-5 w-5 text-violet-600"
-            />
+          <div
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+            className={`flex items-center justify-between p-2 rounded-md transition-colors ${
+              item.status
+                ? 'bg-violet-100 text-violet-900'
+                : 'bg-gray-100 text-gray-500'
+            }`}
+          >
+            <span className="mx-2 text-sm font-medium flex gap-3 justify-center items-center">
+              {item.label === '1개 콘텐츠 학습' && (
+                <>
+                  <Book className="w-6 h-6 stroke-1" />
+                  콘텐츠 1개 학습
+                </>
+              )}
+              {item.label === '형광펜 사용' && (
+                <>
+                  <Highlighter className="w-6 h-6 stroke-1" />
+                  문장 북마크 1개
+                </>
+              )}
+              {item.label === '퀴즈 완료' && (
+                <>
+                  <HelpCircle className="w-6 h-6 stroke-1" />
+                  퀴즈 1문제 완료
+                </>
+              )}
+            </span>
+            <div
+              className={`${item.status ? 'text-violet-500' : 'text-gray-400'}`}
+            >
+              {item.status && <CircleCheckBig stroke="#6622EC" />}
+            </div>
           </div>
         ))}
       </div>
@@ -119,8 +154,8 @@ function MobileLearningTracker() {
                   </div>
                 )}
               </div>
-              <div className="text-center text-sm text-gray-700 mt-1">
-                {formatDate(history.date, 'YYYY.MM.DD')}
+              <div className="text-center text-[12px] text-gray-700 mt-1">
+                {formatDate(history.date, 'MM.DD', -1)}
               </div>
             </div>
           ))}

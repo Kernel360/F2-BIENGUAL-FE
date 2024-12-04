@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 import { ko } from 'date-fns/locale';
-import { CheckCircle, BookmarkCheck, HelpCircle } from 'lucide-react';
+import { Book, Highlighter, HelpCircle } from 'lucide-react';
 
 import { useFetchMissionCalendar } from '@/api/hooks/useDashboard';
 import { Calendar as CustomCalendar } from '@/components/common/CustomShadcnCalendar';
@@ -191,14 +191,14 @@ export default function MissionCalendar() {
                 ) : mission ? (
                   <div className="flex justify-evenly gap-2  my-2 text-sm ">
                     <StatusBox
-                      label="컨텐츠 1개 학습"
+                      label="콘텐츠 1개 학습"
                       completed={mission.missionStatus.oneContent}
-                      icon={<CheckCircle className="w-6 h-6 stroke-1" />}
+                      icon={<Book className="w-6 h-6 stroke-1" />}
                     />
                     <StatusBox
                       label="문장 북마크 1개"
                       completed={mission.missionStatus.bookmark}
-                      icon={<BookmarkCheck className="w-6 h-6 stroke-1" />}
+                      icon={<Highlighter className="w-6 h-6 stroke-1" />}
                     />
                     <StatusBox
                       label="퀴즈 1문제"

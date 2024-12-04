@@ -20,7 +20,7 @@ import {
   ReadingPreviewResponse,
   ListeningPreviewResponse,
   // TODO(@godhyzzang) : 추천bookmark한 문장도  initialData연결
-  // RecommendedBookmarksResponse,
+  RecommendedBookmarksResponse,
 } from '@/types/Preview';
 
 import ItemComponentCard from './ItemComponentCard';
@@ -29,13 +29,13 @@ import RecommendedList from './RecommendedList';
 interface HomePageClientProps {
   initialReadingContents: ReadingPreviewResponse;
   initialListeningContents: ListeningPreviewResponse;
-  // initialSentences: RecommendedBookmarksResponse;
+  initialSentences: RecommendedBookmarksResponse;
 }
 
 export default function HomePageClient({
   initialReadingContents,
   initialListeningContents,
-  // initialSentences,
+  initialSentences,
 }: HomePageClientProps) {
   const { data: readingList, isLoading: readingLoading } = useQuery({
     queryKey: ['readingPreview'],
@@ -53,7 +53,7 @@ export default function HomePageClient({
     useQuery({
       queryKey: ['recommendedBookmarks'],
       queryFn: fetchRecommendedBookmarks,
-      // initialData: initialSentences,
+      initialData: initialSentences,
     });
 
   if (readingLoading || listeningLoading || isSentenceLoading) {

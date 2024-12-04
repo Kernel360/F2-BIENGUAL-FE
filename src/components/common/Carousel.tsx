@@ -46,7 +46,7 @@ export default function Carousel<T>({
     ...previewDatas,
     ...previewDatas.slice(0, loopExtensionCount),
   ];
-
+  // 이 loop 기능은 currentIndex를 가상으로 확장해서 무한 스크롤이 일어나는 것처럼 착각을 주는 것이기 때문에 transition(moveToSlide)이 일어나는 동안에는 인덱스를 업데이트하지 않는 것이 중요함
   const moveToSlide = (index: number) => {
     if (isTransitioning) return; // 이동 중일 경우 중복 호출 방지
     setIsTransitioning(true);
@@ -66,7 +66,8 @@ export default function Carousel<T>({
   useEffect(() => {
     if (carouselRef.current) {
       const totalItemWidth = itemWidth + gap;
-      // TODO(@godhyzzang) : transition 계속 누르면 결국 안 보이는 문제 발생
+      // transition이 일어날 때면 버튼으로 이동하지 못하게 만듦
+      // TODO(@godhyzzang): 특정 엘리먼트가 아주 살짝 뒤늦게 보이는 문제 발생
       carouselRef.current.style.transition = isTransitioning
         ? 'transform 300ms ease-in-out'
         : 'none';
