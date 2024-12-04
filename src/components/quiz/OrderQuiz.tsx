@@ -197,7 +197,7 @@ export default function OrderQuiz({
         </div>
 
         {/* 결과 메세지 */}
-        {question.status !== 'ready' && (
+        {question.status !== 'ready' && question.status !== 'submitting' && (
           <div
             className={cn(
               'text-center font-medium p-3 rounded-lg',
