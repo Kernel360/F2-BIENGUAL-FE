@@ -14,6 +14,8 @@ import {
   ChartPie,
 } from 'lucide-react';
 
+import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
+import LogInOutButton from '@/components/common/LogInOutButton';
 import { Button } from '@/components/ui/button';
 
 import MobileLearningTracker from './side/MobileLearningTracker';
@@ -29,6 +31,9 @@ export default function SwipeablePanel({
   isOpen,
   setIsOpen,
 }: SwipeablePanelProps) {
+  const { data: isLoginData } = useUserLoginStatus();
+  const isLogin = !!isLoginData?.data;
+
   const panelRef = useRef<HTMLDivElement>(null);
   const startY = useRef<number | null>(null);
 
@@ -69,7 +74,7 @@ export default function SwipeablePanel({
       ref={panelRef}
       className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t rounded-t-2xl shadow-lg z-30"
       style={{
-        height: 'calc(100% - 12rem)',
+        height: '600px',
         touchAction: 'none',
         transform: 'translateY(100%)',
       }}
@@ -77,6 +82,16 @@ export default function SwipeablePanel({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      {!isLogin && (
+        <div className="absolute  inset-0 bg-white/60 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center rounded-lg">
+          <div className="p-8 bg-white rounded-lg shadow-lg ">
+            <p className="text-center p-2 text-gray-700 font-medium text-lg mb-2">
+              로그인하고 미션 기록을 쌓아가세요!
+            </p>
+            <LogInOutButton className="shadow-md hover:shadow-lg transition-shadow duration-300" />
+          </div>
+        </div>
+      )}
       <div className="p-4 h-full overflow-auto">
         <Button
           variant="ghost"
@@ -97,11 +112,15 @@ export function MobileNav() {
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
 
   const navItems = [
+    { name: '홈', href: '/', icon: HouseIcon },
     { name: '학습', href: '/learn/listening', icon: BookHeadphones },
     { name: '스크랩', href: '/scrapbook/content', icon: Bookmark },
-    { name: '홈', href: '/', icon: HouseIcon },
     { name: '대시보드', href: '/dashboard', icon: ChartPie },
   ];
+  // pathname바뀌면 트래커 닫기
+  useEffect(() => {
+    setIsTrackerOpen(false);
+  }, [pathname]);
 
   return (
     <>
