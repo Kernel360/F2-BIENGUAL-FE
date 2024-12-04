@@ -107,42 +107,6 @@ export default function SwipeablePanel({
   );
 }
 
-// export function useHasNotch() {
-//   const [hasNotch, setHasNotch] = useState(false);
-
-//   useEffect(() => {
-//     // PWA 및 일반 웹 환경 모두 지원
-//     const isiPhone = (() => {
-//       if (typeof window === 'undefined') return false; // 서버사이드 렌더링 방지
-
-//       const userAgent = navigator.userAgent || navigator.vendor || '';
-//       const isStandalone =
-//         window.matchMedia('(display-mode: standalone)').matches ||
-//         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//         (navigator as any).standalone;
-
-//       // iPhone 확인
-//       const isDeviceiPhone =
-//         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//         /iPhone/.test(userAgent) && !(window as any).MSStream;
-
-//       // PWA 환경에서 standalone 여부도 함께 확인
-//       return (
-//         isDeviceiPhone &&
-//         (isStandalone || !navigator.userAgent.includes('Safari'))
-//       );
-//     })();
-//     if (isiPhone) {
-//       const hasSafeAreaInset =
-//         window.CSS &&
-//         CSS.supports('padding-bottom', 'env(safe-area-inset-bottom)');
-//       setHasNotch(hasSafeAreaInset);
-//     }
-//   }, []);
-
-//   return hasNotch;
-// }
-
 export function MobileNav() {
   const pathname = usePathname();
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
