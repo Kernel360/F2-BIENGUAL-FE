@@ -65,17 +65,6 @@ function MobileLearningTracker() {
 
   return (
     <div className="relative space-y-6">
-      {!isLogin && (
-        <div className="absolute  inset-0 bg-white/60 backdrop-blur-[1px] z-10 flex flex-col items-center justify-center rounded-lg">
-          <div className="p-8 bg-white/50 rounded-lg shadow-lg mb-4">
-            <p className="text-center p-2 text-gray-700 font-medium text-lg mb-2">
-              로그인하고 미션 기록을 쌓아가세요!
-            </p>
-            <LogInOutButton className="shadow-md hover:shadow-lg transition-shadow duration-300" />
-          </div>
-        </div>
-      )}
-
       <h2 className="text-2xl font-bold text-center">학습 트래커</h2>
       <div className="text-center">
         <span className="text-4xl font-bold">{totalLearningDays + 1}</span>
