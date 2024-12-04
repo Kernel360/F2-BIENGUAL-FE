@@ -40,7 +40,7 @@ function RecentLearning() {
               <div className="space-y-1">
                 <div className="w-full relative bg-gray-200 rounded-full h-1.5">
                   <div
-                    className="bg-violet-500 absolute z-50 h-1.5 rounded-full"
+                    className="bg-violet-500 absolute z-10 h-1.5 rounded-full"
                     style={{ width: `${item.currentLearningRate}%` }}
                   />
                   <div
