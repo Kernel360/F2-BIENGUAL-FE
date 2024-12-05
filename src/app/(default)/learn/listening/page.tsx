@@ -1,71 +1,44 @@
-'use client';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 
-import { usePaginatedListeningPreview } from '@/api/hooks/usePreview';
-import ContentTypeFilter from '@/components/common/ContentTypeFilter';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
-import Pagination from '@/components/common/Pagination';
-import ItemComponent from '@/components/ItemComponentCard';
-import { useSetSearchParams } from '@/hooks/useSetSearchParams';
+import { fetchPaginatedListeningPreview } from '@/api/queries/contentsQueries';
+import LearnListeningClient from '@/app/(default)/learn/listening/LearnListeningClient';
 
-function ListeningPage() {
-  const { path, searchParams, setSearchParams } = useSetSearchParams();
+export default async function ListeningPage({
+  searchParams, // 서버 컴포넌트에서 직접 받을 수 있음
+}: {
+  searchParams: Record<string, string | undefined>;
+}) {
+  console.log('searchParams', searchParams);
 
-  const currentPage = Number(searchParams.get('page')) || 1;
-  const size = Number(searchParams.get('size')) || 10;
-  const sort = searchParams.get('sort') || 'createdAt';
-  const direction = searchParams.get('direction') || 'DESC';
-  const categoryId = Number(searchParams.get('categoryId')) || undefined;
+  // 안전한 기본값 처리
+  const page = Number(searchParams?.page || '1');
+  const size = Number(searchParams?.size || '10');
+  const sort = searchParams?.sort || 'createdAt';
+  const direction = searchParams?.direction || 'DESC';
+  const categoryId = Number(searchParams?.categoryId || '');
 
-  const {
-    data: listeningContents,
-    isLoading,
-    isError,
-    error,
-  } = usePaginatedListeningPreview(
-    currentPage,
-    size,
-    sort,
-    direction,
-    categoryId,
-  );
+  const queryClient = new QueryClient();
 
-  if (isError) {
-    return (
-      <p className="text-red-500">
-        리스닝 콘텐츠 목록을 불러오지 못했어요: {error.message}
-      </p>
-    );
-  }
-
-  const handlePageChange = (page: number) => {
-    setSearchParams({ path, params: { page: String(page) } });
-  };
+  await queryClient.prefetchQuery({
+    queryKey: [
+      'paginatedListeningPreview',
+      page,
+      size,
+      sort,
+      direction,
+      categoryId,
+    ].filter((value) => value !== undefined),
+    queryFn: () =>
+      fetchPaginatedListeningPreview(page, size, sort, direction, categoryId),
+  });
 
   return (
-    <main>
-      <ContentTypeFilter />
-
-      {isLoading && <LoadingSpinner />}
-
-      {!isLoading &&
-      (!listeningContents || listeningContents.data.contents.length === 0) ? (
-        <div className="flex justify-center items-center mt-8">
-          콘텐츠가 없습니다
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-7 mt-8">
-          {listeningContents?.data.contents.map((content) => (
-            <ItemComponent key={content.contentId} data={content} />
-          ))}
-        </div>
-      )}
-
-      <Pagination
-        totalPages={listeningContents?.data.totalPages ?? 0}
-        onPageChange={handlePageChange}
-      />
-    </main>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <LearnListeningClient />
+    </HydrationBoundary>
   );
 }
-
-export default ListeningPage;
