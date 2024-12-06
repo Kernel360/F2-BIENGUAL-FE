@@ -22,9 +22,7 @@ export default function ContentTypeFilter() {
   ];
   // 선택한 카테고리 버튼에 색깔반영 위해 currentCategoryId를 state로 관리
   const currentCategoryId = searchParams.get('categoryId') || '';
-  const [selectedCategoryId, setSelectedCategoryId] = useState(
-    currentCategoryId || '',
-  );
+  
 
   const listeningCategories =
     useFetchCategoriesByContentType('LISTENING').data?.data.categoryList || [];
@@ -34,11 +32,7 @@ export default function ContentTypeFilter() {
     ? listeningCategories
     : readingCategories;
 
-  const handleSelectCategories = (categoryId: number) => {
-    setSelectedCategoryId((prevCategoryId) =>
-      prevCategoryId === String(categoryId) ? '' : String(categoryId),
-    );
-  };
+ 
   useEffect(() => {
     if (categories) {
       const validCategory = categories.some(
@@ -46,7 +40,6 @@ export default function ContentTypeFilter() {
       )
         ? currentCategoryId
         : '';
-      setSelectedCategoryId(validCategory);
       setSearchParams({ path: '', params: { categoryId: validCategory } });
     }
   }, [categories]);
@@ -87,7 +80,6 @@ export default function ContentTypeFilter() {
         <button
           type="button"
           onClick={() => {
-            handleSelectCategories(0);
             setSearchParams({ path, params: { categoryId: '' } });
           }}
           className={`px-3 py-1 rounded-full text-sm ${
@@ -105,19 +97,18 @@ export default function ContentTypeFilter() {
               key={category.id}
               type="button"
               onClick={() => {
-                handleSelectCategories(category.id);
                 setSearchParams({
                   path,
                   params: {
                     categoryId:
-                      selectedCategoryId === String(category.id)
+                      currentCategoryId === String(category.id)
                         ? ''
                         : String(category.id),
                   },
                 });
               }}
               className={`px-3 py-1 rounded-full text-sm ${
-                selectedCategoryId === String(category.id)
+                currentCategoryId === String(category.id)
                   ? 'bg-primary text-primary-foreground'
                   : 'bg-gray-200 text-gray-800'
               }`}
