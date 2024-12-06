@@ -17,6 +17,7 @@ import {
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
 import LogInOutButton from '@/components/common/LogInOutButton';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
 import MobileLearningTracker from './side/MobileLearningTracker';
 
@@ -110,6 +111,7 @@ export default function SwipeablePanel({
 export function MobileNav() {
   const pathname = usePathname();
   const [isTrackerOpen, setIsTrackerOpen] = useState(false);
+  const [ios, setIos] = useState(false);
 
   const navItems = [
     { name: '홈', href: '/', icon: HouseIcon },
@@ -117,14 +119,27 @@ export function MobileNav() {
     { name: '스크랩', href: '/scrapbook/content', icon: Bookmark },
     { name: '대시보드', href: '/dashboard', icon: ChartPie },
   ];
+
   // pathname바뀌면 트래커 닫기
   useEffect(() => {
     setIsTrackerOpen(false);
   }, [pathname]);
 
+  // 브라우저 환경에서 iOS 여부 확인
+  useEffect(() => {
+    if (typeof navigator !== 'undefined') {
+      setIos(/iPhone|iPad|iPod/i.test(navigator.userAgent));
+    }
+  }, []);
+
   return (
     <>
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t z-40">
+      <nav
+        className={cn(
+          'md:hidden fixed bottom-0 left-0 right-0 bg-white border-t z-40',
+          ios && 'pb-[34px]',
+        )}
+      >
         <div className="flex justify-around items-center h-16">
           {navItems.map((item) => (
             <Link
