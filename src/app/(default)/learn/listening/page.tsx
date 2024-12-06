@@ -8,6 +8,8 @@ import {
 
 import { fetchPaginatedListeningPreview } from '@/api/queries/contentsQueries';
 import LearnListeningClient from '@/app/(default)/learn/listening/LearnListeningClient';
+import { fetchCategoriesByContentType } from '@/api/queries/categoryQueries';
+
 
 export default async function ListeningPage({
   searchParams, // 서버 컴포넌트에서 직접 받을 수 있음
@@ -15,6 +17,15 @@ export default async function ListeningPage({
   searchParams: Record<string, string | undefined>;
 }) {
   console.log('searchParams', searchParams);
+
+     // 서버 컴포넌트라 useQueryClient 사용불가하므로 QueryClient 새로 생성
+
+     const queryClient = new QueryClient();
+     // 카테고리 데이터 미리 가져오기
+     await queryClient.prefetchQuery({
+       queryKey: ['categories', 'LISTENING'],
+       queryFn: () => fetchCategoriesByContentType('LISTENING'),
+     });
 
   // 안전한 기본값 처리
    const page = Number(searchParams?.page || '1'); // 기본값 1
@@ -26,7 +37,7 @@ export default async function ListeningPage({
    const categoryIdNumber = categoryId ? Number(categoryId) : undefined;
    console.log('categoryIdNumber', categoryIdNumber);
 
-  const queryClient = new QueryClient();
+ 
 
   await queryClient.prefetchQuery({
     queryKey: [

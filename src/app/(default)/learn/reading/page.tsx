@@ -8,6 +8,7 @@ import {
 
 import { fetchPaginatedReadingPreview } from '@/api/queries/contentsQueries';
 import LearnReadingClient from '@/app/(default)/learn/reading/LearnReadingClient';
+import { fetchCategoriesByContentType } from '@/api/queries/categoryQueries';
 
 export default async function ReadingPage({
   searchParams, // 서버 컴포넌트에서 직접 받을 수 있음
@@ -15,6 +16,17 @@ export default async function ReadingPage({
   searchParams: Record<string, string | undefined>;
 }) {
   console.log('searchParams', searchParams);
+
+
+
+   // 서버 컴포넌트라 useQueryClient 사용불가하므로 QueryClient 새로 생성
+   const queryClient = new QueryClient();
+
+   await queryClient.prefetchQuery({
+     queryKey: ['categories', 'READING'],
+     queryFn: () => fetchCategoriesByContentType('READING'),
+   });
+ 
 
   // 안전한 기본값 처리
    const page = Number(searchParams?.page || '1'); // 기본값 1
@@ -26,7 +38,6 @@ export default async function ReadingPage({
    const categoryIdNumber = categoryId ? Number(categoryId) : undefined;
    console.log('categoryIdNumber', categoryIdNumber);
 
-  const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
     queryKey: [
