@@ -1,4 +1,5 @@
 // app/(default)/learn/reading/page.tsx
+
 import {
   dehydrate,
   HydrationBoundary,

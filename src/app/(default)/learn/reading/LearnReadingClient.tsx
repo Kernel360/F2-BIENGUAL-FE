@@ -1,3 +1,5 @@
+// app/learn/reading/LearnReadingClient.tsx
+
 'use client';
 
 import { usePaginatedReadingPreview } from '@/api/hooks/usePreview';
