@@ -1,70 +1,63 @@
-'use client';
+// app/(default)/learn/reading/page.tsx
 
-import { usePaginatedReadingPreview } from '@/api/hooks/usePreview';
-import ContentTypeFilter from '@/components/common/ContentTypeFilter';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
-import Pagination from '@/components/common/Pagination';
-import ItemComponentList from '@/components/ItemComponentList';
-import { useSetSearchParams } from '@/hooks/useSetSearchParams';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 
-export default function ReadingPage() {
-  const { path, searchParams, setSearchParams } = useSetSearchParams();
-  const currentPage = Number(searchParams.get('page'));
-  // 기본값 지정해줘야만 null, undefined가 queryparams로 들어가지 않음
-  const size = Number(searchParams.get('size')) || 10;
-  const sort = searchParams.get('sort') || 'createdAt';
-  const direction = searchParams.get('direction') || 'DESC';
-  const categoryId = Number(searchParams.get('categoryId')) || undefined;
+import { fetchCategoriesByContentType } from '@/api/queries/categoryQueries';
+import { fetchPaginatedReadingPreview } from '@/api/queries/contentsQueries';
+import LearnReadingClient from '@/app/(default)/learn/reading/LearnReadingClient';
 
-  const {
-    data: readingContents,
-    isLoading,
-    isError,
-    error,
-  } = usePaginatedReadingPreview(
-    currentPage,
-    size,
-    sort,
-    direction,
-    categoryId,
-  );
+export default async function ReadingPage({
+  searchParams, // 서버 컴포넌트에서 직접 받을 수 있음
+}: {
+  searchParams: Record<string, string | undefined>;
+}) {
+  // console.log('searchParams', searchParams);
 
-  if (isError) {
-    return (
-      <p className="text-red-500">
-        리딩 콘텐츠 목록을 불러오지 못했어요: {error.message}
-      </p>
-    );
-  }
+  // 서버 컴포넌트라 useQueryClient 사용불가하므로 QueryClient 새로 생성
+  const queryClient = new QueryClient();
 
-  const handlePageChange = (page: number) => {
-    setSearchParams({ path, params: { page: String(page) } });
-  };
+  await queryClient.prefetchQuery({
+    queryKey: ['categories', 'READING'],
+    queryFn: () => fetchCategoriesByContentType('READING'),
+  });
+
+  // 안전한 기본값 처리
+  const page = Number(searchParams?.page || '1');
+  const size = Number(searchParams?.size || '10');
+  const sort = searchParams?.sort || 'createdAt';
+  const direction = searchParams?.direction || 'DESC';
+  const categoryId = searchParams?.categoryId || '';
+  //  console.log('categoryId', categoryId);
+
+  const categoryIdNumber = categoryId ? Number(categoryId) : undefined;
+  //  console.log('categoryIdNumber', categoryIdNumber);
+
+  await queryClient.prefetchQuery({
+    queryKey: [
+      'paginatedReadingPreview',
+      page,
+      size,
+      sort,
+      direction,
+      categoryIdNumber,
+    ].filter((value) => value !== undefined),
+    queryFn: () =>
+      fetchPaginatedReadingPreview(
+        page,
+        size,
+        sort,
+        direction,
+        categoryIdNumber,
+      ),
+  });
 
   return (
-    <main>
-      <ContentTypeFilter />
-
-      {isLoading && <LoadingSpinner />}
-
-      {!isLoading &&
-      (!readingContents || readingContents.data.contents.length === 0) ? (
-        <div className="flex justify-center items-center mt-8">
-          콘텐츠가 없습니다
-        </div>
-      ) : (
-        <div>
-          <ul className="flex flex-col gap-6 mt-8">
-            {readingContents?.data.contents.map((content) => (
-              <ItemComponentList data={content} key={content.contentId} />
-            ))}
-          </ul>
-          <Pagination
-            totalPages={readingContents?.data.totalPages ?? 0}
-            onPageChange={handlePageChange}
-          />
-        </div>
-      )}
-    </main>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <LearnReadingClient />
+    </HydrationBoundary>
   );
 }
