@@ -6,10 +6,9 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 
+import { fetchCategoriesByContentType } from '@/api/queries/categoryQueries';
 import { fetchPaginatedListeningPreview } from '@/api/queries/contentsQueries';
 import LearnListeningClient from '@/app/(default)/learn/listening/LearnListeningClient';
-import { fetchCategoriesByContentType } from '@/api/queries/categoryQueries';
-
 
 export default async function ListeningPage({
   searchParams, // 서버 컴포넌트에서 직접 받을 수 있음
@@ -22,19 +21,19 @@ export default async function ListeningPage({
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-       queryKey: ['categories', 'LISTENING'],
-       queryFn: () => fetchCategoriesByContentType('LISTENING'),
-     });
+    queryKey: ['categories', 'LISTENING'],
+    queryFn: () => fetchCategoriesByContentType('LISTENING'),
+  });
 
   // 안전한 기본값 처리
-   const page = Number(searchParams?.page || '1');
-   const size = Number(searchParams?.size || '10');
-   const sort = searchParams?.sort || 'createdAt';
-   const direction = searchParams?.direction || 'DESC';
-   const categoryId = searchParams?.categoryId || '';
+  const page = Number(searchParams?.page || '1');
+  const size = Number(searchParams?.size || '10');
+  const sort = searchParams?.sort || 'createdAt';
+  const direction = searchParams?.direction || 'DESC';
+  const categoryId = searchParams?.categoryId || '';
   //  console.log('categoryId', categoryId);
 
-   const categoryIdNumber = categoryId ? Number(categoryId) : undefined;
+  const categoryIdNumber = categoryId ? Number(categoryId) : undefined;
   //  console.log('categoryIdNumber', categoryIdNumber);
 
   await queryClient.prefetchQuery({
@@ -47,7 +46,13 @@ export default async function ListeningPage({
       categoryIdNumber,
     ].filter((value) => value !== undefined),
     queryFn: () =>
-      fetchPaginatedListeningPreview(page, size, sort, direction, categoryIdNumber),
+      fetchPaginatedListeningPreview(
+        page,
+        size,
+        sort,
+        direction,
+        categoryIdNumber,
+      ),
   });
 
   return (
