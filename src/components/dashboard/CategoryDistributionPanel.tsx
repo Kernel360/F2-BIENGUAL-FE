@@ -65,7 +65,10 @@ export default function CategoryDistributionPanel() {
             <EmptyPanel message="학습한 카테고리가 없습니다." />
           )}
         {!isLoading && !isError && (
-          <ChartContainer config={chartConfig}>
+          <ChartContainer
+            config={chartConfig}
+            className="aspect-square w-full max-w-lg"
+          >
             <PieChart className="">
               <Pie
                 data={chartData}
@@ -73,7 +76,7 @@ export default function CategoryDistributionPanel() {
                 nameKey="category"
                 cx="50%"
                 cy="50%"
-                outerRadius={100}
+                outerRadius="90%"
                 fill="#8884d8"
               >
                 <LabelList
