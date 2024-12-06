@@ -1,3 +1,5 @@
+// app/learn/listening/page.tsx
+
 import {
   dehydrate,
   HydrationBoundary,
@@ -15,11 +17,14 @@ export default async function ListeningPage({
   console.log('searchParams', searchParams);
 
   // 안전한 기본값 처리
-  const page = Number(searchParams?.page || '1');
-  const size = Number(searchParams?.size || '10');
-  const sort = searchParams?.sort || 'createdAt';
-  const direction = searchParams?.direction || 'DESC';
-  const categoryId = Number(searchParams?.categoryId || '');
+   const page = Number(searchParams?.page || '1'); // 기본값 1
+   const size = Number(searchParams?.size || '10'); // 기본값 10
+   const sort = searchParams?.sort || 'createdAt'; // 기본값 createdAt
+   const direction = searchParams?.direction || 'DESC'; // 기본값 DESC
+   const categoryId = searchParams?.categoryId || ''; // categoryId는 undefined 허용
+   console.log('categoryId', categoryId);
+   const categoryIdNumber = categoryId ? Number(categoryId) : undefined;
+   console.log('categoryIdNumber', categoryIdNumber);
 
   const queryClient = new QueryClient();
 
@@ -30,10 +35,10 @@ export default async function ListeningPage({
       size,
       sort,
       direction,
-      categoryId,
+      categoryIdNumber,
     ].filter((value) => value !== undefined),
     queryFn: () =>
-      fetchPaginatedListeningPreview(page, size, sort, direction, categoryId),
+      fetchPaginatedListeningPreview(page, size, sort, direction, categoryIdNumber),
   });
 
   return (
