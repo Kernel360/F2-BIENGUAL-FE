@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Link from 'next/link';
 
@@ -55,6 +55,28 @@ export default function HomePageClient({
       queryFn: fetchRecommendedBookmarks,
       initialData: initialSentences,
     });
+
+  // useEffect(() => {
+  //   if ('serviceWorker' in navigator) {
+  //     const registInit = async () => {
+  //       const registration = await navigator.serviceWorker.register('/sw.js');
+  //       registration.waiting?.postMessage('SKIP_WAITING');
+  //     };
+  //     registInit();
+  //   }
+  // });
+
+  useEffect(() => {
+    navigator.serviceWorker
+      .register('/sw.js')
+      .then((registration) =>
+        console.log(
+          'Service Worker registration successful with scope: ',
+          registration.scope,
+        ),
+      )
+      .catch((err) => console.log('Service Worker registration failed: ', err));
+  });
 
   if (readingLoading || listeningLoading || isSentenceLoading) {
     return <LoadingSpinner />;
