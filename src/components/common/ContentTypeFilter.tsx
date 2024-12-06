@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useFetchCategoriesByContentType } from '@/api/hooks/useCategories';
 import { Button } from '@/components/ui/button';
@@ -22,7 +22,6 @@ export default function ContentTypeFilter() {
   ];
   // 선택한 카테고리 버튼에 색깔반영 위해 currentCategoryId를 state로 관리
   const currentCategoryId = searchParams.get('categoryId') || '';
-  
 
   const listeningCategories =
     useFetchCategoriesByContentType('LISTENING').data?.data.categoryList || [];
@@ -32,7 +31,6 @@ export default function ContentTypeFilter() {
     ? listeningCategories
     : readingCategories;
 
- 
   useEffect(() => {
     if (categories) {
       const validCategory = categories.some(
