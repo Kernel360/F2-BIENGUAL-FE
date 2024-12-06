@@ -58,10 +58,10 @@ export const processQuizAccuracyData = (data: WeeklyQuizAccuracy[]) =>
     week: `week ${item.weekNumber} (${item.weekStartDate})`,
     firstTryRate:
       item.totalFirstTry > 0
-        ? ((item.firstTryCorrect / item.totalFirstTry) * 100).toFixed(2)
+        ? ((item.firstTryCorrect / item.totalFirstTry) * 100).toFixed(0)
         : 0,
     reTryRate:
       item.totalReTry > 0
-        ? ((item.reTryCorrect / item.totalReTry) * 100).toFixed(2)
+        ? ((item.reTryCorrect / item.totalReTry) * 100).toFixed(0)
         : 0,
   }));
