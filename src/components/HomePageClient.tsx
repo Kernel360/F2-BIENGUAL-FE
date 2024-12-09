@@ -56,16 +56,6 @@ export default function HomePageClient({
       initialData: initialSentences,
     });
 
-  // useEffect(() => {
-  //   if ('serviceWorker' in navigator) {
-  //     const registInit = async () => {
-  //       const registration = await navigator.serviceWorker.register('/sw.js');
-  //       registration.waiting?.postMessage('SKIP_WAITING');
-  //     };
-  //     registInit();
-  //   }
-  // });
-
   useEffect(() => {
     navigator.serviceWorker
       .register('/sw.js')
