@@ -121,40 +121,38 @@ export default function ReadingScriptItem({
   };
 
   return (
-    <li className="rounded relative leading-loose">
+    <li className="rounded leading-loose relative">
       <div
         onClick={() => setIsSelected(true)}
         role="button"
         tabIndex={0}
         className={cn(
-          `w-fit cursor-pointer px-2 transition-colors duration-300`,
+          `w-fit cursor-pointer px-2 transition-colors duration-300 relative`,
           // 팬딩 상태 또는 북마크가 활성화된 경우 노란색 적용
-          script.isHighlighted && 'bg-yellow-200',
-          !script.isHighlighted && 'hover:bg-gray-200',
+          script.isHighlighted && 'bg-yellow-200 rounded-sm',
+          !script.isHighlighted && 'hover:bg-gray-200 rounded-sm',
         )}
       >
         <p className="font-semibold relative">
           {script.enScript}
-          {showMemo && (
-            <MemoInput
-              memoText={memoText}
-              setMemoText={setMemoText}
-              onSaveMemo={handleSaveMemo}
-              onClose={() => setShowMemo(false)}
-            />
+          {script.description && (
+            <span
+              className="cursor-pointer inline-flex ml-2"
+              onClick={handleReadMemo}
+            >
+              <MessageCircleMoreIcon size="16px" color="purple" />
+            </span>
           )}
         </p>
-        {script.description && (
-          <span
-            className="cursor-pointer ml-2 inline-flex"
-            onClick={handleReadMemo}
-          >
-            <MessageCircleMoreIcon size="16px" color="purple" />
-          </span>
+        {showMemo && (
+          <MemoInput
+            memoText={memoText}
+            setMemoText={setMemoText}
+            onSaveMemo={handleSaveMemo}
+            onClose={() => setShowMemo(false)}
+          />
         )}
       </div>
-      {showTranslate && <p className="px-2 ">{script.koScript}</p>}
-
       {isSelected && (
         <Tooltip
           onAddBookmark={handleAddBookmark}
@@ -164,6 +162,8 @@ export default function ReadingScriptItem({
           isBookmarked={script.isHighlighted}
         />
       )}
+
+      {showTranslate && <p className="px-2 ">{script.koScript}</p>}
 
       {showDeleteModal && (
         <Modal

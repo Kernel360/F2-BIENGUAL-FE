@@ -33,7 +33,7 @@ export default function MemoInput({
   return (
     <div
       ref={memoRef}
-      className="absolute w-72 bg-white border border-gray-200 shadow-lg rounded-lg p-4 z-50 mt-2 top-full left-0 "
+      className="absolute w-72 bg-white border border-gray-200 shadow-lg rounded-lg p-4 z-30 top-full -left-2"
       onClick={(e) => e.stopPropagation()} // 메모 창 클릭 시 이벤트 전파 방지
     >
       <textarea
