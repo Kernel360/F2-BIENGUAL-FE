@@ -65,29 +65,29 @@ export default function Tooltip({
           {!isBookmarked ? (
             <button
               type="button"
-              className="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded cursor-pointer"
+              className="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded cursor-pointer "
               onClick={onAddBookmark}
             >
               <HighlighterIcon size="16px" />
-              <span>형광펜</span>
+              <span className="ml-1">형광펜</span>
             </button>
           ) : (
             <button
               type="button"
-              className="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded cursor-pointer"
+              className="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded cursor-pointer "
               onClick={onRemoveBookmark}
             >
               <Trash2 size="16px" />
-              <span>삭제</span>
+              <span className="ml-1">삭제</span>
             </button>
           )}
           <button
             type="button"
-            className="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded cursor-pointer"
+            className="flex items-center p-2 text-gray-600 hover:bg-gray-100 rounded cursor-pointer "
             onClick={onAddMemoStart}
           >
             <MessageCircleMoreIcon size="16px" />
-            <span>메모</span>
+            <span className="ml-1">메모</span>
           </button>
         </>
       )}
