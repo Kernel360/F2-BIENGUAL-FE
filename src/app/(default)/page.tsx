@@ -15,6 +15,7 @@ import HomePageClient from '../../components/HomePageClient';
 export default async function HomePage() {
   const cookieHeader = cookies().toString();
 
+  // TODO(@smosco): allSettled로 변경 필요 병렬 처리 중에 하나에서 에러나면 아예 에러남
   const [
     initialReadingContents,
     initialListeningContents,
