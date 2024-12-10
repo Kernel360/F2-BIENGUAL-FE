@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import ContentWrapper from '@/components/layout/ContentWrapper';
 import { Header } from '@/components/layout/Header';
@@ -26,7 +26,7 @@ export default function DefaultLayout({
       <ContentWrapper>{children}</ContentWrapper>
       <Toaster />
       <MobileNav />
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </TanstackQueryPovider>
   );
 }
