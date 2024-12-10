@@ -1,112 +1,20 @@
-'use client';
-
 import Link from 'next/link';
 
 import { Lock, BookOpen, Headphones } from 'lucide-react';
 
-import { useRecommendedContents } from '@/api/hooks/useRecommend';
 import useUserLoginStatus from '@/api/hooks/useUserLoginStatus';
-// import DifficultyDisplay from '@/components/DifficultyDisplay';
 import { RecommendedPreview } from '@/types/Preview';
 
 import LogInOutButton from './common/LogInOutButton';
 import { Badge } from './ui/badge';
 
-const mockContents: RecommendedPreview[] = [
-  {
-    contentId: 18,
-    title: 'A simple guide to chaos theory - BBC World Service',
-    thumbnailUrl: 'https://i.ytimg.com/vi/r_ahZOgPTsk/maxresdefault.jpg',
-    contentType: 'LISTENING',
-    category: 'Sports',
-    isPointRequired: false,
-  },
-  {
-    contentId: 52,
-    title:
-      'More than one million children in Gaza need mental health support, says UN | BBC News',
-    thumbnailUrl: 'https://i.ytimg.com/vi/pPxZk0QabDQ/maxresdefault.jpg',
-    contentType: 'LISTENING',
-    category: 'News',
-    isPointRequired: false,
-  },
-  {
-    contentId: 10,
-    title: 'Trump’s extreme vision for America hikes pressure on Harris',
-    thumbnailUrl: 'https://media.cnn.com/api/v1/images/stellar/prod/trump2.jpg',
-    contentType: 'READING',
-    category: 'Politics',
-    isPointRequired: false,
-  },
-  {
-    contentId: 9,
-    title:
-      'Fareed: How regional leaders are attempting to upend the international order',
-    thumbnailUrl: 'https://i.ytimg.com/vi/Cl69AodagMU/maxresdefault.jpg',
-    contentType: 'LISTENING',
-    category: 'Politics',
-    isPointRequired: false,
-  },
-  {
-    contentId: 19,
-    title:
-      'Record number of early votes cast in Georgia as election gets underway in battleground state',
-    thumbnailUrl:
-      'https://media.cnn.com/api/v1/images/stellar/prod/enten2-20241016002134646.jpg',
-    contentType: 'READING',
-    category: 'Politics',
-    isPointRequired: false,
-  },
-  {
-    contentId: 27,
-    title: 'Former One Direction member Liam Payne dies at 31',
-    thumbnailUrl: 'https://i.ytimg.com/vi/q68Gfld2vis/maxresdefault.jpg',
-    contentType: 'LISTENING',
-    category: 'Politics',
-    isPointRequired: false,
-  },
-  {
-    contentId: 34,
-    title:
-      'Han Kang wins Nobel Prize in literature for ‘intense poetic prose’ confronting human fragility',
-    thumbnailUrl:
-      'https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-591383892.jpg',
-    contentType: 'READING',
-    category: 'Style',
-    isPointRequired: false,
-  },
-  {
-    contentId: 11,
-    title: 'Judge scrutinizes Boeing plea deal and will decide case ‘soon’',
-    thumbnailUrl:
-      'https://media.cnn.com/api/v1/images/stellar/prod/gettyimages-2158860451.jpg',
-    contentType: 'READING',
-    category: 'Business',
-    isPointRequired: false,
-  },
-  {
-    contentId: 17,
-    title: 'Harvard negotiator explains how to argue | Dan Shapiro',
-    thumbnailUrl: 'https://i.ytimg.com/vi/IDj1OBG5Tpw/maxresdefault.jpg',
-    contentType: 'LISTENING',
-    category: 'Education',
-    isPointRequired: false,
-  },
-];
-
-export default function RecommendedList() {
+export default function RecommendedList({
+  recommendedData,
+}: {
+  recommendedData: RecommendedPreview[];
+}) {
   const { data: isLoginData } = useUserLoginStatus();
   const isLogin = !!isLoginData?.data;
-
-  const {
-    data: recommendedContents,
-    isLoading,
-    isError,
-  } = useRecommendedContents();
-
-  const contents = isLogin
-    ? recommendedContents?.data.recommendedContents || []
-    : mockContents;
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-6">
@@ -128,19 +36,7 @@ export default function RecommendedList() {
 
         {/* TODO(@smosco): 대체 어떻게 로딩, 에러 상태를 표시하는게 좋은지 모르겠음 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {isLogin && isLoading && (
-            <div className="flex h-64">
-              <p className="text-muted-foreground">로딩 중...</p>
-            </div>
-          )}
-
-          {isLogin && isError && (
-            <div className="flex h-64">
-              <p>추천 콘텐츠를 불러오지 못했습니다.</p>
-            </div>
-          )}
-
-          {contents.map((content, index) => (
+          {recommendedData.map((content, index) => (
             <Link
               key={content.contentId}
               href={`/learn/${content.contentType.toLowerCase()}/detail/${content.contentId}`}

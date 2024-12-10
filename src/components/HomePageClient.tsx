@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Link from 'next/link';
 
@@ -11,7 +11,10 @@ import {
   fetchReadingPreview,
   fetchListeningPreview,
 } from '@/api/queries/contentsQueries';
-import { fetchRecommendedBookmarks } from '@/api/queries/recommendQueries';
+import {
+  fetchRecommendedBookmarks,
+  fetchRecommendedContents,
+} from '@/api/queries/recommendQueries';
 import Carousel from '@/components/common/Carousel';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SentenceComponent from '@/components/SentenceComponent';
@@ -21,6 +24,7 @@ import {
   ListeningPreviewResponse,
   // TODO(@godhyzzang) : 추천bookmark한 문장도  initialData연결
   RecommendedBookmarksResponse,
+  RecommendedContentsResponse,
 } from '@/types/Preview';
 
 import ItemComponentCard from './ItemComponentCard';
@@ -30,12 +34,14 @@ interface HomePageClientProps {
   initialReadingContents: ReadingPreviewResponse;
   initialListeningContents: ListeningPreviewResponse;
   initialSentences: RecommendedBookmarksResponse;
+  initialRecommendedContents: RecommendedContentsResponse;
 }
 
 export default function HomePageClient({
   initialReadingContents,
   initialListeningContents,
   initialSentences,
+  initialRecommendedContents,
 }: HomePageClientProps) {
   const { data: readingList, isLoading: readingLoading } = useQuery({
     queryKey: ['readingPreview'],
@@ -56,19 +62,19 @@ export default function HomePageClient({
       initialData: initialSentences,
     });
 
-  useEffect(() => {
-    navigator.serviceWorker
-      .register('/sw.js')
-      .then((registration) =>
-        console.log(
-          'Service Worker registration successful with scope: ',
-          registration.scope,
-        ),
-      )
-      .catch((err) => console.log('Service Worker registration failed: ', err));
-  });
+  const { data: recommendedContents, isLoading: isRecommendedLoading } =
+    useQuery({
+      queryKey: ['recommendedContents'],
+      queryFn: () => fetchRecommendedContents(),
+      initialData: initialRecommendedContents,
+    });
 
-  if (readingLoading || listeningLoading || isSentenceLoading) {
+  if (
+    readingLoading ||
+    listeningLoading ||
+    isSentenceLoading ||
+    isRecommendedLoading
+  ) {
     return <LoadingSpinner />;
   }
 
@@ -121,7 +127,9 @@ export default function HomePageClient({
         // isAutoPlay
         loopExtensionCount={2} // 한 화면에 캐러셀이 3개인 캐러셀은 2개 확장해야 Loop기능 가능
       />
-      <RecommendedList />
+      <RecommendedList
+        recommendedData={recommendedContents?.data.recommendedContents}
+      />
     </div>
   );
 }
