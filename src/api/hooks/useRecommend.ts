@@ -5,6 +5,7 @@ import {
   RecommendedContentsResponse,
 } from '@/types/Preview';
 
+import { useQueryLoginOnly } from './common';
 import {
   fetchRecommendedBookmarks,
   fetchRecommendedContents,
@@ -12,7 +13,7 @@ import {
 
 export const useRecommendedContents =
   (): UseQueryResult<RecommendedContentsResponse> => {
-    return useQuery({
+    return useQueryLoginOnly({
       queryKey: ['recommendedContents'],
       queryFn: () => fetchRecommendedContents(),
     });
