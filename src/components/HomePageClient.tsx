@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import Link from 'next/link';
 
@@ -55,18 +55,6 @@ export default function HomePageClient({
       queryFn: fetchRecommendedBookmarks,
       initialData: initialSentences,
     });
-
-  useEffect(() => {
-    navigator.serviceWorker
-      .register('/sw.js')
-      .then((registration) =>
-        console.log(
-          'Service Worker registration successful with scope: ',
-          registration.scope,
-        ),
-      )
-      .catch((err) => console.log('Service Worker registration failed: ', err));
-  });
 
   if (readingLoading || listeningLoading || isSentenceLoading) {
     return <LoadingSpinner />;
