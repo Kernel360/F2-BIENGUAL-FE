@@ -137,7 +137,7 @@ export function MobileNav() {
       <nav
         className={cn(
           'md:hidden fixed bottom-0 left-0 right-0 bg-white border-t z-40',
-          ios && 'pb-[env(safe-area-inset-bottom)]',
+          ios && 'pb-[20px]',
         )}
       >
         <div className="flex justify-around items-center h-16">

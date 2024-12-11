@@ -107,13 +107,6 @@ export default function MissionCalendar() {
         {isError && (
           <ErrorPanel title="학습 미션 캘린더" className="h-[370px]" />
         )}
-        {/* {!isLoading && !isError && data?.data === null && (
-          <EmptyPanel
-            title="학습 미션 캘린더"
-            message="포인트가 없습니다."
-            className="h-[110px]"
-          />
-        )} */}
         {!isLoading && !isError && (
           <>
             <CustomCalendar
@@ -207,7 +200,7 @@ export default function MissionCalendar() {
                     />
                   </div>
                 ) : (
-                  <div>미션 데이터가 없습니다.</div>
+                  <div>미션 데이터가 없어요.</div>
                 )}
               </div>
               {/* <span>Count: {mission.missionStatus.count}</span> */}

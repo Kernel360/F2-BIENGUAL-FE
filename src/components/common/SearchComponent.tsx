@@ -47,8 +47,8 @@ export default function SearchComponent() {
       <input
         ref={inputRef}
         type="text"
-        placeholder="콘텐츠 제목을 검색하세요"
-        className="min-h-4 p-2 outline-none border-none flex-grow rounded-lg bg-gray-50 text-gray-600 focus:ring-1 focus:ring-violet-400 focus:ring-opacity-70"
+        placeholder="제목 또는 내용을 검색해보세요"
+        className="min-h-4 p-2 pl-4 outline-none border-none flex-grow rounded-lg bg-gray-50 text-gray-600 focus:ring-1 focus:ring-violet-400 focus:ring-opacity-70"
         onKeyDown={handleKeyDown}
       />
       <Button variant="ghost" size="icon" onClick={handleButtonClick}>

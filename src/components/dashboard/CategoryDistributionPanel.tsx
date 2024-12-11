@@ -62,7 +62,7 @@ export default function CategoryDistributionPanel() {
         {!isLoading &&
           !isError &&
           data?.data.categoryLearningList.length === 0 && (
-            <EmptyPanel message="학습한 카테고리가 없습니다." />
+            <EmptyPanel message="학습한 카테고리가 없어요" />
           )}
         {!isLoading && !isError && (
           <ChartContainer

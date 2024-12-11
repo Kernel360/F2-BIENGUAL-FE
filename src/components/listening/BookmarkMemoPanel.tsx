@@ -93,8 +93,8 @@ export default function BookmarkMemoPanel({
       )
     ) {
       toast({
-        title: '이미 해당 시간에 북마크가 존재합니다.',
-        description: '북마크 아래 메모영역에 메모를 추가해주세요.',
+        title: '해당 시간에 이미 북마크가 존재해요',
+        description: '북마크 아래 메모 영역에 메모를 추가해주세요.',
         duration: 1000,
       });
       return;
@@ -160,7 +160,7 @@ export default function BookmarkMemoPanel({
                   );
                 })
               : !selectedSentenceIndex && ( // 메모 저장이 안 되었어도 '메모추가' 버튼 누르는 순간부터 북마크가 없다는 메세지는 안 보여야함
-                  <EmptyAlert alertDescription="북마크가 없습니다." />
+                  <EmptyAlert alertDescription="저장된 북마크가 없어요" />
                 )}
           </ScrollArea>
         </CardContent>

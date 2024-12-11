@@ -108,7 +108,7 @@ export default function PreviewScrapButton({
         <Modal
           isOpen={showLoginModal}
           onClose={() => setShowLoginModal(false)}
-          title="로그인이 필요합니다."
+          title="로그인이 필요해요"
           description="이 기능을 이용하려면 로그인이 필요해요! "
         >
           <div className="flex justify-center gap-4 mt-4">

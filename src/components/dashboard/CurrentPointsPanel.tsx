@@ -32,7 +32,7 @@ export default function CurrentPointsPanel() {
         {!isLoading && !isError && data?.data === null && (
           <EmptyPanel
             title="내 포인트"
-            message="포인트가 없습니다."
+            message="포인트가 없어요."
             className="h-[110px]"
           />
         )}

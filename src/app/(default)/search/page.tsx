@@ -29,7 +29,7 @@ function SearchResultsList() {
 
   if (!searchResultData || searchResultData.data.contents.length === 0) {
     return (
-      <EmptyAlert alertDescription={`${query}에 대한 검색 결과가 없습니다.`} />
+      <EmptyAlert alertDescription={`${query}에 대한 검색 결과가 없어요`} />
     );
   }
 

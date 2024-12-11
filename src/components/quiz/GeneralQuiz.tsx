@@ -102,11 +102,11 @@ export default function GeneralQuiz({
       if (success) {
         setHint(success.data.hint);
         toast({
-          description: `${requiredPoints} 포인트가 차감되었습니다.`,
+          description: `${requiredPoints} 포인트가 차감되었어요`,
         });
       }
     } catch (error) {
-      toast({ title: '힌트를 불러오지 못했습니다.', duration: 1000 });
+      toast({ title: '힌트를 불러오지 못했어요', duration: 1000 });
     } finally {
       setShowPointModal(false);
     }
