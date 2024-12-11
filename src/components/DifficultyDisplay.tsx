@@ -22,7 +22,7 @@ export default function DifficultyDisplay({
   return (
     <div className="flex h-full w-full items-center justify-start">
       <div className="relative flex items-center justify-center w-auto h-full">
-        {!calculatedLevel ? (
+        {calculatedLevel ? (
           <div
             className={`flex items-center justify-center p-1 px-2 mx-1 gap-1 text-xs font-semibold font-mono text-white ${getBackgroundColor(calculatedLevel)} backdrop-blur-sm rounded`}
           >
