@@ -25,9 +25,8 @@ export default function RecommendedList({
             <div className="bg-card p-6 rounded-lg shadow-lg max-w-md w-full text-center space-y-4 backdrop-blur-sm">
               <Lock className="w-9 h-9 mx-auto text-primary" />
               <h3 className="text-xl font-bold">맞춤 추천을 받아보세요!</h3>
-              <p className="text-sm text-muted-foreground">
-                로그인하면 나만의 학습 기록을 기반으로 맞춤 콘텐츠를 추천받을 수
-                있어요.
+              <p className="text-md text-muted-foreground">
+                로그인해서 맞춤 콘텐츠를 추천받아 보세요
               </p>
               <LogInOutButton />
             </div>
