@@ -20,7 +20,11 @@ export const processCategoryData = <T>(
   categoryData: MonthlyCategoryRatio<T>[],
   totalCount: number,
 ): ProcessedCategoryData[] => {
-  //  count로 내림차순 정렬
+  if (categoryData.length === 0) {
+    return [];
+  }
+
+  // count로 내림차순 정렬
   const sortedData = categoryData.sort((a, b) => b.count - a.count);
 
   // 동률 포함 TOP5 선정
@@ -41,11 +45,15 @@ export const processCategoryData = <T>(
     } as MonthlyCategoryRatio<T>,
   );
 
-  // 비율 계산 및 색깔 부여
-  const chartData = [...top5WithTies, extra].map((item, index) => ({
+  // extra가 0일 경우 제외
+  const chartData = [
+    ...top5WithTies,
+    ...(extra.count > 0 ? [extra] : []), // extra를 count가 0일 경우 추가하지 않음
+  ].map((item, index) => ({
     category: item.categoryName,
     count: item.count,
-    percent: Number(((item.count / totalCount) * 100).toFixed(1)), // 숫자 형식으로 변환
+    percent:
+      totalCount > 0 ? Number(((item.count / totalCount) * 100).toFixed(1)) : 0, // totalCount가 0일 경우 비율 0
     fill:
       index < top5WithTies.length ? colorPalette[index % 5] : colorPalette[5], // top5는 보라색 계열, 나머지는 회색 계열
   }));
@@ -53,15 +61,20 @@ export const processCategoryData = <T>(
   return chartData;
 };
 
-export const processQuizAccuracyData = (data: WeeklyQuizAccuracy[]) =>
-  data.map((item) => ({
+export const processQuizAccuracyData = (data: WeeklyQuizAccuracy[]) => {
+  if (data.length === 0) {
+    return [];
+  }
+
+  return data.map((item) => ({
     week: `week ${item.weekNumber} (${item.weekStartDate})`,
     firstTryRate:
       item.totalFirstTry > 0
-        ? ((item.firstTryCorrect / item.totalFirstTry) * 100).toFixed(0)
+        ? Number(((item.firstTryCorrect / item.totalFirstTry) * 100).toFixed(0))
         : 0,
     reTryRate:
       item.totalReTry > 0
-        ? ((item.reTryCorrect / item.totalReTry) * 100).toFixed(0)
+        ? Number(((item.reTryCorrect / item.totalReTry) * 100).toFixed(0))
         : 0,
   }));
+};

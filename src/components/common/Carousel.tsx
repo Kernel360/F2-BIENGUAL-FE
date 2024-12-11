@@ -19,7 +19,6 @@ interface CarouselProps<T> {
   itemWidth: number;
   isAutoPlay?: boolean;
   autoPlayInterval?: number;
-  loopExtensionCount?: number;
 }
 
 export default function Carousel<T>({
@@ -28,74 +27,44 @@ export default function Carousel<T>({
   previewDatas,
   itemWidth,
   isAutoPlay = false,
-  autoPlayInterval = 3000,
-  loopExtensionCount = 1, // 한 화면에 아이템 개수 1개인 기본 캐러셀의 경우 extendedItems하지 않을 경우 기본 1으로 설정
+  autoPlayInterval = 4000,
 }: CarouselProps<T>) {
   const ItemComponent = itemComponent;
-  const [currentIndex, setCurrentIndex] = useState(0); // 시작 인덱스를 1로 설정
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [showButtons, setShowButtons] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const gap = 16; // 아이템 간 간격 (px)
   const totalItems = previewDatas.length;
-  const extendedItems = [
-    ...previewDatas.slice(totalItems - loopExtensionCount),
-    ...previewDatas,
-    ...previewDatas.slice(0, loopExtensionCount),
-  ];
-  // 이 loop 기능은 currentIndex를 가상으로 확장해서 무한 스크롤이 일어나는 것처럼 착각을 주는 것이기 때문에 transition(moveToSlide)이 일어나는 동안에는 인덱스를 업데이트하지 않는 것이 중요함
+
   const moveToSlide = (index: number) => {
-    if (isTransitioning) return; // 이동 중일 경우 중복 호출 방지
-    setIsTransitioning(true);
     setCurrentIndex(index);
   };
 
   const nextSlide = () => {
-    if (isTransitioning) return; // transition이 끝날 때까지 무시
-    moveToSlide(currentIndex + 1);
+    moveToSlide((currentIndex + 1) % (totalItems - 2));
   };
 
   const prevSlide = () => {
-    if (isTransitioning) return; // transition이 끝날 때까지 무시
-    moveToSlide(currentIndex - 1);
+    moveToSlide((currentIndex - 1 + (totalItems - 2)) % (totalItems - 2));
   };
 
   useEffect(() => {
     if (carouselRef.current) {
       const totalItemWidth = itemWidth + gap;
-      // transition이 일어날 때면 버튼으로 이동하지 못하게 만듦
-      // TODO(@godhyzzang): 특정 엘리먼트가 아주 살짝 뒤늦게 보이는 문제 발생
-      carouselRef.current.style.transition = isTransitioning
-        ? 'transform 300ms ease-in-out'
-        : 'none';
       carouselRef.current.style.transform = `translateX(-${
         currentIndex * totalItemWidth
       }px)`;
     }
-  }, [currentIndex, itemWidth, gap, isTransitioning]);
-
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsTransitioning(false);
-      if (currentIndex === 0) {
-        setCurrentIndex(totalItems);
-      } else if (currentIndex === extendedItems.length - loopExtensionCount) {
-        setCurrentIndex(loopExtensionCount);
-      }
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [currentIndex, totalItems]);
+  }, [currentIndex, itemWidth, gap]);
 
   useEffect(() => {
     if (isAutoPlay && intervalRef.current === null) {
       const intervalId = setInterval(nextSlide, autoPlayInterval);
       intervalRef.current = intervalId;
     }
-    // 종속배열 바뀔 때마다 실행
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -131,7 +100,6 @@ export default function Carousel<T>({
   return (
     <div className="w-full px-4" style={{ minWidth: 0 }}>
       {header && <div className="w-full">{header}</div>}
-
       <div
         className="relative w-full overflow-hidden"
         onMouseEnter={() => setShowButtons(true)}
@@ -142,9 +110,9 @@ export default function Carousel<T>({
       >
         <div
           ref={carouselRef}
-          className="flex transition-transform duration-300 ease-in-out gap-4"
+          className="flex transition-transform duration-1000 ease-in-out gap-4"
         >
-          {extendedItems.map((data, index) => (
+          {previewDatas.map((data, index) => (
             <div
               // eslint-disable-next-line react/no-array-index-key
               key={index}

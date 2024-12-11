@@ -95,25 +95,38 @@ export function Header() {
                     <Avatar className="h-8 w-8">
                       {/* TODO(@smosco): 아바타 이미지 수정 */}
                       {/* <AvatarImage src="/avatars/01.png" alt="@username" /> */}
-                      <AvatarFallback>U</AvatarFallback>
+                      <AvatarFallback>ME</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuItem>
-                    <User className="mr-2 h-4 w-4" />
-                    <Link href="/mypage/profile">
+                <DropdownMenuContent
+                  className="w-40 px-3"
+                  align="end"
+                  forceMount
+                >
+                  <Link href="/mypage/profile">
+                    <DropdownMenuItem className="flex">
+                      <User className=" h-4 w-4" />
                       <span>마이페이지</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Coins className="mr-2 h-4 w-4" />
-                    <Link href="/point">
-                      <span>포인트: {currentPoints?.data.currentPoint}P</span>
-                    </Link>
-                  </DropdownMenuItem>
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link href="/point">
+                    <DropdownMenuItem className="">
+                      {/* <span className="flex items-center text-xs border py-1 px-2 rounded"> */}
+                      <Coins className=" h-4 w-4" />
+                      포인트 :
+                      <span className="text-primary">
+                        {currentPoints?.data.currentPoint} P
+                      </span>
+                      {/* </span> */}
+                    </DropdownMenuItem>
+                  </Link>
+
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => fetchUserLogout()}>
+                  <DropdownMenuItem
+                    className="flex items-center justify-center py-1.5 "
+                    onClick={() => fetchUserLogout()}
+                  >
                     로그아웃
                   </DropdownMenuItem>
                 </DropdownMenuContent>

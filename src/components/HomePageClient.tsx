@@ -92,7 +92,7 @@ export default function HomePageClient({
         }
         itemComponent={ItemComponentCard}
         itemWidth={255}
-        loopExtensionCount={2} // 한 화면에 캐러셀이 3개인 캐러셀은 2개 확장해야 Loop기능 가능
+        isAutoPlay
       />
       {listeningError && (
         <p className="px-4 text-gray-500">
@@ -105,6 +105,8 @@ export default function HomePageClient({
         previewDatas={recommendedBookmarksData?.data.popularBookmarks || []}
         itemComponent={SentenceComponent}
         itemWidth={798}
+        isAutoPlay
+        autoPlayInterval={10000}
       />
       {bookmarksError && (
         <p className="px-4 text-gray-500">오늘의 문장을 불러오지 못했어요</p>
@@ -126,7 +128,7 @@ export default function HomePageClient({
         }
         itemComponent={ItemComponentCard}
         itemWidth={255}
-        loopExtensionCount={2}
+        isAutoPlay
       />
       {readingError && (
         <p className="px-4 text-gray-500">

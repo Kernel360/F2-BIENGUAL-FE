@@ -20,7 +20,6 @@ export default function SentenceComponent({
             <h3 className="text-xl font-bold text-white mb-2 flex gap-2 ">
               다른 사람들이 저장한 문장
             </h3>
-
             <div key={data.contentId}>
               <p className="text-sm text-white mb-2">{data.enDetail}</p>
               {showTranslation && (
