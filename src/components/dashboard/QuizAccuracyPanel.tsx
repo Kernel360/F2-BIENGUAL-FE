@@ -80,7 +80,7 @@ export default function QuizAccuracyPanel() {
       {!isLoading && !isError && !data?.data && (
         <EmptyPanel
           title="최근 5주 퀴즈 정답률"
-          message="최근 5주 학습한 퀴즈가 없습니다."
+          message="학습한 퀴즈가 없어요 퀴즈를 풀어 주세요!"
           className="h-[250px]"
         />
       )}

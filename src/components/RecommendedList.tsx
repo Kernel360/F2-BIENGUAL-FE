@@ -26,8 +26,8 @@ export default function RecommendedList({
               <Lock className="w-9 h-9 mx-auto text-primary" />
               <h3 className="text-xl font-bold">맞춤 추천을 받아보세요!</h3>
               <p className="text-sm text-muted-foreground">
-                로그인하시면 나만의 학습 기록을 기반으로 한 맞춤 콘텐츠를
-                추천해드립니다.
+                로그인하면 나만의 학습 기록을 기반으로 맞춤 콘텐츠를 추천받을 수
+                있어요.
               </p>
               <LogInOutButton />
             </div>

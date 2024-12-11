@@ -35,7 +35,7 @@ export function ErrorPanel({
         className,
       )}
     >
-      {title}을 불러오지 못했습니다.
+      {title}을 불러오지 못했어요
     </div>
   );
 }

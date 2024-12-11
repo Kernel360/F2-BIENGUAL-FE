@@ -20,10 +20,10 @@ export default function DifficultyEvaluator({
     createContentsFeedbackMutation.mutate(level, {
       onSuccess: () => {
         setSuccess(true);
-        toast({ description: '평가가 성공적으로 제출되었습니다.' });
+        toast({ description: '평가가 성공적으로 제출되었어요' });
       },
       onError: () => {
-        toast({ description: '평가를 제출하지 못했습니다.' });
+        toast({ description: '평가를 제출하지 못했어요' });
       },
     });
   };
