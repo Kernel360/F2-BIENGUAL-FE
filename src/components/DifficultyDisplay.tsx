@@ -8,9 +8,9 @@ export default function DifficultyDisplay({
   calculatedLevel: LevelType;
 }) {
   const getHeartCount = (level: LevelType) => {
-    if (level === 'LOW') return 'EASY';
-    if (level === 'MEDIUM') return 'MEDIUM';
-    return 'HARD';
+    if (level === 'LOW') return '🍀EASY';
+    if (level === 'MEDIUM') return '🌟MEDIUM';
+    return '🔥HARD';
   };
 
   const getBackgroundColor = (level: LevelType) => {
