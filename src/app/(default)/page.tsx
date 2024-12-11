@@ -15,20 +15,50 @@ import HomePageClient from '../../components/HomePageClient';
 export default async function HomePage() {
   const cookieHeader = cookies().toString();
 
-  // TODO(@smosco): allSettled로 변경 필요 병렬 처리 중에 하나에서 에러나면 아예 에러남
-  const [
-    initialReadingContents,
-    initialListeningContents,
-    initialSentences,
-    initialRecommendedContents,
-  ] = await Promise.all([
+  const results = await Promise.allSettled([
     fetchReadingPreview({ Cookie: cookieHeader }),
     fetchListeningPreview({ Cookie: cookieHeader }),
     fetchRecommendedBookmarks(),
     cookieHeader
-      ? fetchRecommendedContents({ Cookie: cookieHeader }) || []
-      : mockRecommendedData,
+      ? fetchRecommendedContents({ Cookie: cookieHeader })
+      : Promise.resolve(mockRecommendedData),
   ]);
+
+  const initialReadingContents =
+    results[0].status === 'fulfilled'
+      ? results[0].value
+      : {
+          code: 'error',
+          message: '리딩 콘텐츠 프리뷰 조회 실패',
+          data: { readingPreview: [] },
+        };
+
+  const initialListeningContents =
+    results[1].status === 'fulfilled'
+      ? results[1].value
+      : {
+          code: 'error',
+          message: '리스닝 콘텐츠 프리뷰 조회 실패',
+          data: { listeningPreview: [] },
+        };
+
+  const initialSentences =
+    results[2].status === 'fulfilled'
+      ? results[2].value
+      : {
+          code: 'error',
+          message: '오늘의 문장 조회 실패',
+          data: { popularBookmarks: [] },
+        };
+
+  const initialRecommendedContents =
+    results[3].status === 'fulfilled'
+      ? results[3].value
+      : {
+          code: 'error',
+          message: '추천 콘텐츠 조회 실패',
+          data: { recommendedContents: [] },
+        };
 
   return (
     <HomePageClient

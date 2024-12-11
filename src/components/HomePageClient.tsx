@@ -16,13 +16,11 @@ import {
   fetchRecommendedContents,
 } from '@/api/queries/recommendQueries';
 import Carousel from '@/components/common/Carousel';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
 import SentenceComponent from '@/components/SentenceComponent';
 import { Button } from '@/components/ui/button';
 import {
   ReadingPreviewResponse,
   ListeningPreviewResponse,
-  // TODO(@godhyzzang) : 추천bookmark한 문장도  initialData연결
   RecommendedBookmarksResponse,
   RecommendedContentsResponse,
 } from '@/types/Preview';
@@ -43,40 +41,38 @@ export default function HomePageClient({
   initialSentences,
   initialRecommendedContents,
 }: HomePageClientProps) {
-  const { data: readingList, isLoading: readingLoading } = useQuery({
+  const { data: readingList, isError: readingError } = useQuery({
     queryKey: ['readingPreview'],
     queryFn: () => fetchReadingPreview(),
     initialData: initialReadingContents,
   });
 
-  const { data: listeningList, isLoading: listeningLoading } = useQuery({
+  const { data: listeningList, isError: listeningError } = useQuery({
     queryKey: ['listeningPreview'],
     queryFn: () => fetchListeningPreview(),
     initialData: initialListeningContents,
   });
 
-  const { data: recommendedBookmarksData, isLoading: isSentenceLoading } =
-    useQuery({
-      queryKey: ['recommendedBookmarks'],
-      queryFn: fetchRecommendedBookmarks,
-      initialData: initialSentences,
-    });
+  const { data: recommendedBookmarksData, isError: bookmarksError } = useQuery({
+    queryKey: ['recommendedBookmarks'],
+    queryFn: fetchRecommendedBookmarks,
+    initialData: initialSentences,
+  });
 
-  const { data: recommendedContents, isLoading: isRecommendedLoading } =
-    useQuery({
-      queryKey: ['recommendedContents'],
-      queryFn: () => fetchRecommendedContents(),
-      initialData: initialRecommendedContents,
-    });
+  const { data: recommendedContents, isError: recommendedError } = useQuery({
+    queryKey: ['recommendedContents'],
+    queryFn: () => fetchRecommendedContents(),
+    initialData: initialRecommendedContents,
+  });
 
-  if (
-    readingLoading ||
-    listeningLoading ||
-    isSentenceLoading ||
-    isRecommendedLoading
-  ) {
-    return <LoadingSpinner />;
-  }
+  // if (readingError || listeningError || bookmarksError || recommendedError) {
+  //   console.error('에러 발생: ', {
+  //     readingError,
+  //     listeningError,
+  //     bookmarksError,
+  //     recommendedError,
+  //   });
+  // }
 
   return (
     <div className="w-full flex flex-col gap-6">
@@ -94,20 +90,26 @@ export default function HomePageClient({
             </Link>
           </div>
         }
-        // TODO(@smosco): ItemComponent margin 안 먹음
         itemComponent={ItemComponentCard}
         itemWidth={255}
-        // isAutoPlay
         loopExtensionCount={2} // 한 화면에 캐러셀이 3개인 캐러셀은 2개 확장해야 Loop기능 가능
       />
+      {listeningError && (
+        <p className="px-4 text-gray-500">
+          인기 리스닝 콘텐츠를 불러오지 못했어요
+        </p>
+      )}
+
       {/* 문장 캐러셀 */}
       <Carousel
         previewDatas={recommendedBookmarksData?.data.popularBookmarks || []}
         itemComponent={SentenceComponent}
         itemWidth={798}
-        // isAutoPlay
-        // autoPlayInterval={10000}
       />
+      {bookmarksError && (
+        <p className="px-4 text-gray-500">오늘의 문장을 불러오지 못했어요</p>
+      )}
+
       {/* 인기 리딩 콘텐츠 캐러셀 */}
       <Carousel
         previewDatas={readingList?.data.readingPreview || []}
@@ -124,12 +126,20 @@ export default function HomePageClient({
         }
         itemComponent={ItemComponentCard}
         itemWidth={255}
-        // isAutoPlay
-        loopExtensionCount={2} // 한 화면에 캐러셀이 3개인 캐러셀은 2개 확장해야 Loop기능 가능
+        loopExtensionCount={2}
       />
+      {readingError && (
+        <p className="px-4 text-gray-500">
+          인기 리딩 콘텐츠를 불러오지 못했어요
+        </p>
+      )}
+
       <RecommendedList
         recommendedData={recommendedContents?.data.recommendedContents}
       />
+      {recommendedError && (
+        <p className="px-4 text-gray-500">추천 콘텐츠를 불러오지 못했어요</p>
+      )}
     </div>
   );
 }
