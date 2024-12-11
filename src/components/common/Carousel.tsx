@@ -32,6 +32,7 @@ export default function Carousel<T>({
   const ItemComponent = itemComponent;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showButtons, setShowButtons] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -40,6 +41,8 @@ export default function Carousel<T>({
   const totalItems = previewDatas.length;
 
   const moveToSlide = (index: number) => {
+    if (isTransitioning) return; // 이동 중일 경우 중복 호출 방지
+    setIsTransitioning(true);
     setCurrentIndex(index);
   };
 
@@ -54,10 +57,21 @@ export default function Carousel<T>({
   useEffect(() => {
     if (carouselRef.current) {
       const totalItemWidth = itemWidth + gap;
+      carouselRef.current.style.transition = isTransitioning
+        ? 'transform 300ms ease-in-out'
+        : 'none';
       carouselRef.current.style.transform = `translateX(-${
         currentIndex * totalItemWidth
       }px)`;
     }
+  }, [currentIndex, itemWidth, gap, isTransitioning]);
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsTransitioning(false);
+    }, 300);
+    return () => clearTimeout(timer);
   }, [currentIndex, itemWidth, gap]);
 
   useEffect(() => {
@@ -71,7 +85,7 @@ export default function Carousel<T>({
         intervalRef.current = null;
       }
     };
-  }, [isAutoPlay, nextSlide]);
+  }, [isAutoPlay, nextSlide]); // nextSlide가 의존성배열에 들어가야 캐러셀 옮겨도 autoPlay정상작동
 
   const handleTouchStart = (event: React.TouchEvent) => {
     touchStartX.current = event.touches[0].clientX;
