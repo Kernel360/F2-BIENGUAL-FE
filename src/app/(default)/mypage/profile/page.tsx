@@ -74,35 +74,10 @@ export default function UserProfile() {
     );
   };
 
-  // 이름 변경
-  const handleUsernameChange = () => {
-    updateUserInfoMutation.mutate(
-      { username },
-      {
-        onSuccess: () => {
-          toast({
-            duration: 1000,
-            description: '이름이 성공적으로 변경되었습니다.',
-          });
-          refetchUserInfo();
-        },
-        onError: () => {
-          toast({ duration: 1000, description: '이름을 변경하지 못했어요.' });
-          setUsername(userData?.data.username || '');
-        },
-      },
-    );
-  };
-
   // 닉네임 변경 여부 확인
   const isNicknameChanged = useMemo(() => {
     return nickname !== userData?.data.nickname;
   }, [nickname, userData?.data.nickname]);
-
-  // 이름 변경 여부 확인
-  const isUsernameChanged = useMemo(() => {
-    return username !== userData?.data.username;
-  }, [username, userData?.data.username]);
 
   // 카테고리 토글
   const toggleCategory = (categoryId: number) => {
@@ -226,18 +201,9 @@ export default function UserProfile() {
                 id="username"
                 placeholder="이름"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
                 className="flex-1"
+                disabled
               />
-              <Button
-                type="button" // 새로고침 방지
-                variant="outline"
-                size="sm"
-                disabled={!isUsernameChanged}
-                onClick={handleUsernameChange}
-              >
-                변경하기
-              </Button>
             </div>
           </div>
 
