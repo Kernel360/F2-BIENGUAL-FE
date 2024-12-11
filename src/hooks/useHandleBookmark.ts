@@ -25,7 +25,7 @@ export default function useHandleBookmark(contentId: number) {
       }
     } else {
       toast({
-        title: '이미 해당 시간에 북마크가 존재합니다.',
+        title: '해당 시간에 이미 북마크가 존재해요',
         duration: 1000,
       });
       return false;

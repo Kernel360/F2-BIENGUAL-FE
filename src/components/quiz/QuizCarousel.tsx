@@ -116,7 +116,7 @@ export default function QuizCarousel({
                 </h2>
                 <p className="text-lg mb-6">
                   총 {state.questions.length}문제 중 {correctQuestionCount}
-                  문제를 맞추셨습니다.
+                  문제를 맞췄어요
                 </p>
                 <div className="flex justify-center items-center space-x-4 mb-8">
                   <div className="font-bold">{score}%</div>
@@ -125,10 +125,10 @@ export default function QuizCarousel({
                 <div className="space-y-4">
                   <p>
                     {score >= 80
-                      ? '훌륭한 점수입니다! 당신의 지식이 빛납니다.'
+                      ? '훌륭해요! 당신의 지식이 빛나고 있어요'
                       : score >= 50
                         ? '좋은 시도였어요. 조금만 더 노력하면 더 좋은 결과를 얻을 수 있을 거예요.'
-                        : '걱정하지 마세요. 학습은 계속되는 과정입니다. 다시 도전해보세요!'}
+                        : '걱정하지 마세요. 학습은 계속되는 과정이에요. 다시 도전해보세요!'}
                   </p>
                   <Button onClick={handleRetry} className="w-full">
                     <RotateCcw className="w-4 h-4 mr-2" />

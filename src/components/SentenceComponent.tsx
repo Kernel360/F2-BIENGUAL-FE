@@ -18,15 +18,12 @@ export default function SentenceComponent({
         <div className="flex justify-between items-start relative">
           <div>
             <h3 className="text-xl font-bold text-white mb-2 flex gap-2 ">
-              {/* <Quote className="transform rotate-180" fill="white" /> 다른
-              사람들이 저장한 문장 <Quote fill="white" /> */}
               다른 사람들이 저장한 문장
             </h3>
-
-            <div key={data.contentId} className="">
-              <p className="text-sm text-white mb-2">“ {data.enDetail} ”</p>
+            <div key={data.contentId}>
+              <p className="text-sm text-white mb-2">{data.enDetail}</p>
               {showTranslation && (
-                <p className="text-sm text-gray-200">“ {data.koDetail} ”</p>
+                <p className="text-sm text-gray-200">{data.koDetail}</p>
               )}
             </div>
           </div>

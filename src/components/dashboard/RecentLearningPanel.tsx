@@ -34,7 +34,7 @@ export default function RecentLearningPanel() {
         {isLoading && <LoadingPanel title="최근 학습 강의" className="" />}
         {isError && <ErrorPanel title="최근 학습 강의" className="" />}
         {!isLoading && !isError && !recentLearningData?.data && (
-          <EmptyPanel message="최근 학습 기록이 없습니다." />
+          <EmptyPanel message="최근에 학습한 콘텐츠가 없어요" />
         )}
         {!isLoading && !isError && recentLearningData?.data && (
           <div className="flex items-center space-x-3">

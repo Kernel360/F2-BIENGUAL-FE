@@ -81,7 +81,7 @@ export default function LoginAddPage() {
       }
 
       toast.toast({
-        description: '카테고리는 최대 5개까지 선택 가능합니다.',
+        description: '카테고리는 최대 5개까지 선택해주세요',
       });
 
       return prevSelected;
@@ -99,7 +99,7 @@ export default function LoginAddPage() {
           <span className="text-lg text-gray-400 font-medium">
             읽고싶은 아티클🖋️이나 영상 🖥️의 카테고리를 골라주세요!
             <br />
-            선택한 카테고리 위주로 콘텐츠 추천이 제공됩니다.
+            선택한 카테고리를 기반으로 콘텐츠를 추천해드려요
           </span>
         </p>
 

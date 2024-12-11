@@ -191,13 +191,13 @@ export default function ListeningDetailClient({
   }
 
   if (isError) {
-    return <p className="text-red-500">에러가 발생했습니다: {error.message}</p>;
+    return <p className="text-red-500">에러가 발생했어요: {error.message}</p>;
   }
 
   if (!listeningDetailData || !listeningDetailData.data) {
     return (
       <div className="flex flex-col items-center justify-center h-full">
-        <p className="text-lg text-gray-500">리스닝 콘텐츠가 없습니다.</p>
+        <p className="text-lg text-gray-500">콘텐츠를 불러오지 못했어요</p>
       </div>
     );
   }
@@ -298,7 +298,7 @@ export default function ListeningDetailClient({
         <Modal
           isOpen={showLoginModal}
           onClose={() => setShowLoginModal(false)}
-          title="로그인이 필요합니다."
+          title="로그인이 필요해요"
           description="이 기능을 이용하려면 로그인이 필요해요! "
         >
           <div className="flex justify-center gap-4 mt-4">
