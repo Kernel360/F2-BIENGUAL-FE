@@ -23,7 +23,7 @@ export default function SentenceComponent({
               다른 사람들이 저장한 문장
             </h3>
 
-            <div key={data.contentId} className="shadow-sm">
+            <div key={data.contentId} className="">
               <p className="text-sm text-white mb-2">“ {data.enDetail} ”</p>
               {showTranslation && (
                 <p className="text-sm text-gray-200">“ {data.koDetail} ”</p>
