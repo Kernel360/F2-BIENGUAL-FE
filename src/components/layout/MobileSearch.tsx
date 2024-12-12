@@ -48,7 +48,7 @@ export default function MobileSearch({ isOpen, setIsOpen }: MobileSearchProps) {
         <input
           ref={inputRef}
           type="text"
-          placeholder="제목 검색하기"
+          placeholder="제목 또는 내용 검색하기"
           className="flex-1 ml-3 bg-transparent outline-none text-foreground placeholder:text-muted-foreground"
           onKeyDown={handleKeyDown}
         />
