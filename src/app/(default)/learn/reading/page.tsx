@@ -1,4 +1,5 @@
 // app/(default)/learn/reading/page.tsx
+import { cookies } from 'next/headers';
 
 import {
   dehydrate,
@@ -52,6 +53,9 @@ export default async function ReadingPage({
         sort,
         direction,
         categoryIdNumber,
+        {
+          Cookie: cookies().toString(),
+        },
       ),
   });
 
