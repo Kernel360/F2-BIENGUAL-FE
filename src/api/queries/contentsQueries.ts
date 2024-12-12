@@ -45,6 +45,7 @@ export const fetchPaginatedReadingPreview = async (
   sort?: string,
   direction?: string,
   categoryId?: number,
+  customHeaders?: Record<string, string>,
 ): Promise<ContentsResponse> => {
   const queryParams = new URLSearchParams();
   if (sort) queryParams.append('sort', sort);
@@ -58,6 +59,7 @@ export const fetchPaginatedReadingPreview = async (
     `/contents/preview/paginated-reading?${queryParams.toString()}`,
     {
       method: 'GET',
+      customHeaders,
     },
   );
 };
@@ -69,6 +71,7 @@ export const fetchPaginatedListeningPreview = async (
   sort?: string,
   direction?: string,
   categoryId?: number,
+  customHeaders?: Record<string, string>,
 ): Promise<ContentsResponse> => {
   const queryParams = new URLSearchParams();
   if (sort) queryParams.append('sort', sort);
@@ -82,6 +85,7 @@ export const fetchPaginatedListeningPreview = async (
     `/contents/preview/paginated-listening?${queryParams.toString()}`,
     {
       method: 'GET',
+      customHeaders,
     },
   );
 };

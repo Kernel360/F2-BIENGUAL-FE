@@ -1,4 +1,5 @@
 // app/learn/listening/page.tsx
+import { cookies } from 'next/headers';
 
 import {
   dehydrate,
@@ -52,6 +53,9 @@ export default async function ListeningPage({
         sort,
         direction,
         categoryIdNumber,
+        {
+          Cookie: cookies().toString(),
+        },
       ),
   });
 
