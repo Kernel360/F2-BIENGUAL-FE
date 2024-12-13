@@ -24,7 +24,7 @@ export default function FloatingButtons({
         <Button
           variant="outline"
           size="icon"
-          className={`rounded-full w-12 h-12 ${showTranslate && 'bg-primary'}`}
+          className={`rounded-full w-12 h-12 ${showTranslate && 'bg-primary  hover:bg-primary/70 hover:text-white'}`}
           onClick={onTranslateToggle}
         >
           <Languages
@@ -36,7 +36,7 @@ export default function FloatingButtons({
       <Button
         variant="outline"
         size="icon"
-        className={`rounded-full w-12 h-12 ${isScrapped && 'bg-primary'}`}
+        className={`rounded-full w-12 h-12 ${isScrapped && 'bg-primary hover:bg-primary/70  hover:text-white '}`}
         onClick={onScrapToggle} // 스크랩 상태를 토글하는 함수 실행
       >
         <Bookmark className="h-6 w-6" color={isScrapped ? 'white' : 'black'} />
