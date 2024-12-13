@@ -17,7 +17,11 @@ function SearchResultsList() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
 
-  const { data: searchResultData, isLoading } = useFetchSearchResults(query);
+  const {
+    data: searchResultData,
+    isLoading,
+    isError,
+  } = useFetchSearchResults(query);
 
   if (!query) {
     return <p>검색어를 입력해주세요</p>;
@@ -27,9 +31,21 @@ function SearchResultsList() {
     return <LoadingSpinner />;
   }
 
-  if (!searchResultData || searchResultData.data.contents.length === 0) {
+  if (isError) {
     return (
-      <EmptyAlert alertDescription={`${query}에 대한 검색 결과가 없어요`} />
+      <div className="px-6">
+        <EmptyAlert
+          alertDescription={`${query}에 대한 검색 결과를 불러오지 못했어요`}
+        />
+      </div>
+    );
+  }
+
+  if (searchResultData?.data.contents.length === 0) {
+    return (
+      <div className="px-6">
+        <EmptyAlert alertDescription={`${query}에 대한 검색 결과가 없어요`} />
+      </div>
     );
   }
 
@@ -39,7 +55,7 @@ function SearchResultsList() {
         &apos;{query}&apos; 에 대한 검색 결과
       </h1>
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {searchResultData.data.contents.map((result) => (
+        {searchResultData?.data.contents.map((result) => (
           <li key={result.contentId}>
             <ContentCard
               href={
