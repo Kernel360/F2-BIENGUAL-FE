@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Search, X } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 interface MobileSearchProps {
   isOpen: boolean;
@@ -17,6 +18,8 @@ export default function MobileSearch({ isOpen, setIsOpen }: MobileSearchProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
+  const { toast } = useToast();
+
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus();
@@ -25,11 +28,19 @@ export default function MobileSearch({ isOpen, setIsOpen }: MobileSearchProps) {
 
   const handleSearch = () => {
     if (inputRef.current) {
-      const query = inputRef.current.value.replace(/\n/g, '').trim();
-      if (query) {
-        router.push(`/search?q=${encodeURIComponent(query)}`);
-        setIsOpen(false);
+      const query = inputRef.current.value.replace(/\n/g, '').trim(); // 개행문자 제거 및 공백 제거
+
+      if (query.length <= 0 || query.length >= 20) {
+        toast({
+          duration: 1000,
+          description: '1~20자 이내로 검색해주세요',
+        });
+
+        return;
       }
+
+      router.push(`/search?q=${encodeURIComponent(query)}`);
+      setIsOpen(false);
     }
   };
 
