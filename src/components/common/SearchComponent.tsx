@@ -7,18 +7,28 @@ import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 export default function SearchComponent() {
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { toast } = useToast();
 
   const handleSearch = () => {
     if (inputRef.current) {
       const query = inputRef.current.value.replace(/\n/g, '').trim(); // 개행문자 제거 및 공백 제거
-      if (query) {
-        router.push(`/search?q=${encodeURIComponent(query)}`);
+
+      if (query.length <= 0 || query.length >= 20) {
+        toast({
+          duration: 1000,
+          description: '1~20자 이내로 검색해주세요',
+        });
+
+        return;
       }
+
+      router.push(`/search?q=${encodeURIComponent(query)}`);
     }
   };
 
