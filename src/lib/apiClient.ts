@@ -14,6 +14,7 @@ export const apiClient = async <Response>(
   try {
     const response = await fetch(`${BASE_URL}/api${endpoint}`, {
       method,
+      cache: 'no-store',
       headers: {
         'Content-Type': 'application/json',
         ...customHeaders,
