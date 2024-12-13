@@ -129,8 +129,10 @@ export default function ReadingDetailClient({
       </div>
 
       <QuizWrapper contentId={contentId} />
-      <DifficultyEvaluator contentId={contentId} />
-
+      <DifficultyEvaluator
+        contentId={contentId}
+        customLevel={contentData?.customLevel}
+      />
       {/* 로그인 모달 */}
       {showLoginModal && (
         <Modal
