@@ -29,7 +29,7 @@ export default function DifficultyDisplay({
             <span>{getHeartCount(calculatedLevel)}</span>
           </div>
         ) : (
-          <div className="flex items-center justify-center  p-1 px-2 mx-1 gap-1 text-xs font-semibold font-mono text-white bg-violet-500/70  backdrop-blur-sm rounded">
+          <div className="flex items-center justify-center  p-1 px-2 mx-1 gap-1 text-xs font-semibold font-mono text-white bg-violet-500/70  backdrop-blur-sm rounded-md">
             LEVEL
             <QuestionMarkCircledIcon />
           </div>

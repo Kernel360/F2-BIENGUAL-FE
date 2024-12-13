@@ -90,61 +90,42 @@ export default function ReadingDetailClient({
   if (!contentData) return <div>콘텐츠가 존재하지 않아요!</div>;
 
   return (
-    <>
-      <div className="flex">
-        <div className="flex flex-col flex-1 gap-5 mx-auto pb-16 max-w-[800px] h-auto">
-          <div>
-            <div className="flex justify-start gap-1">
-              <Badge>{contentData.category}</Badge>
-              <DifficultyDisplay
-                calculatedLevel={contentData.calculatedLevel}
-              />
-            </div>
-
-            <div className="font-bold text-2xl mt-2 mb-4">
-              {contentData.title}
-            </div>
-
-            <div className="text-sm flex justify-end w-full items-center  gap-1 text-gray-400 ">
-              <Eye className="w-4 h-4" />
-              {formatViewCount(contentData.hits)}
-            </div>
-          </div>
-          <Separator />
-          <div className="flex justify-center">
-            <img
-              src={contentData.thumbnailUrl}
-              alt="이미지"
-              className="rounded-lg"
-            />
-          </div>
-          <div>
-            <ul className="flex flex-col gap-8 text-[#313131]">
-              {contentData.scriptList.map((script, index) => {
-                return (
-                  <ReadingScriptItem
-                    index={index}
-                    key={index}
-                    script={script}
-                    showTranslate={showTranslate}
-                    missionStatus={missionStatus?.data}
-                  />
-                );
-              })}
-            </ul>
+    <div className="w-full flex flex-col gap-5 h-auto">
+      <div>
+        <h1 className="text-lg font-bold mb-2">{contentData.title}</h1>
+        <div className="flex justify-between gap-1">
+          <Badge>{contentData.category}</Badge>
+          <DifficultyDisplay calculatedLevel={contentData.calculatedLevel} />
+          <div className="text-sm flex justify-end items-center w-full gap-1 text-gray-400">
+            <Eye className="w-4 h-4" />
+            {formatViewCount(contentData.hits)}
           </div>
         </div>
       </div>
+      <Separator />
 
-      <div className="fixed right-4 bottom-20 md:bottom-4">
-        <Button
-          variant="default"
-          size="icon"
-          className="rounded-full w-12 h-12"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        >
-          <ArrowUp className="w-5 h-5" />
-        </Button>
+      <div className="flex justify-center">
+        <img
+          src={contentData.thumbnailUrl}
+          alt="이미지"
+          className="rounded-lg"
+        />
+      </div>
+
+      <div className="mb-6">
+        <ul className="flex flex-col gap-6 text-[#313131]">
+          {contentData.scriptList.map((script, index) => {
+            return (
+              <ReadingScriptItem
+                index={index}
+                key={index}
+                script={script}
+                showTranslate={showTranslate}
+                missionStatus={missionStatus?.data}
+              />
+            );
+          })}
+        </ul>
       </div>
 
       <QuizWrapper contentId={contentId} />
@@ -177,6 +158,17 @@ export default function ReadingDetailClient({
         scrollPercent={scrollProgress}
         missionStatus={missionStatus?.data}
       />
-    </>
+
+      <div className="fixed right-4 bottom-20 md:bottom-4">
+        <Button
+          variant="default"
+          size="icon"
+          className="rounded-full w-12 h-12"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <ArrowUp className="w-5 h-5" />
+        </Button>
+      </div>
+    </div>
   );
 }

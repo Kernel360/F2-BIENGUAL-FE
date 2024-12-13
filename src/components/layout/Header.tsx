@@ -50,7 +50,7 @@ export function Header() {
 
   return (
     <>
-      <div className="sticky top-0 z-50 bg-white bg-opacity-95 border-b">
+      <div className="sticky top-0 z-30 bg-white bg-opacity-95 border-b">
         <header className="flex items-center max-w-[1440px] h-16 mx-auto px-6">
           <Link href="/" className="text-lg font-bold mr-6 text-primary">
             Biengual
@@ -93,17 +93,11 @@ export function Header() {
                     className="relative h-8 w-8 rounded-full"
                   >
                     <Avatar className="h-8 w-8">
-                      {/* TODO(@smosco): 아바타 이미지 수정 */}
-                      {/* <AvatarImage src="/avatars/01.png" alt="@username" /> */}
-                      <AvatarFallback>ME</AvatarFallback>
+                      <AvatarFallback>me</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className="w-40 px-3"
-                  align="end"
-                  forceMount
-                >
+                <DropdownMenuContent className="w-40" align="end" forceMount>
                   <Link href="/mypage/profile">
                     <DropdownMenuItem className="flex">
                       <User className=" h-4 w-4" />
@@ -115,7 +109,7 @@ export function Header() {
                       {/* <span className="flex items-center text-xs border py-1 px-2 rounded"> */}
                       <Coins className=" h-4 w-4" />
                       포인트 :
-                      <span className="text-primary">
+                      <span className="text-violet-800 font-semibold">
                         {currentPoints?.data.currentPoint} P
                       </span>
                       {/* </span> */}

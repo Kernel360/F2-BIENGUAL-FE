@@ -73,7 +73,7 @@ export default function SwipeablePanel({
   return (
     <div
       ref={panelRef}
-      className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t rounded-t-2xl shadow-lg z-30"
+      className="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t rounded-t-2xl shadow-lg z-20"
       style={{
         height: '600px',
         touchAction: 'none',

@@ -203,10 +203,12 @@ export default function ListeningDetailClient({
   }
 
   return (
-    <div className="w-full flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-4">
       <div>
-        <h1 className="text-lg font-bold">{listeningDetailData?.data.title}</h1>
-        <div className="flex justify-between gap-3 ">
+        <h1 className="text-lg font-bold mb-2">
+          {listeningDetailData?.data.title}
+        </h1>
+        <div className="flex justify-between gap-1">
           <Badge>{listeningDetailData?.data.category}</Badge>
           <DifficultyDisplay
             calculatedLevel={listeningDetailData?.data.calculatedLevel}
@@ -219,61 +221,63 @@ export default function ListeningDetailClient({
       </div>
       <Separator />
 
-      {/* TODO(@smosco): response 타입 나누기 싫어서 타입 단언 */}
-      <VideoPlayer
-        isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
-        ref={playerRef}
-        videoUrl={listeningDetailData?.data.videoUrl as string}
-        setCurrentTime={setCurrentTime}
-        onProgress={handleProgress}
-      />
+      <div className="flex flex-col gap-2">
+        {/* TODO(@smosco): response 타입 나누기 싫어서 타입 단언 */}
+        <VideoPlayer
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+          ref={playerRef}
+          videoUrl={listeningDetailData?.data.videoUrl as string}
+          setCurrentTime={setCurrentTime}
+          onProgress={handleProgress}
+        />
 
-      {/* 보기모드, 언어 옵션 */}
-      <SubtitleOption
-        mode={mode}
-        selectedLanguages={selectedLanguages}
-        setMode={setMode}
-        setSelectedLanguages={setSelectedLanguages}
-      />
+        {/* 보기모드, 언어 옵션 */}
+        <SubtitleOption
+          mode={mode}
+          selectedLanguages={selectedLanguages}
+          setMode={setMode}
+          setSelectedLanguages={setSelectedLanguages}
+        />
 
-      {/* 자막 컨테이너 */}
-      <ReactScriptPlayer
-        mode={mode}
-        scripts={listeningDetailData?.data.scriptList || []}
-        selectedLanguages={selectedLanguages}
-        seekTo={seekTo}
-        getCurrentTime={getCurrentTime}
-        onClickScript={(script, index) => {
-          console.log(script, index);
-        }}
-        onSelectWord={(word, script, index) => {
-          console.log(word, script, index);
-        }}
-        containerStyle={{
-          width: '',
-          height: '',
-          padding: '',
-          backgroundColor: '',
-          borderColor: '#ede9fe',
-        }}
-        textStyle={{
-          color: '',
-          fontSize: '',
-          fontWeight: '',
-          lineHeight: '',
-          activeColor: '#f5f3ff',
-        }}
-        timeStyle={{
-          color: '#5a5a5a',
-          fontSize: '',
-          backgroundColor: '#ddd6fe',
-          borderRadius: '',
-          padding: '',
-        }}
-        // eslint-disable-next-line react/jsx-no-bind
-        FocusButton={FocusButton}
-      />
+        {/* 자막 컨테이너 */}
+        <ReactScriptPlayer
+          mode={mode}
+          scripts={listeningDetailData?.data.scriptList || []}
+          selectedLanguages={selectedLanguages}
+          seekTo={seekTo}
+          getCurrentTime={getCurrentTime}
+          onClickScript={(script, index) => {
+            console.log(script, index);
+          }}
+          onSelectWord={(word, script, index) => {
+            console.log(word, script, index);
+          }}
+          containerStyle={{
+            width: '',
+            height: '',
+            padding: '',
+            backgroundColor: '',
+            borderColor: '#ede9fe',
+          }}
+          textStyle={{
+            color: '',
+            fontSize: '',
+            fontWeight: '',
+            lineHeight: '',
+            activeColor: '#f5f3ff',
+          }}
+          timeStyle={{
+            color: '#5a5a5a',
+            fontSize: '',
+            backgroundColor: '#ddd6fe',
+            borderRadius: '',
+            padding: '',
+          }}
+          // eslint-disable-next-line react/jsx-no-bind
+          FocusButton={FocusButton}
+        />
+      </div>
 
       {/* TODO(@godhyzzang) : logout상태일 때 블러처리한 커버사진 있으면 좋을듯 */}
       {/* 북마크 메모 패널 */}
