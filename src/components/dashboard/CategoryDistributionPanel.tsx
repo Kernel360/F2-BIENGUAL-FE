@@ -28,7 +28,7 @@ import { processCategoryData } from '@/lib/processChartData';
 
 export default function CategoryDistributionPanel() {
   const { data, isLoading, isError } = useMonthlyCategoryRatio(
-    formatDate(String(new Date()), 'YYYY-MM'),
+    formatDate(new Date(), 'YYYY-MM'),
   );
 
   const chartData = data

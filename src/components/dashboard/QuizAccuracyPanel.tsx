@@ -28,7 +28,7 @@ import { processQuizAccuracyData } from '@/lib/processChartData';
 
 export default function QuizAccuracyPanel() {
   const { data, isLoading, isError } = useWeeklyQuizAccuracy(
-    formatDate(String(new Date()), 'YYYY-MM-DD'),
+    formatDate(new Date(), 'YYYY-MM-DD'),
   );
 
   const chartData = data
