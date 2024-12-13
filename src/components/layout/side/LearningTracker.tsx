@@ -88,7 +88,7 @@ export default function LearningTracker() {
     : mockData.recentMissionHistory.data.recentHistories;
 
   return (
-    <Card className="fixed w-[260px] bg-white my-[60px] ">
+    <Card className="fixed w-[260px] bg-white my-[60px] mx-5">
       <CardHeader className="pb-2">
         <CardTitle className="text-lg font-bold">
           Biengual과 함께{' '}
