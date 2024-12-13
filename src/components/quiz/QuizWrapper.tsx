@@ -60,7 +60,7 @@ export default function QuizWrapper({ contentId }: { contentId: number }) {
   const quizQuestions = state.questions;
 
   return (
-    <div className="w-full h-fit overflow-hidden rounded-lg shadow-lg">
+    <div className="w-full overflow-hidden rounded-lg shadow-lg">
       {!showQuiz ? (
         <QuizCover
           startColor={isLogin ? 'from-blue-400' : 'from-gray-300'}
