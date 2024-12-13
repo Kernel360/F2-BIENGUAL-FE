@@ -10,15 +10,17 @@ import {
 } from '@/types/Dashboard';
 
 // 최근 학습 콘텐츠 조회 (GET)
-export const fetchRecentLearningPreview =
-  async (): Promise<FetchRecentLearningPreviewResponse> => {
-    return apiClient<FetchRecentLearningPreviewResponse>(
-      '/dashboard/learning/recent',
-      {
-        method: 'GET',
-      },
-    );
-  };
+export const fetchRecentLearningPreview = async (
+  customHeaders: Record<string, string>,
+): Promise<FetchRecentLearningPreviewResponse> => {
+  return apiClient<FetchRecentLearningPreviewResponse>(
+    '/dashboard/learning/recent',
+    {
+      method: 'GET',
+      customHeaders,
+    },
+  );
+};
 
 // 월간 미션 달력 조회 (GET)
 export const fetchMissionCalendar = async (

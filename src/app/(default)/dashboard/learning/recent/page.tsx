@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { cookies } from 'next/headers';
+
 import {
   dehydrate,
   HydrationBoundary,
@@ -15,7 +17,10 @@ export default async function RecentLearning() {
 
   await queryClient.prefetchQuery({
     queryKey: ['recentLearningPreview'],
-    queryFn: () => fetchRecentLearningPreview(),
+    queryFn: () =>
+      fetchRecentLearningPreview({
+        Cookie: cookies().toString(),
+      }),
   });
 
   return (
