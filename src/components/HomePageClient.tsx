@@ -65,15 +65,6 @@ export default function HomePageClient({
     initialData: initialRecommendedContents,
   });
 
-  // if (readingError || listeningError || bookmarksError || recommendedError) {
-  //   console.error('에러 발생: ', {
-  //     readingError,
-  //     listeningError,
-  //     bookmarksError,
-  //     recommendedError,
-  //   });
-  // }
-
   return (
     <div className="w-full flex flex-col gap-6">
       {/* 인기 리스닝 콘텐츠 캐러셀 */}
