@@ -35,7 +35,7 @@ export default function RecommendedList({
         )}
 
         {/* 추천 콘텐츠 리스트 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {recommendedData.map((content, index) => (
             <Link
               key={content.contentId}
