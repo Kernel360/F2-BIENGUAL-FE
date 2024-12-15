@@ -17,7 +17,7 @@ export default function RecommendedList({
   const isLogin = !!isLoginData?.data;
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 py-6 ">
+    <div className="w-full max-w-7xl mx-auto px-4 py-6">
       <h3 className="text-2xl font-bold mb-8">추천 콘텐츠</h3>
       <div className="relative">
         {/* 로그인 필요 안내 */}
@@ -40,24 +40,29 @@ export default function RecommendedList({
             <Link
               key={content.contentId}
               href={`/learn/${content.contentType.toLowerCase()}/detail/${content.contentId}`}
-              className="relative flex flex-col bg-background hover:bg-accent/10 transition-colors duration-300 rounded-lg group overflow-hidden"
+              className="flex flex-col bg-background rounded-lg overflow-visible"
             >
-              {/* 순번 표시 */}
-              <div className="absolute flex items-center justify-center w-10 h-10 font-semibold text-lg bg-violet-700 text-white shadow-lg z-10 rounded-br-xl">
-                {index + 1}
-              </div>
+              {/* 썸네일 및 인덱스 컨테이너 */}
+              <div className="relative overflow-visible rounded-lg group">
+                {/* 썸네일 */}
+                <div className="aspect-[16/9] overflow-hidden rounded-xl group-hover:-translate-y-2 transition-all duration-300">
+                  <img
+                    src={content.thumbnailUrl}
+                    alt={content.title}
+                    className="object-cover w-full h-full rounded-lg transition-transform duration-300"
+                  />
+                </div>
 
-              {/* 썸네일 */}
-              <div className="overflow-hidden rounded-lg aspect-[16/10]">
-                <img
-                  src={content.thumbnailUrl}
-                  alt={content.title}
-                  className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-110"
-                />
+                {/* 순번 표시 */}
+                <div className="absolute -bottom-6 right-5 group-hover:-translate-y-2 transition-all duration-300">
+                  <div className="w-11 h-11 rounded-full border-[5px] border-white bg-violet-600 flex items-center text-lg justify-center font-bold text-white">
+                    {index + 1}
+                  </div>
+                </div>
               </div>
 
               {/* 카테고리 및 아이콘 */}
-              <div className="flex gap-1 mt-2">
+              <div className="flex gap-1 mt-6">
                 <Badge variant="secondary">{content.category}</Badge>
                 {content.contentType !== 'READING' ? (
                   <div className="flex items-center justify-center bg-gradient-to-l from-red-500 to-orange-500 rounded-sm shadow-sm">
