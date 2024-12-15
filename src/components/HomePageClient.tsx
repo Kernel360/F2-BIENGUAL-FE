@@ -65,20 +65,14 @@ export default function HomePageClient({
     initialData: initialRecommendedContents,
   });
 
-  // if (readingError || listeningError || bookmarksError || recommendedError) {
-  //   console.error('에러 발생: ', {
-  //     readingError,
-  //     listeningError,
-  //     bookmarksError,
-  //     recommendedError,
-  //   });
-  // }
-
   return (
     <div className="w-full flex flex-col gap-6">
       {/* 인기 리스닝 콘텐츠 캐러셀 */}
       <Carousel
-        previewDatas={listeningList?.data.listeningPreview || []}
+        desktopItemsToShow={3}
+        tabletItemsToShow={2}
+        mobileItemsToShow={1}
+        items={listeningList?.data.listeningPreview || []}
         header={
           <div className="flex items-center justify-between mb-5">
             <h3 className="text-2xl font-bold">인기 리스닝 콘텐츠</h3>
@@ -91,8 +85,7 @@ export default function HomePageClient({
           </div>
         }
         itemComponent={ItemComponentCard}
-        itemWidth={255}
-        isAutoPlay
+        autoPlay
       />
       {listeningError && (
         <p className="px-4 text-gray-500">
@@ -102,10 +95,11 @@ export default function HomePageClient({
 
       {/* 문장 캐러셀 */}
       <Carousel
-        previewDatas={recommendedBookmarksData?.data.popularBookmarks || []}
+        desktopItemsToShow={1}
+        tabletItemsToShow={1}
+        mobileItemsToShow={1}
+        items={recommendedBookmarksData?.data.popularBookmarks || []}
         itemComponent={SentenceComponent}
-        itemWidth={798}
-        isAutoPlay
         autoPlayInterval={10000}
       />
       {bookmarksError && (
@@ -114,7 +108,10 @@ export default function HomePageClient({
 
       {/* 인기 리딩 콘텐츠 캐러셀 */}
       <Carousel
-        previewDatas={readingList?.data.readingPreview || []}
+        desktopItemsToShow={3}
+        tabletItemsToShow={2}
+        mobileItemsToShow={1}
+        items={readingList?.data.readingPreview || []}
         header={
           <div className="flex justify-between items-center mb-5">
             <h3 className="text-2xl font-bold">인기 리딩 콘텐츠</h3>
@@ -127,8 +124,7 @@ export default function HomePageClient({
           </div>
         }
         itemComponent={ItemComponentCard}
-        itemWidth={255}
-        isAutoPlay
+        autoPlay
       />
       {readingError && (
         <p className="px-4 text-gray-500">

@@ -4,7 +4,7 @@
 
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 
-import { ArrowUp, Eye, Target } from 'lucide-react';
+import { ArrowUp, Eye, Crosshair } from 'lucide-react';
 import ReactPlayer from 'react-player';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactScriptPlayer } from 'react-player-plugin-prompter';
@@ -178,7 +178,7 @@ export default function ListeningDetailClient({
             setIsFocused(!isFocused);
           }}
         >
-          <Target
+          <Crosshair
             className="w-6 h-6"
             stroke={isFocused ? '#cbc2d6' : '#8e48ea'} // isFocused 상태에 따라 색상 변경
           />
