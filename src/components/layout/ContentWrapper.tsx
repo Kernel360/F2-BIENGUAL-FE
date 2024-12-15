@@ -20,7 +20,7 @@ export default function ContentWrapper({
   );
 
   return (
-    <div className="flex w-full max-w-[1140px] mx-auto">
+    <div className="flex w-full max-w-[1140px] mx-auto mt-16 ">
       <div
         className={` ${cn(showSideArea ? `w-full md:w-[calc(100%-300px)] py-[60px]` : `w-full justify-center`)}`}
       >

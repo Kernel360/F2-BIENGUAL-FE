@@ -19,12 +19,13 @@ export default function FloatingButtons({
   onTranslateToggle,
 }: FloatingButtonsProps) {
   return (
-    <div className="fixed left-4 top-1/2 -translate-y-1/2 flex flex-col gap-4">
+    // fixed right-4 bottom-20 md:bottom-4
+    <div className="fixed left-4 bottom-20   flex flex-col gap-2 md:bottom-1/2 md:translate-y-1/2">
       {onTranslateToggle && (
         <Button
           variant="outline"
           size="icon"
-          className={`rounded-full w-12 h-12 ${showTranslate && 'bg-primary'}`}
+          className={`rounded-full w-12 h-12 ${showTranslate && 'bg-primary  hover:bg-primary/70 hover:text-white'}`}
           onClick={onTranslateToggle}
         >
           <Languages
@@ -36,7 +37,7 @@ export default function FloatingButtons({
       <Button
         variant="outline"
         size="icon"
-        className={`rounded-full w-12 h-12 ${isScrapped && 'bg-primary'}`}
+        className={`rounded-full w-12 h-12 ${isScrapped && 'bg-primary hover:bg-primary/70  hover:text-white '}`}
         onClick={onScrapToggle} // 스크랩 상태를 토글하는 함수 실행
       >
         <Bookmark className="h-6 w-6" color={isScrapped ? 'white' : 'black'} />

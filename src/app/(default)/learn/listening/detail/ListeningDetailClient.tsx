@@ -4,7 +4,7 @@
 
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 
-import { Eye, Target } from 'lucide-react';
+import { ArrowUp, Eye, Target } from 'lucide-react';
 import ReactPlayer from 'react-player';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactScriptPlayer } from 'react-player-plugin-prompter';
@@ -26,6 +26,7 @@ import SubtitleOption from '@/components/listening/SubtitleOption';
 import VideoPlayer from '@/components/listening/VideoPlayer';
 import QuizWrapper from '@/components/quiz/QuizWrapper';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
@@ -316,6 +317,17 @@ export default function ListeningDetailClient({
         isScrapped={listeningDetailData.data.isScrapped}
         onScrapToggle={handleScrapToggle}
       />
+
+      <div className="fixed right-4 bottom-20 md:bottom-4">
+        <Button
+          variant="default"
+          size="icon"
+          className="rounded-full w-12 h-12"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <ArrowUp className="w-5 h-5" />
+        </Button>
+      </div>
     </div>
   );
 }

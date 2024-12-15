@@ -1,14 +1,14 @@
 import React from 'react';
 
 import '@/app/globals.css';
-import localFont from 'next/font/local';
+// import localFont from 'next/font/local';
 
 import { Metadata } from 'next';
 
-const pretendard = localFont({
-  src: './fonts/PretendardVariable.woff2',
-  variable: '--font-pretendard',
-});
+// const pretendard = localFont({
+//   src: './fonts/PretendardVariable.woff2',
+//   variable: '--font-pretendard',
+// });
 
 export const metadata: Metadata = {
   title: 'Biengual',
@@ -22,7 +22,7 @@ export default function FullscreenLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${pretendard.variable} antialiased`}>{children}</body>
+      <body className={` antialiased`}>{children}</body>
     </html>
   );
 }
