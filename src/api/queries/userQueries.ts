@@ -8,9 +8,12 @@ import {
 } from '@/types/User';
 
 // 사용자 정보 조회 (GET)
-export const fetchUserInfo = async (): Promise<UserResponse> => {
+export const fetchUserInfo = async (
+  customHeaders?: Record<string, string>,
+): Promise<UserResponse> => {
   return apiClient<UserResponse>('/user/me', {
     method: 'GET',
+    customHeaders,
   });
 };
 
