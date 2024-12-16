@@ -75,7 +75,10 @@ export default function HomePageClient({
         items={listeningList?.data.listeningPreview || []}
         header={
           <div className="flex items-center justify-between mb-5">
-            <h3 className="text-2xl font-bold">인기 리스닝 콘텐츠</h3>
+            <h3 className="text-2xl font-bold">
+              <span className="text-red-500 text-medium">🔥 HOT </span>
+              리스닝 콘텐츠
+            </h3>
             <Link href="/learn/listening?page=1">
               <Button variant="ghost" className="shrink-0">
                 더보기
@@ -114,7 +117,10 @@ export default function HomePageClient({
         items={readingList?.data.readingPreview || []}
         header={
           <div className="flex justify-between items-center mb-5">
-            <h3 className="text-2xl font-bold">인기 리딩 콘텐츠</h3>
+            <h3 className="text-2xl font-bold">
+              <span className="text-red-500 text-medium">🔥 HOT </span> 리딩
+              콘텐츠
+            </h3>
             <Link href="/learn/reading?page=1">
               <Button variant="ghost">
                 더보기
