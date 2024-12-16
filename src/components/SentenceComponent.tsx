@@ -18,7 +18,7 @@ export default function SentenceComponent({
         <div className="flex justify-between items-start ">
           <div>
             <h3 className="text-xl font-bold text-white mb-2 flex gap-2 ">
-              지난주에 다른 사람들이 저장한 문장
+              지난 주 사람들이 저장한 문장
             </h3>
             <div key={data.contentId}>
               <p className="text-sm text-white mb-2">{data.enDetail}</p>
