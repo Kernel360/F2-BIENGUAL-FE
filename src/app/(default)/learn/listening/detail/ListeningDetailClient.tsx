@@ -346,7 +346,7 @@ export default function ListeningDetailClient({
         onScrapToggle={handleScrapToggle}
       />
 
-      <div className="fixed right-4 bottom-25 md:bottom-10">
+      <div className="fixed right-4 bottom-25 md:bottom-4">
         <Button
           variant="default"
           size="icon"
