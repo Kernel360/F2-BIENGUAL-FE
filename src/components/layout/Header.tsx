@@ -50,7 +50,7 @@ export function Header() {
 
   return (
     <>
-      <div className="fixed top-0 right-0 left-0 z-50 bg-white bg-opacity-95 border-b">
+      <div className="fixed top-0 right-0 left-0 z-40 bg-white bg-opacity-95 border-b">
         <header className="flex items-center max-w-[1440px] h-16 mx-auto px-6">
           <Link href="/" className="text-lg font-bold mr-6 text-primary">
             Biengual
