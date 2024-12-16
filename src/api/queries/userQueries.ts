@@ -25,9 +25,12 @@ export const updateUserInfo = async (
 };
 
 // 사용자 학습 시간 조회 (GET)
-export const fetchUserTime = async (): Promise<UserTimeResponse> => {
+export const fetchUserTime = async (
+  customHeaders?: Record<string, string>,
+): Promise<UserTimeResponse> => {
   return apiClient<UserTimeResponse>('/user/time', {
     method: 'GET',
+    customHeaders,
   });
 };
 
