@@ -19,12 +19,16 @@ import {
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
 function Login() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [KakaoIsLoading, KakaoSetIsLoading] = useState(false);
+  const [NaverIsLoading, NaverSetIsLoading] = useState(false);
+  const [GoogleIsLoading, GoogleSetIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleOAuthLogin = (provider: string) => {
-    setIsLoading(true);
+    if (provider === 'kakao') KakaoSetIsLoading(true);
+    if (provider === 'naver') NaverSetIsLoading(true);
+    if (provider === 'google') GoogleSetIsLoading(true);
     console.log(`Redirecting to ${provider} OAuth login...`);
     const returnUrl = searchParams.get('returnUrl');
 
@@ -37,13 +41,8 @@ function Login() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50 flex flex-col items-center justify-center p-4">
-      {isLoading && (
-        <div className="absolute inset-0 flex justify-center items-center z-50">
-          <LoadingSpinner />
-        </div>
-      )}
-      <div className={`max-w-md w-full space-y-8 ${isLoading && 'opacity-50'}`}>
+    <div className=" min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50 flex flex-col items-center justify-center p-4">
+      <div className="max-w-md w-full space-y-8 ">
         <div className="text-center space-y-2">
           <h2 className="text-3xl font-extrabold text-gray-900">
             영어 마스터의 지름길
@@ -78,21 +77,30 @@ function Login() {
           <CardContent className="grid gap-4">
             <Button
               onClick={() => handleOAuthLogin('kakao')}
-              className="w-full bg-[#FEE500] text-black hover:bg-[#FEE500]/90"
+              className="relative w-full bg-[#FEE500] text-black hover:bg-[#FEE500]/90"
             >
               카카오로 로그인
+              {KakaoIsLoading && (
+                <LoadingSpinner size="small" className="absolute right-1/4" />
+              )}
             </Button>
             <Button
               onClick={() => handleOAuthLogin('naver')}
-              className="w-full bg-[#03C75A] text-white hover:bg-[#03C75A]/90"
+              className="relative w-full bg-[#03C75A] text-white hover:bg-[#03C75A]/90"
             >
               네이버로 로그인
+              {NaverIsLoading && (
+                <LoadingSpinner size="small" className="absolute right-1/4" />
+              )}
             </Button>
             <Button
               onClick={() => handleOAuthLogin('google')}
-              className="w-full bg-white text-black border border-gray-300 hover:bg-gray-100"
+              className="relative w-full bg-white text-black border border-gray-300 hover:bg-gray-100"
             >
               Google로 로그인
+              {GoogleIsLoading && (
+                <LoadingSpinner size="small" className="absolute right-1/4" />
+              )}
             </Button>
           </CardContent>
         </Card>
