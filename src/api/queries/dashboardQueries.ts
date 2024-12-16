@@ -11,7 +11,7 @@ import {
 
 // 최근 학습 콘텐츠 조회 (GET)
 export const fetchRecentLearningPreview = async (
-  customHeaders: Record<string, string>,
+  customHeaders?: Record<string, string>,
 ): Promise<FetchRecentLearningPreviewResponse> => {
   return apiClient<FetchRecentLearningPreviewResponse>(
     '/dashboard/learning/recent',
