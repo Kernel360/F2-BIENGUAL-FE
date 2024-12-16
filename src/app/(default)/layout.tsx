@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 
-// import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import {
   fetchMissionStatus,
@@ -61,7 +61,7 @@ export default async function DefaultLayout({
       <ContentWrapper>{children}</ContentWrapper>
       <Toaster />
       <MobileNav />
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
+      <ReactQueryDevtools initialIsOpen={false} />
     </TanstackQueryPovider>
   );
 }

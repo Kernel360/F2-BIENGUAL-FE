@@ -60,7 +60,7 @@ export default function QuizWrapper({ contentId }: { contentId: number }) {
   const quizQuestions = state.questions;
 
   return (
-    <div className="w-full h-fit overflow-hidden rounded-lg shadow-lg">
+    <div className="w-full overflow-hidden rounded-lg shadow-lg">
       {!showQuiz ? (
         <QuizCover
           startColor={isLogin ? 'from-blue-400' : 'from-gray-300'}
@@ -97,7 +97,7 @@ export default function QuizWrapper({ contentId }: { contentId: number }) {
             <QuizCover
               startColor="white"
               endColor="to-purple-200"
-              text={`이런! 퀴즈 데이터가 없어요..\n관리자에게 문의해주세요`}
+              text={`퀴즈를 준비중이에요!\n관리자에게 문의해주세요.`}
               textColor="text-gray-700"
             />
           ) : (

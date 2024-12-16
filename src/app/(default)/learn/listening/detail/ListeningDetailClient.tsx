@@ -4,7 +4,7 @@
 
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 
-import { Eye, Target } from 'lucide-react';
+import { ArrowUp, Eye, Crosshair } from 'lucide-react';
 import ReactPlayer from 'react-player';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactScriptPlayer } from 'react-player-plugin-prompter';
@@ -26,6 +26,7 @@ import SubtitleOption from '@/components/listening/SubtitleOption';
 import VideoPlayer from '@/components/listening/VideoPlayer';
 import QuizWrapper from '@/components/quiz/QuizWrapper';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useScrapToggle } from '@/hooks/useScrapToggle';
 import { useUpdateLearningProgressOnUnmount } from '@/hooks/useUpdateLearningProgressOnUnmount';
@@ -177,7 +178,7 @@ export default function ListeningDetailClient({
             setIsFocused(!isFocused);
           }}
         >
-          <Target
+          <Crosshair
             className="w-6 h-6"
             stroke={isFocused ? '#cbc2d6' : '#8e48ea'} // isFocused 상태에 따라 색상 변경
           />
@@ -203,10 +204,12 @@ export default function ListeningDetailClient({
   }
 
   return (
-    <div className="w-full flex flex-col gap-2">
+    <div className="w-full flex flex-col gap-4">
       <div>
-        <h1 className="text-lg font-bold">{listeningDetailData?.data.title}</h1>
-        <div className="flex justify-between gap-3 ">
+        <h1 className="text-lg font-bold mb-2">
+          {listeningDetailData?.data.title}
+        </h1>
+        <div className="flex justify-between gap-1">
           <Badge>{listeningDetailData?.data.category}</Badge>
           <DifficultyDisplay
             calculatedLevel={listeningDetailData?.data.calculatedLevel}
@@ -219,61 +222,63 @@ export default function ListeningDetailClient({
       </div>
       <Separator />
 
-      {/* TODO(@smosco): response 타입 나누기 싫어서 타입 단언 */}
-      <VideoPlayer
-        isPlaying={isPlaying}
-        setIsPlaying={setIsPlaying}
-        ref={playerRef}
-        videoUrl={listeningDetailData?.data.videoUrl as string}
-        setCurrentTime={setCurrentTime}
-        onProgress={handleProgress}
-      />
+      <div className="flex flex-col gap-2">
+        {/* TODO(@smosco): response 타입 나누기 싫어서 타입 단언 */}
+        <VideoPlayer
+          isPlaying={isPlaying}
+          setIsPlaying={setIsPlaying}
+          ref={playerRef}
+          videoUrl={listeningDetailData?.data.videoUrl as string}
+          setCurrentTime={setCurrentTime}
+          onProgress={handleProgress}
+        />
 
-      {/* 보기모드, 언어 옵션 */}
-      <SubtitleOption
-        mode={mode}
-        selectedLanguages={selectedLanguages}
-        setMode={setMode}
-        setSelectedLanguages={setSelectedLanguages}
-      />
+        {/* 보기모드, 언어 옵션 */}
+        <SubtitleOption
+          mode={mode}
+          selectedLanguages={selectedLanguages}
+          setMode={setMode}
+          setSelectedLanguages={setSelectedLanguages}
+        />
 
-      {/* 자막 컨테이너 */}
-      <ReactScriptPlayer
-        mode={mode}
-        scripts={listeningDetailData?.data.scriptList || []}
-        selectedLanguages={selectedLanguages}
-        seekTo={seekTo}
-        getCurrentTime={getCurrentTime}
-        onClickScript={(script, index) => {
-          console.log(script, index);
-        }}
-        onSelectWord={(word, script, index) => {
-          console.log(word, script, index);
-        }}
-        containerStyle={{
-          width: '',
-          height: '',
-          padding: '',
-          backgroundColor: '',
-          borderColor: '#ede9fe',
-        }}
-        textStyle={{
-          color: '',
-          fontSize: '',
-          fontWeight: '',
-          lineHeight: '',
-          activeColor: '#f5f3ff',
-        }}
-        timeStyle={{
-          color: '#5a5a5a',
-          fontSize: '',
-          backgroundColor: '#ddd6fe',
-          borderRadius: '',
-          padding: '',
-        }}
-        // eslint-disable-next-line react/jsx-no-bind
-        FocusButton={FocusButton}
-      />
+        {/* 자막 컨테이너 */}
+        <ReactScriptPlayer
+          mode={mode}
+          scripts={listeningDetailData?.data.scriptList || []}
+          selectedLanguages={selectedLanguages}
+          seekTo={seekTo}
+          getCurrentTime={getCurrentTime}
+          onClickScript={(script, index) => {
+            console.log(script, index);
+          }}
+          onSelectWord={(word, script, index) => {
+            console.log(word, script, index);
+          }}
+          containerStyle={{
+            width: '',
+            height: '',
+            padding: '',
+            backgroundColor: '',
+            borderColor: '#ede9fe',
+          }}
+          textStyle={{
+            color: '',
+            fontSize: '',
+            fontWeight: '',
+            lineHeight: '',
+            activeColor: '#f5f3ff',
+          }}
+          timeStyle={{
+            color: '#5a5a5a',
+            fontSize: '',
+            backgroundColor: '#ddd6fe',
+            borderRadius: '',
+            padding: '',
+          }}
+          // eslint-disable-next-line react/jsx-no-bind
+          FocusButton={FocusButton}
+        />
+      </div>
 
       {/* TODO(@godhyzzang) : logout상태일 때 블러처리한 커버사진 있으면 좋을듯 */}
       {/* 북마크 메모 패널 */}
@@ -312,6 +317,17 @@ export default function ListeningDetailClient({
         isScrapped={listeningDetailData.data.isScrapped}
         onScrapToggle={handleScrapToggle}
       />
+
+      <div className="fixed right-4 bottom-20 md:bottom-4">
+        <Button
+          variant="default"
+          size="icon"
+          className="rounded-full w-12 h-12"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <ArrowUp className="w-5 h-5" />
+        </Button>
+      </div>
     </div>
   );
 }

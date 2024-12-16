@@ -4,6 +4,8 @@ import React from 'react';
 
 import { usePathname } from 'next/navigation';
 
+import { cn } from '@/lib/utils';
+
 import SideArea from './SideArea';
 
 export default function ContentWrapper({
@@ -13,16 +15,19 @@ export default function ContentWrapper({
 }): JSX.Element {
   const pathname = usePathname();
 
+  const showSideArea = !(
+    pathname?.startsWith('/dashboard') || pathname?.startsWith('/mypage')
+  );
+
   return (
-    <div className="w-full max-w-[1140px] mx-auto">
-      {pathname?.includes('/mypage') || pathname?.includes('/dashboard') ? (
-        <div>{children}</div>
-      ) : (
-        <div className="flex">
-          <div className="w-full max-w-[830px] py-[60px]">{children}</div>
-          <SideArea />
-        </div>
-      )}
+    <div className="flex w-full max-w-[1140px] mx-auto mt-16 ">
+      <div
+        className={` ${cn(showSideArea ? `w-full md:w-[calc(100%-300px)] py-[60px]` : `w-full justify-center`)}`}
+      >
+        {children}
+      </div>
+
+      {showSideArea && <SideArea />}
     </div>
   );
 }

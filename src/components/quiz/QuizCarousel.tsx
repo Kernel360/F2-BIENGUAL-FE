@@ -55,7 +55,7 @@ export default function QuizCarousel({
   );
 
   return (
-    <Card className="w-full mx-auto ">
+    <Card className="w-full">
       <CardHeader className="border-b">
         <CardTitle className="text-lg font-bold">
           {currentIndex === totalQuestions ? '퀴즈 결과' : '퀴즈'}

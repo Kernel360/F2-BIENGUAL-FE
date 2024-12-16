@@ -6,7 +6,7 @@ export default async function LearnPageLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="w-full mx-auto px-6">
+    <div className="w-full mx-auto px-6 pt-0 pb-[60px]">
       <main className="flex-1">{children}</main>
     </div>
   );
