@@ -18,7 +18,7 @@ export default function RecommendedList({
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 py-6">
-      <h3 className="text-2xl font-bold mb-8">추천 콘텐츠</h3>
+      <h3 className="text-2xl font-bold mb-8">당신을 위한 추천 콘텐츠</h3>
       <div className="relative">
         {/* 로그인 필요 안내 */}
         {!isLogin && (
