@@ -7,9 +7,12 @@ import {
 } from '../../types/Bookmark';
 
 // 모든 북마크 조회 (GET)
-export const fetchAllBookmarks = async (): Promise<BookmarkListResponse> => {
+export const fetchAllBookmarks = async (
+  customHeaders?: Record<string, string>,
+): Promise<BookmarkListResponse> => {
   return apiClient<BookmarkListResponse>('/bookmark/view', {
     method: 'GET',
+    customHeaders,
   });
 };
 

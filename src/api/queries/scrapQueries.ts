@@ -6,9 +6,12 @@ import {
 } from '@/types/Scrap';
 
 // 스크랩 조회 (GET)
-export const fetchScrap = async (): Promise<FetchScrapResponse> => {
+export const fetchScrap = async (
+  customHeaders?: Record<string, string>,
+): Promise<FetchScrapResponse> => {
   return apiClient<FetchScrapResponse>('/scrap/view', {
     method: 'GET',
+    customHeaders,
   });
 };
 
