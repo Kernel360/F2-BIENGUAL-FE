@@ -4,7 +4,13 @@
 
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 
-import { ArrowUp, Eye, Crosshair } from 'lucide-react';
+import {
+  ArrowUp,
+  Eye,
+  Crosshair,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
 import ReactPlayer from 'react-player';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactScriptPlayer } from 'react-player-plugin-prompter';
@@ -187,6 +193,26 @@ export default function ListeningDetailClient({
     );
   }
 
+  const PrevButton = (
+    <button
+      type="button"
+      onClick={() => {}}
+      className="w-8 h-8 rounded-sm border-none bg-[#f9fafb] mx-1 hover:bg-[#f3f4f6]"
+    >
+      <ChevronLeft color="#a78bfa" className="w-8 h-8" />
+    </button>
+  );
+
+  const NextButton = (
+    <button
+      type="button"
+      onClick={() => {}}
+      className="w-8 h-8 rounded-sm border-none bg-[#f9fafb] mx-1 hover:bg-[#f3f4f6]"
+    >
+      <ChevronRight color="#a78bfa" className="w-8 h-8" />
+    </button>
+  );
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -275,6 +301,8 @@ export default function ListeningDetailClient({
             borderRadius: '',
             padding: '',
           }}
+          PrevButton={PrevButton}
+          NextButton={NextButton}
           // eslint-disable-next-line react/jsx-no-bind
           FocusButton={FocusButton}
         />
