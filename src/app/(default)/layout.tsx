@@ -54,7 +54,7 @@ export default async function DefaultLayout({
       initialData: recentMissionHistoryResult.value,
     });
   }
-  console.log('initialDatas', initialDatas);
+  // console.log('initialDatas', initialDatas);
   return (
     <TanstackQueryPovider initialDatas={initialDatas}>
       <Header />
