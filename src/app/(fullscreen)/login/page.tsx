@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -19,10 +19,12 @@ import {
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
 function Login() {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleOAuthLogin = (provider: string) => {
+    setIsLoading(true);
     console.log(`Redirecting to ${provider} OAuth login...`);
     const returnUrl = searchParams.get('returnUrl');
 
@@ -35,8 +37,13 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50 flex flex-col items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-8">
+    <div className="relative min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50 flex flex-col items-center justify-center p-4">
+      {isLoading && (
+        <div className="absolute inset-0 flex justify-center items-center z-50">
+          <LoadingSpinner />
+        </div>
+      )}
+      <div className={`max-w-md w-full space-y-8 ${isLoading && 'opacity-50'}`}>
         <div className="text-center space-y-2">
           <h2 className="text-3xl font-extrabold text-gray-900">
             영어 마스터의 지름길
