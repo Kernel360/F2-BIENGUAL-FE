@@ -14,11 +14,11 @@ export default function SentenceComponent({
   const [showTranslation, setShowTranslation] = useState(false);
   return (
     <Card className="h-full bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 shadow-xl rounded-lg">
-      <CardContent className="p-5 flex flex-col justify-between h-full">
-        <div className="flex justify-between items-start relative">
+      <CardContent className="p-5 flex flex-col justify-between h-full ">
+        <div className="flex justify-between items-start ">
           <div>
             <h3 className="text-xl font-bold text-white mb-2 flex gap-2 ">
-              다른 사람들이 저장한 문장
+              지난주에 다른 사람들이 저장한 문장
             </h3>
             <div key={data.contentId}>
               <p className="text-sm text-white mb-2">{data.enDetail}</p>
@@ -28,14 +28,6 @@ export default function SentenceComponent({
             </div>
           </div>
           {/* 문장이 있는 해당 페이지로 가는 <a/> tag */}
-          <div className="absolute -bottom-12 right-0 ">
-            <a
-              href={`/learn/reading/detail/${data.contentId}`}
-              className="text-sm text-blue-300 underline"
-            >
-              Go to Page
-            </a>
-          </div>
         </div>
         <div className="flex justify-between items-center mt-2">
           <Button
@@ -46,6 +38,12 @@ export default function SentenceComponent({
           >
             {showTranslation ? 'Hide Translation' : 'Show Translation'}
           </Button>
+          <a
+            href={`/learn/reading/detail/${data.contentId}`}
+            className="text-sm text-blue-300 underline"
+          >
+            Go to Page
+          </a>
         </div>
       </CardContent>
     </Card>
