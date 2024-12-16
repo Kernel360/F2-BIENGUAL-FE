@@ -57,7 +57,9 @@ export default async function HomePage() {
       : {
           code: 'error',
           message: '추천 콘텐츠 조회 실패',
-          data: { recommendedContents: [] },
+          data: {
+            recommendedContents: mockRecommendedData.data.recommendedContents,
+          },
         };
 
   return (
