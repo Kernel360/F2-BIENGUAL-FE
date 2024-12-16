@@ -2,8 +2,10 @@
 
 export default function LoadingSpinner({
   size = 'default',
+  className = '',
 }: {
   size?: 'small' | 'default' | 'large';
+  className?: string;
 }) {
   const sizeClasses = {
     small: 'w-6 h-6',
@@ -12,9 +14,9 @@ export default function LoadingSpinner({
   };
 
   return (
-    <div className="flex items-center justify-center mt-8">
+    <div className="flex items-center justify-center ">
       <div
-        className={`relative ${sizeClasses[size]} border-4 border-t-transparent border-primary rounded-full animate-spin`}
+        className={`relative ${sizeClasses[size]} ${className} border-4 border-t-transparent border-primary rounded-full animate-spin`}
       />
     </div>
   );

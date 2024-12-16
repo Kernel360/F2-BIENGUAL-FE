@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useState } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -19,10 +19,16 @@ import {
 const BASE_URL = `${process.env.NEXT_PUBLIC_BASE_URL}`;
 
 function Login() {
+  const [KakaoIsLoading, KakaoSetIsLoading] = useState(false);
+  const [NaverIsLoading, NaverSetIsLoading] = useState(false);
+  const [GoogleIsLoading, GoogleSetIsLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleOAuthLogin = (provider: string) => {
+    if (provider === 'kakao') KakaoSetIsLoading(true);
+    if (provider === 'naver') NaverSetIsLoading(true);
+    if (provider === 'google') GoogleSetIsLoading(true);
     console.log(`Redirecting to ${provider} OAuth login...`);
     const returnUrl = searchParams.get('returnUrl');
 
@@ -35,8 +41,8 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50 flex flex-col items-center justify-center p-4">
-      <div className="max-w-md w-full space-y-8">
+    <div className=" min-h-screen bg-gradient-to-br from-indigo-50 to-violet-50 flex flex-col items-center justify-center p-4">
+      <div className="max-w-md w-full space-y-8 ">
         <div className="text-center space-y-2">
           <h2 className="text-3xl font-extrabold text-gray-900">
             영어 마스터의 지름길
@@ -71,21 +77,21 @@ function Login() {
           <CardContent className="grid gap-4">
             <Button
               onClick={() => handleOAuthLogin('kakao')}
-              className="w-full bg-[#FEE500] text-black hover:bg-[#FEE500]/90"
+              className={` w-full bg-[#FEE500] text-black hover:bg-[#FEE500]/90 ${KakaoIsLoading && 'bg-[#FEE500]/70  hover:bg-[#FEE500]/70 text-black/70'}`}
             >
-              카카오로 로그인
+              {KakaoIsLoading ? '카카오로 로그인 중..' : ' 카카오로 로그인'}
             </Button>
             <Button
               onClick={() => handleOAuthLogin('naver')}
-              className="w-full bg-[#03C75A] text-white hover:bg-[#03C75A]/90"
+              className={` w-full bg-[#03C75A] text-white hover:bg-[#03C75A]/90 ${NaverIsLoading && 'bg-[#03C75A]/70  hover:bg-[#03C75A]/70 text-white/70 '}`}
             >
-              네이버로 로그인
+              {NaverIsLoading ? '네이버로 로그인 중' : '네이버로 로그인'}
             </Button>
             <Button
               onClick={() => handleOAuthLogin('google')}
-              className="w-full bg-white text-black border border-gray-300 hover:bg-gray-100"
+              className={` w-full bg-white text-black border border-gray-300 hover:bg-gray-100 ${GoogleIsLoading && 'bg-gray-100/70 hover:bg-gray-100/70 text-black/70'}`}
             >
-              Google로 로그인
+              {GoogleIsLoading ? 'Google로 로그인 중..' : 'Google로 로그인'}
             </Button>
           </CardContent>
         </Card>
