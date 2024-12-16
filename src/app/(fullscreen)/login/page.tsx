@@ -77,19 +77,19 @@ function Login() {
           <CardContent className="grid gap-4">
             <Button
               onClick={() => handleOAuthLogin('kakao')}
-              className={`relative w-full bg-[#FEE500] text-black hover:bg-[#FEE500]/90 ${KakaoIsLoading && 'bg-[#FEE500]/70  hover:bg-[#FEE500]/70 text-black/70'}`}
+              className={` w-full bg-[#FEE500] text-black hover:bg-[#FEE500]/90 ${KakaoIsLoading && 'bg-[#FEE500]/70  hover:bg-[#FEE500]/70 text-black/70'}`}
             >
               {KakaoIsLoading ? '카카오로 로그인 중..' : ' 카카오로 로그인'}
             </Button>
             <Button
               onClick={() => handleOAuthLogin('naver')}
-              className={`relative w-full bg-[#03C75A] text-white hover:bg-[#03C75A]/90 ${NaverIsLoading && 'bg-[#03C75A]/70  hover:bg-[#03C75A]/70 text-black/70 '}`}
+              className={` w-full bg-[#03C75A] text-white hover:bg-[#03C75A]/90 ${NaverIsLoading && 'bg-[#03C75A]/70  hover:bg-[#03C75A]/70 text-white/70 '}`}
             >
               {NaverIsLoading ? '네이버로 로그인 중' : '네이버로 로그인'}
             </Button>
             <Button
               onClick={() => handleOAuthLogin('google')}
-              className={`relative w-full bg-white text-black border border-gray-300 hover:bg-gray-100 ${GoogleIsLoading && 'bg-gray-100/70 hover:bg-gray-100/70 text-black/70'}`}
+              className={` w-full bg-white text-black border border-gray-300 hover:bg-gray-100 ${GoogleIsLoading && 'bg-gray-100/70 hover:bg-gray-100/70 text-black/70'}`}
             >
               {GoogleIsLoading ? 'Google로 로그인 중..' : 'Google로 로그인'}
             </Button>
