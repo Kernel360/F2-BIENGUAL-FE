@@ -6,12 +6,14 @@ import {
 } from '@/types/Mission';
 
 // 미션 상태 확인 (GET)
-export const fetchMissionStatus =
-  async (): Promise<FetchMissionStatusResponse> => {
-    return apiClient<FetchMissionStatusResponse>('/missions/status', {
-      method: 'GET',
-    });
-  };
+export const fetchMissionStatus = async (
+  customHeaders?: Record<string, string>,
+): Promise<FetchMissionStatusResponse> => {
+  return apiClient<FetchMissionStatusResponse>('/missions/status', {
+    method: 'GET',
+    customHeaders,
+  });
+};
 
 // 미션 완료 요청 (PUT)
 export const updateMissionStatus = async (missionStatusData: {
@@ -25,12 +27,14 @@ export const updateMissionStatus = async (missionStatusData: {
   });
 };
 
-export const fetchRecentMissionHistory =
-  async (): Promise<FetchRecentMissionHistoryResponse> => {
-    return apiClient<FetchRecentMissionHistoryResponse>(
-      '/mission-history/recent',
-      {
-        method: 'GET',
-      },
-    );
-  };
+export const fetchRecentMissionHistory = async (
+  customHeaders?: Record<string, string>,
+): Promise<FetchRecentMissionHistoryResponse> => {
+  return apiClient<FetchRecentMissionHistoryResponse>(
+    '/mission-history/recent',
+    {
+      method: 'GET',
+      customHeaders,
+    },
+  );
+};
