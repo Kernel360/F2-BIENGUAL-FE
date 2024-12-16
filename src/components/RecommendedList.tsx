@@ -22,7 +22,7 @@ export default function RecommendedList({
       <div className="relative">
         {/* 로그인 필요 안내 */}
         {!isLogin && (
-          <div className="absolute inset-0 bg-background/10 backdrop-blur-[1px] z-20 flex flex-col items-center justify-center rounded-lg">
+          <div className="absolute inset-0 bg-background/30 backdrop-blur-[1px] z-20 flex flex-col items-center justify-center rounded-lg">
             <div className="bg-card p-6 rounded-lg shadow-lg max-w-md w-full text-center space-y-4">
               <Lock className="w-9 h-9 mx-auto text-primary" />
               <h3 className="text-xl font-bold">맞춤 추천을 받아보세요!</h3>
