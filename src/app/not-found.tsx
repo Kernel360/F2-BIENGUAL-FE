@@ -28,7 +28,7 @@ export default function NotFoundPage() {
             </Button>
             <Button
               className="bg-white text-purple-600 hover:bg-white/90 px-8 py-3 text-lg font-semibold rounded-full transition-all duration-300 ease-in-out transform hover:scale-105 mt-6"
-              onClick={() => router.push('/')}
+              onClick={() => router.replace('/')}
             >
               홈으로 가기
             </Button>

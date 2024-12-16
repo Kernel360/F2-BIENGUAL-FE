@@ -31,7 +31,7 @@ export default function MyPageLayout({
   const isLogin = isLoginData?.data;
   const router = useRouter();
   if (!isLogin) {
-    router.push('/login');
+    router.replace('/login');
   }
 
   return (

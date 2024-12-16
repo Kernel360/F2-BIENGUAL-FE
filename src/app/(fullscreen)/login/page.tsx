@@ -32,7 +32,7 @@ function Login() {
     console.log(`Redirecting to ${provider} OAuth login...`);
     const returnUrl = searchParams.get('returnUrl');
 
-    router.push(
+    router.replace(
       `${BASE_URL}/oauth2/authorization/${provider}${
         returnUrl ? `?returnUrl=${encodeURIComponent(returnUrl)}` : ''
       }`,
