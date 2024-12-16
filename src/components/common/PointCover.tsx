@@ -64,7 +64,7 @@ export default function PointCover({ data, children }: PointCoverProps) {
       const success = await reducePointMutation.mutateAsync(contentId);
       if (success) {
         setIsConfirmed(true);
-        router.replace(
+        router.push(
           data.contentType === 'READING'
             ? `/learn/reading/detail/${data.contentId}`
             : `/learn/listening/detail/${data.contentId}`,

@@ -28,7 +28,7 @@ export default function SearchComponent() {
         return;
       }
 
-      router.replace(`/search?q=${encodeURIComponent(query)}`);
+      router.push(`/search?q=${encodeURIComponent(query)}`);
     }
   };
 

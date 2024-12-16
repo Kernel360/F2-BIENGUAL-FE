@@ -42,7 +42,7 @@ export default function MobileSearch({ isOpen, setIsOpen }: MobileSearchProps) {
         return;
       }
 
-      router.replace(`/search?q=${encodeURIComponent(query)}`);
+      router.push(`/search?q=${encodeURIComponent(query)}`);
       setIsOpen(false);
     }
   };
