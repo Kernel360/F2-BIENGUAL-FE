@@ -9,8 +9,8 @@ import { reducePoints } from '../queries/pointQueries';
 export const useReducePoints = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<ReducePointResponse, Error, string>({
-    mutationFn: (contentId: string) => reducePoints(contentId),
+  return useMutation<ReducePointResponse, Error, number>({
+    mutationFn: (contentId: number) => reducePoints(contentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['currentPoints'] });
       queryClient.invalidateQueries({
@@ -18,6 +18,12 @@ export const useReducePoints = () => {
       });
       queryClient.invalidateQueries({
         queryKey: ['paginatedReadingPreview'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['recommendedContents'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['search'],
       });
     },
   });

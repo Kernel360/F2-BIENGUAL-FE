@@ -18,7 +18,7 @@ import { Button } from '../ui/button';
 interface PointCoverProps {
   data: {
     isPointRequired: boolean;
-    contentId: string;
+    contentId: number;
     contentType: 'READING' | 'LISTENING';
   };
   children: ReactNode;
