@@ -11,9 +11,7 @@ export const useUpdateLearningProgressOnUnmount = (
   const scrollProgressRef = useRef<number>(progress);
 
   useEffect(() => {
-    if (scrollProgressRef.current < progress) {
-      scrollProgressRef.current = progress;
-    }
+    scrollProgressRef.current = progress;
   }, [progress]);
 
   useEffect(() => {
