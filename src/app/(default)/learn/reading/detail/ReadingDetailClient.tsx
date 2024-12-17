@@ -159,7 +159,7 @@ export default function ReadingDetailClient({
         missionStatus={missionStatus?.data}
       />
 
-      <div className="fixed right-4 bottom-25 md:bottom-4">
+      <div className="fixed right-4 bottom-[100px] md:bottom-4">
         <Button
           variant="default"
           size="icon"

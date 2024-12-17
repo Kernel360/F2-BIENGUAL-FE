@@ -20,7 +20,7 @@ export default function FloatingButtons({
 }: FloatingButtonsProps) {
   return (
     // fixed right-4 bottom-20 md:bottom-4
-    <div className="fixed left-4 bottom-20   flex flex-col gap-2 md:bottom-1/2 md:translate-y-1/2">
+    <div className="fixed left-4 bottom-[100px]   flex flex-col gap-2 md:bottom-1/2 md:translate-y-1/2">
       {onTranslateToggle && (
         <Button
           variant="outline"
