@@ -9,6 +9,7 @@ import { Clock, Eye } from 'lucide-react';
 import { useFetchSearchResults } from '@/api/hooks/useSearch';
 import EmptyAlert from '@/components/common/EmptyAlert';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import PointCover from '@/components/common/PointCover';
 import ContentCard from '@/components/items/ContentCard';
 import { Badge } from '@/components/ui/badge';
 import { formatViewCount } from '@/lib/formatViewCount';
@@ -56,7 +57,7 @@ function SearchResultsList() {
       </h1>
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {searchResultData?.data.contents.map((result) => (
-          <li key={result.contentId}>
+          <PointCover key={result.contentId} data={result}>
             <ContentCard
               href={
                 result.contentType === 'READING'
@@ -89,7 +90,7 @@ function SearchResultsList() {
               title={result.title}
               description={result.preScripts}
             />
-          </li>
+          </PointCover>
         ))}
       </ul>
     </div>
