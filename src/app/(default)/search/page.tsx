@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 
-import { Clock, Eye } from 'lucide-react';
+import { BookOpen, Clock, Eye, Headphones } from 'lucide-react';
 
 import { useFetchSearchResults } from '@/api/hooks/useSearch';
 import EmptyAlert from '@/components/common/EmptyAlert';
@@ -80,7 +80,21 @@ function SearchResultsList() {
                 )
               }
               coverImageUrl={result.thumbnailUrl}
-              leftBadge={<Badge>{result.category}</Badge>}
+              leftBadge={
+                <div className="flex gap-1">
+                  <Badge className="">{result.category}</Badge>
+
+                  {result.contentType !== 'READING' ? (
+                    <div className="flex justify-center items-center bg-gradient-to-l from-red-500 to-orange-500 rounded-sm shadow-sm">
+                      <Headphones className="p-1 h-6 w-6 text-white" />
+                    </div>
+                  ) : (
+                    <div className="flex justify-center items-center bg-gradient-to-l from-blue-500 to-sky-500 rounded-sm shadow-sm  ">
+                      <BookOpen className="p-1 h-6 w-6  text-white" />
+                    </div>
+                  )}
+                </div>
+              }
               rightBadge={
                 <div className="flex items-center gap-1 text-gray-400">
                   <Eye className="w-4 h-4" />
